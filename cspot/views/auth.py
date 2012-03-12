@@ -26,15 +26,14 @@ def signup(request):
     email = request.params.get('email','')
     password = request.params.get('password','')
     password_confirm = request.params.get('password_confirm','')
-    submit = request.params.get('submit','')
 
-    if submit:
+    if request.method == 'POST':
         if not (name and email and password and password_confirm):
-            request.session.flash('Oops! Please complete all fields', 'errors')
+            request.session.flash('Oops! Please complete all fields', 'signup_errors')
         elif get_user(email=email):
-            request.session.flash('The e-mail address %s is already in use' % email, 'errors')
+            request.session.flash('The e-mail address %s is already in use' % email, 'signup_errors')
         elif password != password_confirm:
-            request.session.flash('Your passwords did not match', 'errors')
+            request.session.flash('Your passwords did not match', 'signup_errors')
         else:
             if user:
                 # user is logged in with a temporary account
@@ -65,8 +64,6 @@ def signup(request):
     return dict(
         name=name,
         email=email,
-        signup_url=route_url('auth:signup',request),
-        login_url=route_url('auth:login',request),
     )
 
 @view_config(route_name='auth:login', renderer='cspot:templates/auth/login.pt')
@@ -78,55 +75,56 @@ def login(request):
     login_url = route_url('auth:login', request)
 
     if came_from == login_url:
-        came_from = route_url('home', request)
+        came_from = route_url('project:list', request)
 
     username = request.params.get('username','')
     password = request.params.get('password','')
 
-    if username and password:
+    if request.method == 'POST':
         user = get_user(email=username)
 
-        if user and user.is_temporary():
-            raise StandardError, "This account is not available for you to use"
+        if not (username and password):
+            request.session.flash('Please provide a username and password', 'login_errors')
 
-        if user and user.authenticate(password):
+        elif user and user.is_temporary():
+            request.session.flash('This account is not available for you to use', 'login_errors')
+
+        elif user and user.authenticate(password):
             user.set_last_login()
 
             if request.user:
                 # A temporary user exists in the request
                 # copy the temporary user's projects to the new user
-
+    
                 for project in request.user.projects():
                     project.remove_user(request.user)
                     project.remove_user(user)
                     project.add_user(user, 'owner')
                     request.session.flash('%s saved' % project.name, 'messages')
-
+    
             headers = remember(request, user.id)
             request.session['logged_in'] = 'logged_in'
-
+    
             if not user.name:
                 request.session['came_from'] = came_from
-
+    
                 return HTTPFound(
                     location=route_url('user:profile', request),
                     headers=headers
                 )
-
+    
             else:
                 return HTTPFound(
                     location=came_from,
                     headers=headers
                 )
-
+    
         else:
-            request.session.flash('Incorrect username or password', 'errors')
+            request.session.flash('Incorrect username or password', 'login_errors')
 
     return dict(
         came_from=came_from,
         username=username,
-        signup_url=route_url('auth:signup',request),
-        login_url=route_url('auth:login',request),
     )
 
 @view_config(route_name='auth:logout', renderer='cspot:templates/auth/logout.pt')
@@ -142,6 +140,4 @@ def logout(request):
         )
 
     else:
-        return dict(
-            login_url=route_url('auth:login',request),
-        )
+        return dict()

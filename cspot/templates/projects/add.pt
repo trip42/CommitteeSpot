@@ -1,0 +1,60 @@
+<metal:main use-macro="load:../master.pt">
+<metal:title fill-slot="title">New Project</metal:title>
+<metal:content fill-slot="content">
+
+<div class="row">
+    <div class="span12">
+        <div class="box">
+            <h2>New Project</h2>
+
+            <div class="padding">
+            
+            <metal:main use-macro="load:../alerts.pt" />
+
+            <p>
+            We need some basic information about your team's and
+            what you will be reviewing. These questions help us
+            customize the rest of the system to your specific needs.
+            </p>
+
+            <form method="post"
+                  tal:attributes="href route_url('project:add', request)">
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="title">What is the name of your team or project?</label>
+                    <div class="controls">
+                        <input type="text" name="title" id="title" class="span7"
+                               tal:attributes="value title">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="item_plural">What kind of items are you reviewing?</label>
+                    <div class="controls">
+                        <input type="text" name="item_plural" id="item_plural" class="span3"
+                               tal:attributes="value item_plural">
+                        <p class="help-block">
+                            Answer with a <strong>plural noun</strong>. Examples: Applicants,
+                            Candidates, RFPs, Proposals, Bids, People, etc.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary">Create Project</button> or
+                        <a tal:attributes="href route_url('project:list', request)">Cancel</a>
+                    </div>
+                </div>
+
+            </fieldset>
+            </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</metal:content>
+</metal:main>
+

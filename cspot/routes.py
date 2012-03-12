@@ -12,3 +12,13 @@ def includeme(config):
 
     config.add_route('user:profile', '/profile')
 
+    # Projects
+
+    config.add_route('project:list', '/projects')
+    config.add_route('project:add', '/projects/add')
+    config.add_route('project:records', '/projects/{project_id}/records')
+    config.add_route('project:record:add', '/projects/{project_id}/records/add')
+    config.add_route('project:record', '/projects/{project_id}/records/{record_id}')
+    
+
+

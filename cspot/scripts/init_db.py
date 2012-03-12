@@ -1,25 +1,27 @@
-import os
-import sys
 import transaction
 
 from sqlalchemy import engine_from_config
 
-from pyramid.paster import get_appsettings, setup_logging
-from ..models import DBSession
+from pyramid.paster import bootstrap
+from paste.deploy import appconfig
 
-def main(argv=sys.argv):
-    if len(argv) != 2:
-        print "error"
-        sys.exit(1)
+from cspot.models import DBSession
+from cspot.models import Base
 
-    config_uri = argv[1]
-    setup_logging(config_uri)
+from cspot.models.projects import Project
+from cspot.models.users import User
 
-    settings = get_appsettings(config_uri)
-    engine = engine_from_config(settings, 'sqlalchemy.')
-    
+def main():
+    conf = appconfig('config:/home/cspot/webapps/cspot/cspot/development.ini', name='main')
+    engine = engine_from_config(conf, 'sqlalchemy.')
+
     DBSession.configure(bind=engine)
 
+    Base.metadata.bind = engine
+    Base.metadata.bind.echo = True
     Base.metadata.create_all(engine)
+
+if __name__ == '__main__':
+    main()
 
 

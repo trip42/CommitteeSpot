@@ -25,11 +25,15 @@
             <div class="span8">
                 <div id="menu-container">
                     <div id="menu">
-                        <a tal:condition="user" href="/projects">my projects</a>
-                        <a href="/start">new project</a>
-                        <a tal:condition="user" href="/profile">my profile</a>
-                        <a tal:condition="not user or user.is_temporary()" href="/login">sign in</a>
-                        <a tal:condition="user and not user.is_temporary()" href="/logout">sign out</a>
+                        <a tal:condition="user" 
+                           tal:attributes="href route_url('project:list', request)">my projects</a>
+                        <a tal:attributes="href route_url('project:add',request)">new project</a>
+                        <a tal:condition="user" 
+                           tal:attributes="href route_url('user:profile', request)">my profile</a>
+                        <a tal:condition="not user or user.is_temporary()" 
+                           tal:attributes="href route_url('auth:login', request)">sign in</a>
+                        <a tal:condition="user and not user.is_temporary()" 
+                           tal:attributes="href route_url('auth:logout', request)">sign out</a>
                     </div>
                     <div id="user-info" tal:condition="user" tal:content="user.name or user.email"></div>
                 </div>
@@ -39,25 +43,17 @@
 </div>
 
 <tal:block tal:condition="user">
-<div tal:condition="python:user.is_temporary()" class="warning-bar">
-      Your project is <strong>not saved</strong> please <a href="/login">signup</a> or <a href="/login">login</a>
+<div tal:condition="python:user.is_temporary()" id="temp-user-bar">
+    Your project is <strong>not saved</strong> please
+    <a tal:attributes="href route_url('auth:signup', request)">signup</a> or 
+    <a tal:attributes="href route_url('auth:login', request)">login</a>
       to save this project for future use. Unsaved projects are <strong>removed after 24 hours</strong>.
 </div>
 </tal:block>
 
 <div class="container">
     <div class="page">
-
-        <div class="alert alert-error"
-             tal:repeat="error request.session.pop_flash('errors')"
-             tal:content="error"></div>
-
-        <div class="alert alert-success"
-             tal:repeat="message request.session.pop_flash('messages')"
-             tal:content="message"></div>
-
         <metal:content define-slot="content" />
-
     </div>
 
     <div class="row">

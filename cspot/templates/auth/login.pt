@@ -15,40 +15,48 @@
         <div class="box">
 
         <h2>Sign in</h2>
+   
+        <div class="padding">
+ 
+            <div class="alert alert-error"
+                 tal:condition="python:request.session.get('logged_in','')">
+                Your session has expired, please re-login to continue.
+            </div>
+
+            <div class="alert alert-error"
+                 tal:repeat="error request.session.pop_flash('login_errors')"
+                 tal:content="error"></div>
     
-        <div class="alert alert-error"
-             tal:condition="python:request.session.get('logged_in','')">
-            Your session has expired, please re-login to continue.
+            <form method="post"
+                  tal:attributes="action route_url('auth:login', request)">
+            <fieldset>
+                <input type="hidden" name="came_from"
+                             tal:attributes="value came_from | nothing">
+        
+                <div class="control-group">
+                    <label class="control-label" for="username">E-mail address:</label>
+                    <div class="controls">
+                        <input type="text" name="username" id="username"
+                                     tal:attributes="value request.params['username'] | username | nothing;">
+                    </div>
+                </div>
+        
+                <div class="control-group">
+                    <label class="control-label" for="password">Password:</label>
+                    <div class="controls">
+                        <input type="password" name="password" id="password" class="medium">
+                    </div>
+                </div>
+        
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" name="submit" value="signin" class="btn btn-primary">Sign in</button>
+                    </div>
+                </div>
+            </fieldset>
+            </form>
+
         </div>
-    
-        <form method="post" class="padding" 
-              tal:attributes="action login_url">
-        <fieldset>
-            <input type="hidden" name="came_from"
-                         tal:attributes="value came_from | nothing">
-    
-            <div class="control-group">
-                <label class="control-label" for="username">E-mail address:</label>
-                <div class="controls">
-                    <input type="text" name="username" id="username"
-                                 tal:attributes="value request.params['username'] | username | nothing;">
-                </div>
-            </div>
-    
-            <div class="control-group">
-                <label class="control-label" for="password">Password:</label>
-                <div class="controls">
-                    <input type="password" name="password" id="password" class="medium">
-                </div>
-            </div>
-    
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" name="submit" value="signin" class="btn btn-primary">Sign in</button>
-                </div>
-            </div>
-        </fieldset>
-        </form>
 
         </div>
     </div>
@@ -56,55 +64,63 @@
         <div class="box">
 
         <h2>Sign up</h2>
-    
-        <form method="post" class="padding"
-              tal:attributes="action signup_url">
-        <fieldset>
 
-            <div class="control-group">
-                <label for="email">Your E-mail address:</label>
-                <div class="controls">
-                    <input type="text" name="email" id="email"
-                                 tal:attributes="value request.params['email'] | nothing">
-                    <p class="help-block">We will never share your e-mail address.</p>
-                </div>
-            </div>
+        <div class="padding">
+
+            <div class="alert alert-error"
+                 tal:repeat="error request.session.pop_flash('signup_errors')"
+                 tal:content="error"></div>
     
-            <div class="control-group">
-                <label for="name">Your name:</label>
-                <div class="controls">
-                    <input type="text" name="name" id="name" class="medium"
-                           tal:attributes="value request.params['name'] | nothing">
-                    <p class="help-block">
-                        We'll share this with the rest of your committee, be
-                        sure to use a name they will recognize.
-                    </p>
-                </div>
-            </div>
+            <form method="post"
+                  tal:attributes="action route_url('auth:signup', request)">
+            <fieldset>
     
-            <div class="control-group">
-                <label for="signup_password">Password:</label>
-                <div class="controls">
-                    <input type="password" name="password" id="signup_password">
+                <div class="control-group">
+                    <label for="email">Your E-mail address:</label>
+                    <div class="controls">
+                        <input type="text" name="email" id="email"
+                                     tal:attributes="value request.params['email'] | nothing">
+                        <p class="help-block">We will never share your e-mail address.</p>
+                    </div>
                 </div>
-            </div>
-    
-            <div class="control-group">
-                <label for="signup_password_confirm">Confirm Password:</label>
-                <div class="controls">
-                    <input type="password" name="password_confirm" id="signup_password_confirm" class="medium" />
-                    <p class="help-block">Retype your password</p>
+        
+                <div class="control-group">
+                    <label for="name">Your name:</label>
+                    <div class="controls">
+                        <input type="text" name="name" id="name" class="medium"
+                               tal:attributes="value request.params['name'] | nothing">
+                        <p class="help-block">
+                            We'll share this with the rest of your committee, be
+                            sure to use a name they will recognize.
+                        </p>
+                    </div>
                 </div>
-            </div>
-    
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" name="submit" value="signup" class="btn btn-primary">Sign up</button>
+        
+                <div class="control-group">
+                    <label for="signup_password">Password:</label>
+                    <div class="controls">
+                        <input type="password" name="password" id="signup_password">
+                    </div>
                 </div>
-            </div>
-    
-        </fieldset>
-        </form>
+        
+                <div class="control-group">
+                    <label for="signup_password_confirm">Confirm Password:</label>
+                    <div class="controls">
+                        <input type="password" name="password_confirm" id="signup_password_confirm" class="medium" />
+                        <p class="help-block">Retype your password</p>
+                    </div>
+                </div>
+        
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" name="submit" value="signup" class="btn btn-primary">Sign up</button>
+                    </div>
+                </div>
+        
+            </fieldset>
+            </form>
+
+        </div>
 
         </div>
     </div>

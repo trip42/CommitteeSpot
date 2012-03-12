@@ -12,7 +12,7 @@
                 <p> You have signed out. Come back soon! </p>
 
                 <p>
-                    <a tal:attributes="href login_url">Sign in</a>
+                    <a tal:attributes="href route_url('auth:login', request)">Sign in</a>
                 </p>
 
             </div>
