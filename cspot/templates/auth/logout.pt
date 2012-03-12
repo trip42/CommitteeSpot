@@ -1,0 +1,25 @@
+<metal:main use-macro="load:../master.pt">
+<metal:title fill-slot="title">Sign out</metal:title>
+<metal:content fill-slot="content">
+
+<div class="row">
+    <div class="span12">
+        <div class="box">
+            <h2>Signed out</h2>
+
+            <div class="padding">
+
+                <p> You have signed out. Come back soon! </p>
+
+                <p>
+                    <a tal:attributes="href login_url">Sign in</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</metal:content>
+</metal:main>
+
