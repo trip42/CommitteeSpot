@@ -1,0 +1,8 @@
+pyramid
+SQLAlchemy
+MySQL-python
+transaction
+pyramid_tm
+pyramid_debugtoolbar
+zope.sqlalchemy
+deform-bootstrap
