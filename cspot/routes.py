@@ -10,7 +10,11 @@ def includeme(config):
 
     # User Profile
 
-    config.add_route('user:profile', '/profile')
+    config.add_route('user:myprofile', '/profile',
+                     factory='cspot.views.users.user_factory')
+
+    config.add_route('user:profile', '/profile/{user_id}',
+                     factory='cspot.views.users.user_factory')
 
     # Projects
 

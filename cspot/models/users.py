@@ -14,7 +14,9 @@ from sqlalchemy import CheckConstraint
 
 from datetime import datetime
 
-from . import Base
+from pyramid.security import Allow
+
+from cspot.models import Base
 
 class User(Base):
     __tablename__ = 'users'
@@ -28,6 +30,10 @@ class User(Base):
     creation_date = Column(DateTime())
     last_login = Column(DateTime())
 
+    __acl__ = [
+        (Allow, 'owner', 'manage_profile'),
+    ]
+
     def __init__(self, email, name='', password=None):
         self.creation_date = datetime.now()
 
@@ -38,14 +44,29 @@ class User(Base):
     def __boolean__(self):
         return True
 
+    def __cmp__(self, other):
+        return cmp(self.id, other.id)
+
+    def get_user_roles(self, user):
+        """
+        Returns the role names for a user in the
+        context of this user object. Used by the authorization
+        policy via role_finder
+        """
+
+        if user == self:
+            return ['owner']
+
+        return []
+
     def projects(self, role=None):
         return [r.project for r in self.project_roles]
 
     def set_name(self, name):
-        self.name = name
+        self.name = name.strip()
 
     def set_email(self, email):
-        self.email = email.lower()
+        self.email = email.lower().strip()
 
     def set_password(self, password):
         from random import choice

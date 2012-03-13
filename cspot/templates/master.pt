@@ -29,7 +29,7 @@
                            tal:attributes="href route_url('project:list', request)">my projects</a>
                         <a tal:attributes="href route_url('project:add',request)">new project</a>
                         <a tal:condition="user" 
-                           tal:attributes="href route_url('user:profile', request)">my profile</a>
+                           tal:attributes="href route_url('user:profile', request, user_id=user.id)">my profile</a>
                         <a tal:condition="not user or user.is_temporary()" 
                            tal:attributes="href route_url('auth:login', request)">sign in</a>
                         <a tal:condition="user and not user.is_temporary()" 

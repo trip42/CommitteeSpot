@@ -67,7 +67,8 @@ class Project(Base):
     def get_user_roles(self, user):
         """
         Return the role names for a user in the context
-        of this project.
+        of this project. Used by the authorization policy
+        via role_finder
         """
         session = DBSession()
 
