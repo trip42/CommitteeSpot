@@ -19,7 +19,9 @@ from datetime import datetime
 from pyramid.security import Allow
 
 from cspot.models import Base
+from cspot.models import DBSession
 from cspot.models.users import User
+from cspot.models.forms import Form
 
 class Project(Base):
     __tablename__ = 'projects'
@@ -29,7 +31,7 @@ class Project(Base):
     item_name = Column(Unicode(50), nullable=False)
     item_plural = Column(Unicode(55), nullable=False)
     creation_date = Column(DateTime(), nullable=False)
-   
+
     __acl__ = [
         (Allow, 'owner', 'manage_project'),
         (Allow, 'administrator', 'manage_project'),
@@ -45,6 +47,20 @@ class Project(Base):
         self.item_plural = item_plural
         self.creation_date = datetime.now()
 
+        session = DBSession()
+        session.add(Form(self, 'item'))
+        session.add(Form(self, 'feedback'))
+       
+    @property
+    def item_form(self):
+        session = DBSession()
+        return session.query(Form).filter(Form.project==self).filter(Form.type=='item').first()
+
+    @property
+    def feedback_form(self):
+        session = DBSession()
+        return session.query(Form).filter(Form.project==self).filter(Form.type=='feedback').first()
+ 
     def add_user(self, user, role):
         """
         Add a user to this project with role
@@ -57,7 +73,7 @@ class Project(Base):
         """
         session = DBSession()
 
-        roles = session.query(ProjectUserRole).filter(project==self).filter(user==user)
+        roles = session.query(ProjectUserRole).filter(ProjectUserRole.project==self).filter(ProjectUserRole.user==user)
 
         for role in roles.all():
             session.delete(role)
@@ -72,7 +88,7 @@ class Project(Base):
         """
         session = DBSession()
 
-        roles = session.query(ProjectUserRole).filter(project==self).filter(user==user)
+        roles = session.query(ProjectUserRole).filter(ProjectUserRole.project==self).filter(ProjectUserRole.user==user)
             
         return [r.role for r in roles.all()]
 

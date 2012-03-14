@@ -1,0 +1,63 @@
+<metal:main use-macro="load:../master.pt">
+<metal:title fill-slot="title" tal:content="record.title | project.item_name"></metal:title>
+<metal:content fill-slot="content">
+
+<metal:header use-macro="load:header.pt" />
+
+<div class="row">
+    <!-- Left Column -->
+
+    <div class="span7">
+        <div class="box">
+            <h2 tal:condition="record">Update ${project.item_name}</h2>
+            <h2 tal:condition="not:record">Add ${project.item_name}</h2>
+
+            <div id="widget-list">
+                <div class="control-group widget">
+                    <label class="control-label" for="title">${project.item_name} Name or Title:</label>
+                    <div class="controls">
+                        <input type="text" name="title" id="title" class="span6"
+                               tal:attributes="value record.title | nothing" >
+                    </div>
+                </div>
+
+                <tal:widget tal:repeat="widget_html form_widgets"
+                            tal:replace="structure widget_html" />
+            </div>
+
+            <div class="padding">
+
+            <a tal:attributes="href route_url('project:item_form', request, project_id=project.id)">Edit Item Form</a>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column -->
+
+    <div class="span5">
+        <div class="box">
+            <h2>${project.item_plural}</h2>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span7">
+        <div class="padding">
+        <a href="#" class="btn btn-primary">Save</a>
+        <a href="#" class="btn btn-primary">Save and add another</a>
+        </div>
+    </div>
+    <div class="span5">
+        <div class="padding">
+        <a href="#" class="btn btn-success">Done adding ${project.item_plural_short()}</a>
+        </div>
+    </div>
+</div>
+
+</metal:content>
+</metal:main>
+

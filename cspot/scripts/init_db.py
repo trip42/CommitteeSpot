@@ -19,6 +19,7 @@ def main():
 
     Base.metadata.bind = engine
     Base.metadata.bind.echo = True
+    Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
 if __name__ == '__main__':

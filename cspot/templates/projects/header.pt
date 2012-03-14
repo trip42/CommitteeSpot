@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="span12">
+        <div class="box">
+            <h1 class="project-title">
+                <span tal:content="project.name"></span>
+                <span tal:condition="user.is_temporary()">(not saved)</span>
+            </h1>
+
+            <ul id="project-process">
+                <li tal:repeat="item menu">
+                    <a tal:attributes="href item['link']; class ' '.join(item['classes']);">
+                        <span>
+                            <strong>${item['text']}</strong>
+                            ${item['sub_text']}
+                        </span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>

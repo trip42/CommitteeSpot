@@ -44,4 +44,7 @@ def authenticated_user(request):
     return get_user(user_id=user_id)
 
 def role_finder(user_id, request):
-    return request.context.get_user_roles(get_user(user_id))
+    if request.context is not None:
+        return request.context.get_user_roles(get_user(user_id))
+    else:
+        return []

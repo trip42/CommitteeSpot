@@ -1,0 +1,40 @@
+<div class="row">
+    <!-- Left Column -->
+
+    <div class="span7">
+        <div class="box">
+                <div id="widget-list">
+
+                <tal:widget tal:repeat="widget_html form_widgets"
+                            tal:replace="structure widget_html" />
+
+                </div>
+
+            <div class="padding">
+                <h3>Add a field</h3>
+
+                <ul id="add-widget-list">
+                    <li tal:repeat="widget widget_types">
+                        <a href="#"
+                           tal:attributes="data-widget_type widget.widget_type"
+                           tal:content="widget.name"></a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Right Column -->
+
+    <div class="span5">
+        <div id="options-panel">
+
+        </div>
+    </div>
+</div>
+
+<script tal:content="string:var project_id = ${project.id};"></script>
+<script tal:content="string:var form_id = ${form.id};"></script>
+<script tal:content="string:var widget_route_base = '${route_url('form:widget:base',request, project_id=project.id, form_id=form.id)}';"></script>
+<script type="text/javascript" src="/static/js/forms.js"></script>

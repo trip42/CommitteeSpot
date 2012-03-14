@@ -1,0 +1,27 @@
+<metal:main use-macro="load:master.pt">
+<metal:title fill-slot="title">Home</metal:title>
+<metal:content fill-slot="content">
+
+<div class="row">
+    <div class="span12">
+        <div class="box">
+
+        <h2>Oops! You can't do that.</h2>
+
+        <div class="padding">
+            <p tal:condition="user">
+                Try <a tal:attributes="href route_url('auth:logout',request)">logging in as a differt user</a> or
+                return to your <a tal:attributes="href route_url('project:list', request)">project list</a>.
+            </p>
+
+            <p tal:condition="not:user">
+                Try <a tal:attributes="href route_url('auth:login', request)">logging in to contine</a>.
+            </p>
+        </div>
+
+        </div>
+    </div>
+</div>
+
+</metal:content>
+</metal:main>
