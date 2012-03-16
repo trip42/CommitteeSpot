@@ -4,14 +4,27 @@
 
 <metal:header use-macro="load:header.pt" />
 
+<div class="row">
+    <div class="span12">
+        <h1>Ask Questions</h1>
+        <div class="padding">
+            <p>
+                Create a feedback from for your team below. Your team members will answer
+                these questions about each ${project.item_name.lower()}. Phrase your questions
+                to make sense if they were presented alongside a single ${project.item_name.lower()}.
+            </p>
+        </div>
+    </div>
+</div>
+
 <metal:form use-macro="load:../forms/form.pt" />
 
 <div class="row">
     <div class="span12">
-            <div class="padding">
-                <a tal:attributes="href route_url('project:records', request, project_id=project.id)"
-                   class="btn btn-primary btn-large btn-success"><i class="icon-ok icon-white"></i> Done editing item template</a>
-            </div>
+        <div class="padding">
+            <a tal:attributes="href route_url('project:records', request, project_id=project.id)"
+               class="btn btn-primary btn-large btn-success"><i class="icon-ok icon-white"></i> Done editing item template</a>
+        </div>
     </div>
 </div>
 

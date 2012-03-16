@@ -6,7 +6,7 @@ from cspot.util import plural_to_singular
 from cspot.auth import get_temp_user
 
 from cspot.views.forms import FormController
-from cspot.views.forms import widget_type_map
+from cspot.widgets import all_widget_types
 
 from pyramid.url import route_url
 from pyramid.view import view_config
@@ -165,7 +165,7 @@ def item_form_view(project, request):
         form=project.item_form,
         menu=project_menu(project, request, 'records'),
         form_widgets=form_controller.render_widgets(request),
-        widget_types=[w[0] for w in widget_type_map],
+        widget_types=[w[0] for w in all_widget_types],
     )
 
 @view_config(route_name='project:feedback_form', permission='manage_project',
@@ -182,7 +182,7 @@ def feedback_form_view(project, request):
         form=project.feedback_form,
         menu=project_menu(project, request, 'feedback_form'),
         form_widgets=form_controller.render_widgets(request),
-        widget_types=[w[0] for w in widget_type_map],
+        widget_types=[w[0] for w in all_widget_types],
     )
 
 

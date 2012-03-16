@@ -4,14 +4,20 @@
 
 <metal:header use-macro="load:header.pt" />
 
+<div class="row">
+    <div class="span12">
+         <h2 style="margin-bottom: 20px;">Edit ${project.item_name.lower()} template</h2>
+    </div>
+</div> 
+
 <metal:form use-macro="load:../forms/form.pt" />
 
 <div class="row">
     <div class="span12">
-            <div class="padding">
-                <a tal:attributes="href route_url('project:records', request, project_id=project.id)"
-                   class="btn btn-primary btn-large btn-success"><i class="icon-ok icon-white"></i> Done editing item template</a>
-            </div>
+        <div class="padding">
+            <a tal:attributes="href route_url('project:records', request, project_id=project.id)"
+               class="btn btn-primary btn-large btn-success"><i class="icon-ok icon-white"></i> Done editing item template</a>
+        </div>
     </div>
 </div>
 

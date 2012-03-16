@@ -4,66 +4,64 @@
 
 <div class="row">
     <div class="span12">
-        <div class="box">
-            <h2>User Profile</h2>
+        <h2>User Profile</h2>
 
-            <div class="padding">
-            
-            <metal:main use-macro="load:../alerts.pt" />
-
-            <p tal:condition="user.is_temporary()">
-                You haven't setup an account yet, so you cannot update your profile.
-                <a tal:attributes="href route_url('auth:signup', request)">Signup</a> or
-                <a tal:attributes="href route_url('auth:login', request)">login</a> to save
-                your account.
-            </p>
-
-            <form method="post"
-                  tal:condition="not user.is_temporary()"
-                  tal:attributes="href route_url('user:profile', request, user_id=user.id)">
-            <fieldset>
-
-                <div class="control-group">
-                    <label class="control-label" for="name">Name:</label>
-                    <div class="controls">
-                        <input type="text" name="name" id="name" class="span7"
-                               tal:attributes="value user.name">
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label" for="email">E-mail Address:</label>
-                    <div class="controls">
-                        <input type="text" name="email" id="email"
-                               tal:attributes="value user.email">
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label for="signup_password">Change Password:</label>
-                    <div class="controls">
-                        <input type="password" name="password" id="signup_password">
-                    </div>
-                </div>
+        <div class="padding">
         
-                <div class="control-group">
-                    <label for="signup_password_confirm">Confirm Password:</label>
-                    <div class="controls">
-                        <input type="password" name="password_confirm" id="signup_password_confirm" class="medium" />
-                        <p class="help-block">Retype your password</p>
-                    </div>
+        <metal:main use-macro="load:../alerts.pt" />
+
+        <p tal:condition="user.is_temporary()">
+            You haven't setup an account yet, so you cannot update your profile.
+            <a tal:attributes="href route_url('auth:signup', request)">Signup</a> or
+            <a tal:attributes="href route_url('auth:login', request)">login</a> to save
+            your account.
+        </p>
+
+        <form method="post"
+              tal:condition="not user.is_temporary()"
+              tal:attributes="href route_url('user:profile', request, user_id=user.id)">
+        <fieldset>
+
+            <div class="control-group">
+                <label class="control-label" for="name">Name:</label>
+                <div class="controls">
+                    <input type="text" name="name" id="name" class="span7"
+                           tal:attributes="value user.name">
                 </div>
-
-                <div class="control-group">
-                    <div class="controls">
-                        <button type="submit" class="btn btn-primary">Save Changes</button> 
-                    </div>
-                </div>
-
-            </fieldset>
-            </form>
-
             </div>
+
+            <div class="control-group">
+                <label class="control-label" for="email">E-mail Address:</label>
+                <div class="controls">
+                    <input type="text" name="email" id="email"
+                           tal:attributes="value user.email">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="signup_password">Change Password:</label>
+                <div class="controls">
+                    <input type="password" name="password" id="signup_password">
+                </div>
+            </div>
+    
+            <div class="control-group">
+                <label for="signup_password_confirm">Confirm Password:</label>
+                <div class="controls">
+                    <input type="password" name="password_confirm" id="signup_password_confirm" class="medium" />
+                    <p class="help-block">Retype your password</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">Save Changes</button> 
+                </div>
+            </div>
+
+        </fieldset>
+        </form>
+
         </div>
     </div>
 </div>

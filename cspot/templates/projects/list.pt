@@ -4,44 +4,42 @@
 
 <div class="row">
     <div class="span12">
-        <div class="box">
-            <h2>My Projects</h2>
+        <h2>My Projects</h2>
 
-            <div class="padding">
+        <div class="padding">
 
-                <metal:main use-macro="load:../alerts.pt" />
+            <metal:main use-macro="load:../alerts.pt" />
  
-                <p tal:condition="not:project_roles">
-                    You have not started any projects. 
-                </p>
+            <p tal:condition="not:project_roles">
+                You have not started any projects. 
+            </p>
 
-                <a tal:attributes="href route_url('project:add', request)" class="btn btn-primary">Start a project</a>
+            <a tal:attributes="href route_url('project:add', request)" class="btn btn-primary">Start a project</a>
 
-                <tal:projects tal:condition="project_roles">
-                <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Project</th>
-                    <th>My Role</th>
-                    <th># Records</th>
-                    <th>Committee<br />Members</th>
-                </tr>
-                </thead>
+            <tal:projects tal:condition="project_roles">
+            <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Project</th>
+                <th>My Role</th>
+                <th># Records</th>
+                <th>Committee<br />Members</th>
+            </tr>
+            </thead>
 
-                <tbody>
-                <tr tal:repeat="role project_roles">
-                    <td><a tal:attributes="href route_url('project:records', request, project_id=role.project_id)"
-                           tal:content="role.project.name"></a></td>
-                    <td tal:content="role.role"></td>
-                    <td tal:content="nothing"></td>
-                    <td tal:content="nothing"></td>
-                </tr>
-                </tbody>
-                </table>
-                </tal:projects>
-        
+            <tbody>
+            <tr tal:repeat="role project_roles">
+                <td><a tal:attributes="href route_url('project:records', request, project_id=role.project_id)"
+                       tal:content="role.project.name"></a></td>
+                <td tal:content="role.role"></td>
+                <td tal:content="nothing"></td>
+                <td tal:content="nothing"></td>
+            </tr>
+            </tbody>
+            </table>
+            </tal:projects>
+    
 
-            </div>
         </div>
     </div>
 </div>

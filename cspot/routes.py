@@ -31,8 +31,9 @@ def includeme(config):
 
     config.add_route('project:record', '/projects/{project_id}/records/{record_id}',
                      factory='cspot.views.projects.project_factory')
-
-    # Forms
+    
+    config.add_route('project:record:download', '/project/{project_id}/records/{record_id}/widgets/{widget_id}/download/{filename}',
+                     factory='cspot.views.projects.project_factory')
 
     config.add_route('project:item_form', '/project/{project_id}/forms/item_form',
                      factory='cspot.views.projects.project_factory')
@@ -40,10 +41,15 @@ def includeme(config):
     config.add_route('project:feedback_form', '/project/{project_id}/forms/feedback_form',
                      factory='cspot.views.projects.project_factory')
 
+    # Forms
+
     config.add_route('form:widget:base', '/project/{project_id}/forms/{form_id}/widgets',
                      factory='cspot.views.projects.project_factory')
 
     config.add_route('form:widget:add', '/project/{project_id}/forms/{form_id}/widgets/add',
+                     factory='cspot.views.projects.project_factory')
+
+    config.add_route('form:widget:sort_order', '/project/{project_id}/forms/{form_id}/widgets/sort_order',
                      factory='cspot.views.projects.project_factory')
 
     config.add_route('form:widget', '/project/{project_id}/forms/{form_id}/widgets/{widget_id}',
@@ -54,4 +60,5 @@ def includeme(config):
 
     config.add_route('form:widget:delete', '/project/{project_id}/forms/{form_id}/widgets/{widget_id}/delete',
                      factory='cspot.views.projects.project_factory')
+
     

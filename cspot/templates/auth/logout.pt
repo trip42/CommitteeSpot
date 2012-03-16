@@ -4,18 +4,16 @@
 
 <div class="row">
     <div class="span12">
-        <div class="box">
-            <h2>Signed out</h2>
+        <h2>Signed out</h2>
 
-            <div class="padding">
+        <div class="padding">
 
-                <p> You have signed out. Come back soon! </p>
+            <p> You have signed out. Come back soon! </p>
 
-                <p>
-                    <a tal:attributes="href route_url('auth:login', request)">Sign in</a>
-                </p>
+            <p>
+                <a tal:attributes="href route_url('auth:login', request)">Sign in</a>
+            </p>
 
-            </div>
         </div>
     </div>
 </div>

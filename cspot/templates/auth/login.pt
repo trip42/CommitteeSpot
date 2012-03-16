@@ -4,15 +4,12 @@
 
 <div class="row">
     <div class="span12">
-        <div class="box">
-            <h2>Get Started</h2>
-        </div>
+        <h2>Get Started</h2>
     </div>
 </div>
 
 <div class="row">
     <div class="span6">
-        <div class="box">
 
         <h2>Sign in</h2>
    
@@ -58,10 +55,8 @@
 
         </div>
 
-        </div>
     </div>
     <div class="span6">
-        <div class="box">
 
         <h2>Sign up</h2>
 
@@ -121,27 +116,25 @@
             </form>
 
         </div>
-
-        </div>
     </div>
 </div>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#signup_password_confirm').keyup(function(e) {
-                console.log('keypress');
-                var password1 = $('#signup_password').val();
-                var password2 = $('#signup_password_confirm').val();
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#signup_password_confirm').keyup(function(e) {
+            console.log('keypress');
+            var password1 = $('#signup_password').val();
+            var password2 = $('#signup_password_confirm').val();
 
-                if (password1 != password2) {
-                    $(this).parents('.controls').children('.help-block').html('Passwords do not match.')
-                } else {
-                    $(this).parents('.controls').children('.help-block').html('Passwords match!')
-                }
+            if (password1 != password2) {
+                $(this).parents('.controls').children('.help-block').html('Passwords do not match.')
+            } else {
+                $(this).parents('.controls').children('.help-block').html('Passwords match!')
+            }
 
-            });
         });
-    </script>
+    });
+</script>
 
 </metal:content>
 </metal:main>

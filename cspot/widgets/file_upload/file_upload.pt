@@ -1,0 +1,11 @@
+<div class="control-group widget"
+     tal:attributes="data-widget_id widget.id;
+                     id string:${field_id}-container;">
+    <label for="${field_id}" class="control-label" tal:attributes="for field_id">${widget.label}</label>
+    <div class="controls">
+        <div tal:condition="value">
+            <a tal:attributes="href route_url('project:record:download',request, project_id=value.record.project.id, record_id=value.record.id, widget_id=widget.id, filename=value.filename)">Download ${value.filename}</a>
+        </div>
+        <input type="file" name="${field_id}" id="${field_id}" />
+    </div>
+</div>

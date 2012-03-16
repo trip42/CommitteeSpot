@@ -1,40 +1,45 @@
-from sqlalchemy import Table
 from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Unicode
 from sqlalchemy import UnicodeText
 from sqlalchemy import Boolean
-from sqlalchemy import LargeBinary
-from sqlalchemy import DateTime
 from sqlalchemy import ForeignKey
-from sqlalchemy import UniqueConstraint
-from sqlalchemy import CheckConstraint
 
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import backref
 
-from datetime import datetime
-
-from pyramid.security import Allow
-
 from cspot.models import Base
-
-import simplejson
-
+from cspot.widgets import all_widget_types
 
 class Form(Base):
+    """
+    A collection of widgets
+    """
+    
     __tablename__ = 'forms'
+    __mapper_args__ = {'polymorphic_on': 'type'}
+
     id = Column(Integer, primary_key=True)
     type = Column(String(16), nullable=False)
     project_id = Column(Integer, ForeignKey('projects.id'))
-    project = relationship('Project')
 
-    def __init__(self, project, type):
+    def __init__(self, project):
         self.project = project
-        self.type = type
- 
+
+class ItemForm(Form):
+    __mapper_args__ = {'polymorphic_identity':'item'}
+    project = relationship('Project', backref=backref('item_form', uselist=False))
+    
+class FeedbackForm(Form):
+    __mapper_args__ = {'polymorphic_identity':'feedback'} 
+    project = relationship('Project', backref=backref('feedback_form', uselist=False))
+
 class Widget(Base):
+    """
+    Base class for form widgets
+    """
+ 
     __tablename__ = 'widgets'
 
     id = Column(Integer, primary_key=True)
@@ -56,28 +61,12 @@ class Widget(Base):
         self.sort_order = len(form.widgets) + 1
         self.admin_only = False
 
-class MultipleChoiceWidget(Widget):
-    widget_type = 'multiple_choice'
-    name = 'Multiple Choice'
+def widget_factory(widget_type):
+    """
+    Generate a widget model class for a type
+    """
 
-    __mapper_args__ = {'polymorphic_identity':widget_type}
-
-    choices = Column(UnicodeText())
-    
-    def __init__(self, form, label):
-        Widget.__init__(self, form, label)
-        self.set_choices(['Choice 1','Choice 2','Choice 3'])
-
-    def get_choices(self):
-        return simplejson.loads(self.choices)
-
-    def set_choices(self, choices=[]):
-        self.choices = simplejson.dumps(choices)
-       
-class FileUploadWidget(Widget):
-    widget_type = 'file_upload'
-    name = 'File Upload'
-
-    __mapper_args__ = {'polymorphic_identity':widget_type}
-
+    for model, controller in all_widget_types:
+        if model.widget_type == widget_type:
+            return model
 

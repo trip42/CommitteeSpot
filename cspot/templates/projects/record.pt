@@ -4,42 +4,59 @@
 
 <metal:header use-macro="load:header.pt" />
 
+            <form method="post" enctype="multipart/form-data"
+                  tal:define="record_id record.id | string:add"
+                  tal:attributes="action route_url('project:record', request, project_id=project.id, record_id=record_id)">
+
 <div class="row">
     <!-- Left Column -->
 
     <div class="span7">
-        <div class="box">
-            <h2 tal:condition="record">Update ${project.item_name}</h2>
-            <h2 tal:condition="not:record">Add ${project.item_name}</h2>
+        <h2 tal:condition="record">Update ${project.item_name}</h2>
+        <h2 tal:condition="not:record">Add ${project.item_name}</h2>
 
-            <div id="widget-list">
-                <div class="control-group widget">
-                    <label class="control-label" for="title">${project.item_name} Name or Title:</label>
-                    <div class="controls">
-                        <input type="text" name="title" id="title" class="span6"
-                               tal:attributes="value record.title | nothing" >
-                    </div>
+        <div class="padding">
+            <metal:main use-macro="load:../alerts.pt" />
+
+            <div class="control-group widget">
+                <label class="control-label" for="title">${project.item_name} Name or Title:</label>
+                <div class="controls">
+                    <input type="text" name="title" id="title" class="span6"
+                           tal:attributes="value record.title | nothing" >
                 </div>
-
-                <tal:widget tal:repeat="widget_html form_widgets"
-                            tal:replace="structure widget_html" />
             </div>
 
-            <div class="padding">
+            <tal:widget tal:repeat="widget_html form_widgets"
+                        tal:replace="structure widget_html" />
 
-            <a tal:attributes="href route_url('project:item_form', request, project_id=project.id)">Edit Item Form</a>
-
-            </div>
         </div>
     </div>
 
     <!-- Right Column -->
 
     <div class="span5">
-        <div class="box">
-            <h2>${project.item_plural}</h2>
+        <h2>${project.item_plural}</h2>
 
+        <div class="padding"> 
+            <div class="well">
+                <ul class="nav nav-list">
+                    <li> <a tal:attributes="href route_url('project:item_form', request, project_id=project.id)"><i class="icon-pencil"></i> Edit ${project.item_name_short()} template</a> </li>
+                    <li> <a tal:attributes="href route_url('project:record:add', request, project_id=project.id)"><i class="icon-plus"></i> Add ${project.item_name_short()}</a> </li>
 
+                <ul> 
+            </div>
+
+            <div class="well">
+                <ul class="nav nav-list">
+                    <li tal:condition="not:project.items">No ${project.item_plural_short().lower()} exist</li>
+                    <li tal:repeat="item project.items"
+                        tal:define="record_id record.id | nothing;"
+                        tal:attributes="class python:record_id == item.id and 'active' or '';">
+                        <a tal:attributes="href route_url('project:record', request, project_id=project.id, record_id=item.id)"
+                           tal:content="item.title"></a>
+                    </li>
+                <ul> 
+            </div>
         </div>
     </div>
 </div>
@@ -47,16 +64,18 @@
 <div class="row">
     <div class="span7">
         <div class="padding">
-        <a href="#" class="btn btn-primary">Save</a>
-        <a href="#" class="btn btn-primary">Save and add another</a>
+        <button type="submit" name="submit" value="save" class="btn btn-primary">Save</button>
+        <button type="submit" name="submit" value="save_and_add" class="btn btn-primary">Save and add another</button>
         </div>
     </div>
     <div class="span5">
         <div class="padding">
-        <a href="#" class="btn btn-success">Done adding ${project.item_plural_short()}</a>
+        <button type="submit" name="submit" value="save_and_finish" class="btn btn-success">Done adding ${project.item_plural_short()}</button>
         </div>
     </div>
 </div>
+
+</form>
 
 </metal:content>
 </metal:main>

@@ -21,7 +21,10 @@ from pyramid.security import Allow
 from cspot.models import Base
 from cspot.models import DBSession
 from cspot.models.users import User
-from cspot.models.forms import Form
+from cspot.models.forms import ItemForm
+from cspot.models.forms import FeedbackForm
+from cspot.models.records import ItemRecord
+from cspot.models.records import FeedbackRecord
 
 class Project(Base):
     __tablename__ = 'projects'
@@ -48,19 +51,10 @@ class Project(Base):
         self.creation_date = datetime.now()
 
         session = DBSession()
-        session.add(Form(self, 'item'))
-        session.add(Form(self, 'feedback'))
-       
-    @property
-    def item_form(self):
-        session = DBSession()
-        return session.query(Form).filter(Form.project==self).filter(Form.type=='item').first()
 
-    @property
-    def feedback_form(self):
-        session = DBSession()
-        return session.query(Form).filter(Form.project==self).filter(Form.type=='feedback').first()
- 
+        session.add(ItemForm(self))
+        session.add(FeedbackForm(self))
+
     def add_user(self, user, role):
         """
         Add a user to this project with role
@@ -92,7 +86,7 @@ class Project(Base):
             
         return [r.role for r in roles.all()]
 
-    def get_user_roles_string(user):
+    def get_user_roles_string(self, user):
         """
         Return a string showing the roles for a user
         in the context of this project.
@@ -118,6 +112,24 @@ class Project(Base):
             return item_plural
 
         return default
+
+    def item_name_short(self, maxlength=12, default='Item'):
+        """
+        Returns a shortened version of the item name
+        """
+
+        if len(self.item_name) <= maxlength:
+            return self.item_name
+
+        item_name = self.item_name.split()[-1]
+        if len(item_name):
+            return item_name
+
+        return default
+
+    def get_item(self, item_id):
+        session = DBSession()
+        return session.query(ItemRecord).filter(ItemRecord.project==self).filter(ItemRecord.id==item_id).first()
 
 class ProjectUserRole(Base):
     """
