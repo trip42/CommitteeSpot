@@ -1,6 +1,7 @@
 <div class="row">
     <div class="span12">
         <h1 class="project-title">
+            <a href="#" class="btn" style="float: right; margin-top: 4px;">Project Settings</a>
             <span tal:content="project.name"></span>
             <span tal:condition="user.is_temporary()">(not saved)</span>
         </h1>

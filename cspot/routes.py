@@ -38,7 +38,20 @@ def includeme(config):
     config.add_route('project:item_form', '/project/{project_id}/forms/item_form',
                      factory='cspot.views.projects.project_factory')
 
+    # Feedback Form Creation
+
     config.add_route('project:feedback_form', '/project/{project_id}/forms/feedback_form',
+                     factory='cspot.views.projects.project_factory')
+
+    # Team
+
+    config.add_route('project:team', '/project/{project_id}/team',
+                     factory='cspot.views.projects.project_factory')
+
+    config.add_route('project:team:add', '/project/{project_id}/team/add',
+                     factory='cspot.views.projects.project_factory')
+
+    config.add_route('project:team:remove', '/project/{project_id}/team/{user_id}/remove',
                      factory='cspot.views.projects.project_factory')
 
     # Forms

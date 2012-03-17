@@ -3,7 +3,10 @@ from cspot.models.users import User
 from cspot.models.projects import Project
 
 from cspot.util import plural_to_singular
+from cspot.util import validate_email
+
 from cspot.auth import get_temp_user
+from cspot.auth import get_user
 
 from cspot.views.forms import FormController
 from cspot.widgets import all_widget_types
@@ -65,7 +68,7 @@ def project_menu(project, request, section='records'):
         ],
         'text':'Your Team',
         'sub_text':'Add and edit team members',
-        'link':''
+        'link':route_url('project:team', request, project_id=project.id)
     })
 
     items.append({
@@ -185,4 +188,78 @@ def feedback_form_view(project, request):
         widget_types=[w[0] for w in all_widget_types],
     )
 
+@view_config(route_name='project:team', permission='manage_project',
+             renderer='cspot:templates/projects/team_members.pt')
+def team_members(project, request):
+    """
+    View team members
+    """
 
+    return dict(
+        project=project,
+        users=project.get_users(),
+        menu=project_menu(project, request, 'team'),
+    )
+
+@view_config(route_name='project:team:add', permission='manage_project',
+             renderer='cspot:templates/projects/team_members.pt')
+def team_member_add(project, request):
+    """
+    Add team member to the project
+    """
+
+    if request.method == 'POST':
+        email = request.params.get('email','')
+
+        if not validate_email(email):
+            request.session.flash('Invalid e-mail address', 'errors')
+        else:
+            user = get_user(email=email)
+
+            if user is None:
+                user = User(email)
+
+            if project.get_user_roles(user):
+                request.session.flash('%s is already part of this team' % email, 'errors')
+            else:
+                project.add_user(user, 'reviewer')
+                request.session.flash('%s added' % email, 'messages')
+
+                return HTTPFound(
+                    location=route_url('project:team', request, project_id=project.id)
+                )
+
+    return dict(
+        project=project,
+        users=project.get_users(),
+        menu=project_menu(project, request, 'team'),
+    )
+
+@view_config(route_name='project:team:remove', permission='manage_project',
+             renderer='cspot:templates/projects/team_members.pt')
+def team_member_remove(project, request):
+    """
+    Remove a team member
+    """
+
+    user_id = request.matchdict['user_id']
+
+    user = get_user(user_id=user_id)
+
+    if 'owner' in project.get_user_roles(user):
+        request.session.flash('Cannot remove a project\'s owner', 'errors')
+
+    elif user:
+        project.remove_user(user)
+
+        request.session.flash('%s removed' % user.email, 'messages')
+
+        return HTTPFound(
+            location=route_url('project:team', request, project_id=project.id)
+        )
+
+    return dict(
+        project=project,
+        users=project.get_users(),
+        menu=project_menu(project, request, 'team'),
+    )

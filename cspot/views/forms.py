@@ -137,6 +137,7 @@ class IWidgetController(object):
 
 @view_config(route_name='form:widget:options', 
              permission='manage_project',
+             http_cache=0,
              renderer='json')
 def widget_options(project, request):
     """
@@ -166,6 +167,7 @@ def widget_options(project, request):
 
 @view_config(route_name='form:widget:add', 
              permission='manage_project',
+             http_cache=0,
              renderer='json')
 def widget_add(project, request):
     """
@@ -196,6 +198,7 @@ def widget_add(project, request):
 
 @view_config(route_name='form:widget:delete', 
              permission='manage_project',
+             http_cache=0,
              renderer='json')
 def widget_delete(project, request):
     """
@@ -220,6 +223,7 @@ def widget_delete(project, request):
 
 @view_config(route_name='form:widget:sort_order', 
              permission='manage_project',
+             http_cache=0,
              renderer='json')
 def widget_sort_order(project, request):
     """

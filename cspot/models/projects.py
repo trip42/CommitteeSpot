@@ -86,6 +86,17 @@ class Project(Base):
             
         return [r.role for r in roles.all()]
 
+    def get_users(self):
+        """
+        Return user.id, user.name, user.email, user_role.role
+        """
+
+        session = DBSession()
+
+        roles = session.query(User.name, User.email, User.id, ProjectUserRole.role).join(ProjectUserRole.user).filter(ProjectUserRole.project==self)
+
+        return roles
+
     def get_user_roles_string(self, user):
         """
         Return a string showing the roles for a user
