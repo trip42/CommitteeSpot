@@ -13,7 +13,11 @@ from pyramid.url import route_url
 from pyramid.view import view_config
 
 def forbidden(request):
-    return {}
+    came_from = request.url
+
+    return dict(
+        came_from=came_from
+    )
 
 @view_config(route_name='auth:signup', renderer='cspot:templates/auth/login.pt')
 def signup(request):
@@ -21,6 +25,14 @@ def signup(request):
 
     if user and not user.is_temporary():
         raise StandardError, "You may not signup while logged in"
+
+    came_from = request.params.get('came_from', request.referer)
+    login_url = route_url('auth:login', request)
+    signup_url = route_url('auth:signup', request)
+    home_url = route_url('home', request)
+
+    if came_from in [login_url, signup_url, home_url]:
+        came_from = route_url('project:list', request)
 
     name = request.params.get('name','')
     email = request.params.get('email','')
@@ -43,12 +55,11 @@ def signup(request):
                 user.set_name(name)
                 user.set_email(email)
                 user.set_password(password)
-
-                location = route_url('home', request)
+                location = came_from
 
             else:
                 user = User(email, name, password)
-                location = route_url('home', request)
+                location = came_from
 
             session = DBSession()
             session.add(user)
@@ -64,6 +75,7 @@ def signup(request):
     return dict(
         name=name,
         email=email,
+        came_from=came_from
     )
 
 @view_config(route_name='auth:login', renderer='cspot:templates/auth/login.pt')
@@ -71,10 +83,12 @@ def login(request):
     if request.user and not request.user.is_temporary():
         raise StandardError, "You must logout first"
 
-    came_from = request.params.get('came_from', request.url)
+    came_from = request.params.get('came_from', request.referer)
     login_url = route_url('auth:login', request)
+    signup_url = route_url('auth:signup', request)
+    home_url = route_url('home', request)
 
-    if came_from == login_url:
+    if came_from in [login_url, signup_url, home_url]:
         came_from = route_url('project:list', request)
 
     username = request.params.get('username','')
@@ -105,11 +119,11 @@ def login(request):
             headers = remember(request, user.id)
             request.session['logged_in'] = 'logged_in'
     
-            if not user.name:
+            if user.password_default:
                 request.session['came_from'] = came_from
     
                 return HTTPFound(
-                    location=route_url('user:profile', request),
+                    location=route_url('user:profile', request, user_id=user.id),
                     headers=headers
                 )
     

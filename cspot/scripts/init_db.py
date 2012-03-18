@@ -11,6 +11,9 @@ from cspot.models import Base
 from cspot.models.projects import Project
 from cspot.models.users import User
 
+from cspot.widgets.multiple_choice import MultipleChoiceWidget
+from cspot.widgets.file_upload import FileUploadWidget
+
 def main():
     conf = appconfig('config:/home/cspot/webapps/cspot/cspot/development.ini', name='main')
     engine = engine_from_config(conf, 'sqlalchemy.')

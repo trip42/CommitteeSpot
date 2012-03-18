@@ -1,0 +1,30 @@
+<metal:main use-macro="load:../master.pt">
+<metal:title fill-slot="title">${project.name} - CommitteeSpot</metal:title>
+<metal:content fill-slot="content">
+
+<metal:header use-macro="load:header.pt" />
+
+<div class="row">
+    <div class="span12">
+         <h2>View Feedback</h2>
+    </div>
+</div> 
+
+<div class="row">
+    <div class="span12">
+        <div class="padding">
+        <div tal:repeat="item item_summaries">
+            <h3 tal:content="item['item'].title"></h3>
+
+            <div tal:repeat="summary item['summary']"
+                 tal:content="structure summary"></div> 
+
+        </div>
+        </div>
+
+    </div>
+</div>
+
+</metal:content>
+</metal:main>
+

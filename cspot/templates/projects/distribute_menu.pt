@@ -1,0 +1,12 @@
+        <div class="padding">
+        <div class="well">
+            <ul class="nav nav-list">
+                <li class="nav-header">Distribution Options</li>
+                <li> <a href="${route_url('project:feedback',request,project_id=project.id)}">Preview Feedback Process</a> </li>
+                <li> <a href="${route_url('project:distribute:history',request,project_id=project.id)}">Distribution history</a> </li>
+                <!-- li> <a href="#">Automatic reminders</a> </li>
+                <li> <a href="#">Automatic distribution</a> </li -->
+            <ul>
+        </div>
+        </div>
+

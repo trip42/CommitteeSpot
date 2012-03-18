@@ -37,6 +37,9 @@ class User(Base):
     def __init__(self, email, name='', password=None):
         self.creation_date = datetime.now()
 
+        if not name:
+            name = email.split('@')[0]
+
         self.set_name(name)
         self.set_email(email)
         self.set_password(password)
@@ -77,6 +80,8 @@ class User(Base):
             # Set a default password
             password = ''.join([choice(letters+digits) for x in range(8)])
             self.password_default = password
+        else:
+            self.password_default = ''
 
         salt = choice(letters+digits) + choice(letters+digits)
         self.password_hash = crypt(password, salt)

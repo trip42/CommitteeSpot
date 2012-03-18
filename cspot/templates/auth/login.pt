@@ -69,6 +69,8 @@
             <form method="post"
                   tal:attributes="action route_url('auth:signup', request)">
             <fieldset>
+                <input type="hidden" name="came_from"
+                             tal:attributes="value came_from | nothing">
     
                 <div class="control-group">
                     <label for="email">Your E-mail address:</label>

@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="span12">
-        <h2>User Profile</h2>
+        <h2>Update Your Profile</h2>
 
         <div class="padding">
         
@@ -38,6 +38,12 @@
                 </div>
             </div>
 
+            <div class="alert alert-info"
+                 tal:condition="user.password_default">
+                We strongly recommend that you change your password
+                from the default password before continuing.
+            </div>
+
             <div class="control-group">
                 <label for="signup_password">Change Password:</label>
                 <div class="controls">
@@ -55,7 +61,10 @@
 
             <div class="control-group">
                 <div class="controls">
-                    <button type="submit" class="btn btn-primary">Save Changes</button> 
+                    <button tal:condition="'came_from' in request.session"
+                            type="submit" class="btn btn-primary">Save and Continue</button> 
+                    <button tal:condition="'came_from' not in request.session"
+                            type="submit" class="btn btn-primary">Save Changes</button> 
                 </div>
             </div>
 

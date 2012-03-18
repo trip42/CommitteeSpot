@@ -42,7 +42,19 @@
 
             <h3>Add a team member</h3>
 
+            <tal:temp tal:condition="project.is_owner_temporary()">
+                <p>
+                    Before you can add members to your team, you need to save this project to a CommitteeSpot account.
+                </p>
+
+                <p>
+                    <a href="${route_url('auth:signup',request)}" class="btn btn-primary">Setup an account to continue</a>
+                    it takes less than a minute.
+                </p>
+            </tal:temp>
+
             <form method="post"
+                  tal:condition="not:project.is_owner_temporary()"
                   tal:attributes="action route_url('project:team:add', request, project_id=project.id)">
             <fieldset>
                 <div class="control-group">
@@ -55,6 +67,15 @@
                 <div class="control-group">
                     <div class="controls">
                         <button type="submit" class="btn btn-primary">Add team member</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+
+                        <hr>
+                        <a tal:attributes="href route_url('project:distribute', request, project_id=project.id)"
+                           class="btn btn-primary btn-large btn-success"><i class="icon-ok icon-white"></i> Done adding team members</a>
+
                     </div>
                 </div>
             </fieldset>

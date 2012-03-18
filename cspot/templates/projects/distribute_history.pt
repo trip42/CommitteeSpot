@@ -1,0 +1,53 @@
+<metal:main use-macro="load:../master.pt">
+<metal:title fill-slot="title">${project.item_name} Template</metal:title>
+<metal:content fill-slot="content">
+
+<metal:header use-macro="load:header.pt" />
+
+<div class="row">
+    <div class="span12">
+         <h2>Distribution History</h2>
+    </div>
+</div> 
+
+<div class="row">
+    <div class="span7">
+        <div class="padding"
+             tal:define="items project.items_distributed()">
+
+            <metal:alerts use-macro="load:../alerts.pt" />
+
+            <p tal:condition="not:items">
+                No items have been distributed to the team.
+            </p>
+
+            <table class="table table-striped"
+                   tal:condition="items">
+            <thead>
+            <tr>
+                <th>${project.item_name}</th>
+                <th>Date Distributed</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr tal:repeat="item items">
+                <td tal:content="item.title"></td>
+                <td tal:content="item.distributed"></td>
+            </tr>
+            </tbody>
+            </table> 
+
+            <hr >
+            <a tal:attributes="href route_url('project:distribute', request, project_id=project.id)"
+               class="btn btn-primary btn-large btn-success"><i class="icon-ok icon-white"></i> Done viewing history</a>
+        </div>
+    </div>  
+    <div class="span5">
+        <metal:alerts use-macro="load:distribute_menu.pt" />
+    </div>
+</div>
+
+</metal:content>
+</metal:main>
+

@@ -54,6 +54,25 @@ def includeme(config):
     config.add_route('project:team:remove', '/project/{project_id}/team/{user_id}/remove',
                      factory='cspot.views.projects.project_factory')
 
+    # Distribution
+
+    config.add_route('project:distribute', '/project/{project_id}/distribute',
+                     factory='cspot.views.projects.project_factory')
+
+    config.add_route('project:distribute:history', '/project/{project_id}/distribute/history',
+                     factory='cspot.views.projects.project_factory')
+
+    # Submit Feedback
+
+    config.add_route('project:feedback', '/project/{project_id}/feedback',
+                     factory='cspot.views.projects.project_factory')
+
+    config.add_route('project:feedback:view', '/project/{project_id}/feedback/view',
+                     factory='cspot.views.projects.project_factory')
+
+    config.add_route('project:feedback:item', '/project/{project_id}/feedback/{item_id}',
+                     factory='cspot.views.projects.project_factory')
+
     # Forms
 
     config.add_route('form:widget:base', '/project/{project_id}/forms/{form_id}/widgets',

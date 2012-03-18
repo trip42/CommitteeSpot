@@ -27,6 +27,9 @@ class Form(Base):
     def __init__(self, project):
         self.project = project
 
+    def has_widgets(self):
+        return len(self.widgets)
+
 class ItemForm(Form):
     __mapper_args__ = {'polymorphic_identity':'item'}
     project = relationship('Project', backref=backref('item_form', uselist=False))

@@ -10,9 +10,11 @@ from sqlalchemy import DateTime
 from sqlalchemy import ForeignKey
 from sqlalchemy import UniqueConstraint
 from sqlalchemy import CheckConstraint
+from sqlalchemy import and_
 
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import backref
+from sqlalchemy.orm import aliased
 
 from datetime import datetime
 
@@ -86,6 +88,14 @@ class Project(Base):
             
         return [r.role for r in roles.all()]
 
+    def has_role(self, user, role):
+        """
+        Check if a user has a role in the context
+        of this project.
+        """
+
+        return role in self.get_user_roles(user)
+
     def get_users(self):
         """
         Return user.id, user.name, user.email, user_role.role
@@ -93,9 +103,16 @@ class Project(Base):
 
         session = DBSession()
 
-        roles = session.query(User.name, User.email, User.id, ProjectUserRole.role).join(ProjectUserRole.user).filter(ProjectUserRole.project==self)
+        roles = session.query(User.name, User.email, User.id, User.password_default, ProjectUserRole.role).join(ProjectUserRole.user).filter(ProjectUserRole.project==self)
 
         return roles
+
+    def get_users_by_role(self, role):
+        session = DBSession()
+
+        roles = session.query(ProjectUserRole).filter(ProjectUserRole.project==self).filter(ProjectUserRole.role==role)
+
+        return [r.user for r in roles]
 
     def get_user_roles_string(self, user):
         """
@@ -138,9 +155,59 @@ class Project(Base):
 
         return default
 
+    def get_items_for_user_query(self, user):
+        Feedback = aliased(FeedbackRecord, name='feedback_records')
+
+        return DBSession().query(
+                    ItemRecord.id, 
+                    ItemRecord.title, 
+                    ItemRecord.distributed, 
+                    Feedback.submitted,
+                    Feedback.submitted_on,
+                    Feedback.user_id,
+                    Feedback.id.label('feedback_id')) \
+                .filter(ItemRecord.project == self) \
+                .filter(ItemRecord.distributed != None) \
+                .outerjoin((Feedback, and_(Feedback.item_id==ItemRecord.id, Feedback.type == 'feedback', Feedback.user_id == user.id))) \
+                .order_by(Feedback.submitted, ItemRecord.title)
+
+    def get_item_for_user(self, user, item_id):
+        return self.get_items_for_user_query(user).filter(ItemRecord.id == item_id).first()
+
+    def get_items_for_user(self, user):
+        return self.get_items_for_user_query(user).all()
+
     def get_item(self, item_id):
-        session = DBSession()
-        return session.query(ItemRecord).filter(ItemRecord.project==self).filter(ItemRecord.id==item_id).first()
+        return DBSession().query(ItemRecord) \
+                .filter(ItemRecord.project==self) \
+                .filter(ItemRecord.id==item_id) \
+                .first()
+
+    def get_item_names(self):
+        return DBSession().query(ItemRecord.id, ItemRecord.title) \
+                .filter(ItemRecord.project==self) \
+                .order_by(ItemRecord.title)
+
+    def items_to_distribute(self):
+        return DBSession().query(ItemRecord) \
+                .filter(ItemRecord.project==self) \
+                .filter(ItemRecord.distributed==None) \
+                .order_by(ItemRecord.title).all()
+
+    def items_distributed(self):
+        return DBSession().query(ItemRecord) \
+                .filter(ItemRecord.project==self) \
+                .filter(ItemRecord.distributed!=None) \
+                .order_by(ItemRecord.distributed).all()
+
+    def num_items(self):
+        return DBSession().query(func.count(ItemRecord)) \
+                .filter(ItemRecord.project==self) \
+                .scalar()
+
+    def is_owner_temporary(self):
+        owner = self.get_users_by_role('owner')[0]
+        return owner.is_temporary()
 
 class ProjectUserRole(Base):
     """

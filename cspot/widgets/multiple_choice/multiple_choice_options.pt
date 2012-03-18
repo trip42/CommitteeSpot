@@ -18,7 +18,7 @@
         <div id="choices">
             <div id="choice-template" class="choice">
                 <input type="text" name="choices" value="" class="span3" />
-                <a class="remove-choice btn btn-danger"><i class="icon-remove icon-white"></i></a>
+                <a href="#" class="remove-choice" title="Remove choice"><i class="icon-remove"></i></a>
             </div>
         </div>
         <div>

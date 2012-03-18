@@ -1,0 +1,115 @@
+<metal:main use-macro="load:../master.pt">
+<metal:title fill-slot="title">${project.name} - CommitteeSpot</metal:title>
+<metal:content fill-slot="content">
+
+<div class="row">
+    <div class="span12">
+         <h2>${project.name}: Feedback</h2>
+    </div>
+</div> 
+
+<div class="row">
+    <div class="span7">
+
+        <tal:not-item tal:condition="not:item | nothing">
+            <h2>No ${project.item_name.lower()} selected</h2>
+
+            <div class="padding">
+            <p>
+                No ${project.item_name.lower()} is available for your feedback.
+            </p>
+            </div>
+        </tal:not-item>
+
+        <tal:item tal:condition="item | nothing">
+            <h2 tal:content="item.title | nothing"></h2>
+            
+            <form method="post" enctype="multipart/form-data"
+                  action="${route_url('project:feedback:item',request,project_id=project.id,item_id=item.id)}">
+            <fieldset>
+    
+            <div class="padding" style="padding-bottom: 0px;">
+            <tal:widget tal:repeat="widget_html item_values"
+                        tal:replace="structure widget_html" />
+            </div>
+    
+            <h2>Your Feedback</h2>
+    
+            <div class="padding">
+                <tal:widget tal:repeat="widget_html form_widgets"
+                            tal:replace="structure widget_html" />
+    
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary">Submit Feedback and Review Next</button>
+                    </div>
+                </div>
+            </div>
+    
+            </fieldset>
+            </form>
+        </tal:item>
+
+    </div>
+    <div class="span5">
+        <h2>${project.item_plural_short()}</h2>
+
+        <div class="padding" style="padding-left: 0px;">
+            <div class="well">
+
+            <ul class="nav nav-list">
+                <li class="nav-header">Pending Reviews</li>
+
+                <li tal:condition="not:pending_items">
+                    No items for review
+                </li>
+
+                <li tal:repeat="i pending_items"
+                    tal:attributes="class test(i.id==item.id,'active','')">
+                    <a href="${route_url('project:feedback:item',request,project_id=project.id,item_id=i.id)}">
+                        ${i.title}
+                        <i tal:condition="i.submitted_on" class="icon-ok"></i>
+                    </a>
+                </li>
+            </ul>
+
+            </div>
+
+            <div class="well">
+
+            <ul class="nav nav-list">
+                <li class="nav-header">Completed Reviews</li>
+
+                <li tal:condition="not:completed_items">
+                    No items completed
+                </li>
+
+                <li tal:repeat="i completed_items"
+                    tal:attributes="class test(i.id==item.id,'active','')">
+                    <a href="${route_url('project:feedback:item',request,project_id=project.id,item_id=i.id)}">
+                        ${i.title}
+                        <i tal:condition="i.submitted_on" class="icon-ok"></i>
+                    </a>
+                </li>
+            </ul>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row"
+     tal:condition="project.has_role(request.user, 'owner')">
+    <div class="span12">
+        <div class="padding" style="padding-top: 0px">
+            <hr >
+            <a tal:attributes="href route_url('project:distribute', request, project_id=project.id)"
+               class="btn btn-primary btn-large btn-success"><i class="icon-ok icon-white"></i> Done with reviews</a>
+        </div>
+    </div>
+</div>
+
+</metal:content>
+</metal:main>
+

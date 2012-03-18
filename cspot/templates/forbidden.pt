@@ -3,21 +3,56 @@
 <metal:content fill-slot="content">
 
 <div class="row">
-    <div class="span12">
+    <div class="span12" tal:condition="request.user">
 
         <h2>Oops! You can't do that.</h2>
 
         <div class="padding">
-            <p tal:condition="user">
+            <p>
                 Try <a tal:attributes="href route_url('auth:logout',request)">logging in as a differt user</a> or
                 return to your <a tal:attributes="href route_url('project:list', request)">project list</a>.
             </p>
-
-            <p tal:condition="not:user">
-                Try <a tal:attributes="href route_url('auth:login', request)">logging in to contine</a>.
-            </p>
         </div>
 
+    </div>
+
+    <div class="span12" tal:condition="not:request.user">
+        <h2>Sign in</h2>
+   
+        <div class="padding">
+            <div class="alert alert-error"
+                 tal:repeat="error request.session.pop_flash('login_errors')"
+                 tal:content="error"></div>
+    
+            <form method="post"
+                  tal:attributes="action route_url('auth:login', request)">
+            <fieldset>
+                <input type="hidden" name="came_from"
+                             tal:attributes="value came_from | nothing">
+        
+                <div class="control-group">
+                    <label class="control-label" for="username">E-mail address:</label>
+                    <div class="controls">
+                        <input type="text" name="username" id="username"
+                                     tal:attributes="value request.params['username'] | username | nothing;">
+                    </div>
+                </div>
+        
+                <div class="control-group">
+                    <label class="control-label" for="password">Password:</label>
+                    <div class="controls">
+                        <input type="password" name="password" id="password" class="medium">
+                    </div>
+                </div>
+        
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" name="submit" value="signin" class="btn btn-primary">Sign in</button>
+                    </div>
+                </div>
+            </fieldset>
+            </form>
+        </div>
     </div>
 </div>
 

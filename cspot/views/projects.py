@@ -1,5 +1,6 @@
 from cspot.models import DBSession
 from cspot.models.users import User
+
 from cspot.models.projects import Project
 
 from cspot.util import plural_to_singular
@@ -10,6 +11,7 @@ from cspot.auth import get_user
 
 from cspot.views.forms import FormController
 from cspot.widgets import all_widget_types
+from cspot.widgets.multiple_choice import MultipleChoiceWidget
 
 from pyramid.url import route_url
 from pyramid.view import view_config
@@ -17,6 +19,8 @@ from pyramid.view import view_config
 from pyramid.security import remember
 
 from pyramid.httpexceptions import HTTPFound
+
+import smtplib
 
 def project_factory(request):
     """
@@ -79,7 +83,7 @@ def project_menu(project, request, section='records'):
         ],
         'text':'Distribute',
         'sub_text':'Send items to your team',
-        'link':''
+        'link':route_url('project:distribute', request, project_id=project.id)
     })
 
     items.append({
@@ -90,7 +94,7 @@ def project_menu(project, request, section='records'):
         ],
         'text':'View Feedback',
         'sub_text':'View feedback, make decisions',
-        'link':''
+        'link':route_url('project:feedback:view', request, project_id=project.id)
     })
 
     return items
@@ -137,6 +141,9 @@ def projects_add(request):
 
             project = Project(title, item_name, item_plural)
             project.add_user(user, 'owner')
+
+            rate_question = MultipleChoiceWidget(project.feedback_form, 'Rate this %s' % (project.item_name))
+            rate_question.set_choices(['Very Good', 'Good', 'Average', 'Poor', 'Very Poor'])
 
             session = DBSession()
             session.add(project)
@@ -263,3 +270,120 @@ def team_member_remove(project, request):
         users=project.get_users(),
         menu=project_menu(project, request, 'team'),
     )
+
+@view_config(route_name='project:distribute', permission='manage_project',
+             renderer='cspot:templates/projects/distribute.pt')
+def distribute(project, request):
+    """
+    Distribute items to the team
+    """
+
+    if request.method == 'POST':
+        submit = request.params.get('submit','')
+        item_ids = request.params.getall('item_ids')
+        message = request.params.get('message','').strip()
+
+        if submit == 'all':
+            item_ids = [i.id for i in project.items_to_distribute()]
+
+        if not item_ids:
+            request.session.flash('Oops! Please select one or more items to distribute, or choose "Distribute All"','errors')
+            
+        else:
+            count = 0
+            for item_id in item_ids:
+                item = project.get_item(item_id)
+                if item: 
+                    item.distribute()
+                    count += 1
+
+            data = {
+                'from_name':request.user.name,
+                'project_name':project.name,
+                'item_plural':project.item_plural,
+                'feedback_url':route_url('project:feedback',request, project_id=project.id),
+                'count':count,
+                'message':message
+            }
+
+            settings = request.registry.settings
+
+            server = smtplib.SMTP(settings['cspot.email_server'])
+            server.login(settings['cspot.email_user'], settings['cspot.email_password'])
+
+            for user in project.get_users():
+                data['to_address'] = user.email
+                data['to_name'] = user.name
+
+                msg = u"""
+To: %(to_address)s
+From: %(from_name)s by way of CommitteeSpot <team@committeespot.com>
+Subject: %(project_name)s %(item_plural)s
+
+%(to_name)s,
+
+%(count)s new %(item_plural)s are ready for your review for %(project_name)s.
+
+To provide your feedback login at:
+
+%(feedback_url)s
+                """ % data
+
+                if user.password_default:
+                    data['to_password'] = user.password_default
+                    msg += u"""
+Login using your e-mail address and the password below.
+
+E-mail: %(to_address)s
+Password: %(to_password)s
+                    """ % data
+                else:
+                    msg += u"""
+Login using your e-mail address and your CommitteeSpot password.
+                    """
+
+                if message:
+                    msg += u"""
+Message from %(from_name)s:
+
+%(message)s
+                    """ % data
+
+                msg = msg.strip()
+
+                server.sendmail('team@committeespot.com', user.email, msg)
+
+            server.quit()
+            request.session.flash('%s items distributed' % len(item_ids), 'messages')
+
+    items_to_distribute = project.items_to_distribute()
+
+    if project.is_owner_temporary():
+        show_section = 'temporary_account'
+    elif not project.items or not project.feedback_form.has_widgets():
+        show_section = 'incomplete'
+    elif not items_to_distribute:
+        show_section = 'no_items'
+    else:
+        show_section = 'items'
+
+    return dict(
+        project=project,
+        items_to_distribute=items_to_distribute,
+        show_section=show_section,
+        menu=project_menu(project, request, 'distribute')
+    )
+
+@view_config(route_name='project:distribute:history', permission='manage_project',
+             renderer='cspot:templates/projects/distribute_history.pt')
+def distribute_history(project, request):
+    """
+    Show distribution history
+    """
+
+    return dict(
+        project=project,
+        menu=project_menu(project, request, 'distribute')
+    )
+
+

@@ -1,0 +1,15 @@
+<div class="control-group widget"
+     tal:attributes="data-widget_id widget.id;
+                     id string:${field_id}-container;">
+    <label for="${field_id}" class="control-label" tal:attributes="for field_id">${widget.label}</label>
+    <div class="controls">
+        <table class="table table-striped">
+        <tbody>
+        <tr tal:repeat="choice widget.get_choices()">
+            <td tal:content="summary.get(choice,0)"></td>
+            <td tal:content="choice"></td>
+        </tr>
+        <tbody>
+        </table>
+    </div>
+</div>

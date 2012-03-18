@@ -58,6 +58,40 @@ class FormController(object):
 
         return widgets
 
+    def render_values(self, request, record=None):
+        """
+        return a list of read-only rendered HTML for each form element in the form.
+        """
+
+        widgets = []
+
+        for widget in self.form.widgets:
+            widget_controller = widget_controller_factory(widget)
+            
+            if record is not None:
+                value = record.get_widget_value(widget)
+            else:
+                value = None
+
+            widget_html = widget_controller.render_value(value, request)
+            widgets.append(widget_html)
+
+        return widgets
+
+    def render_feedback_summary(self, request, feedback_records):
+        """
+        Return rendered summary of all feedback for the given record
+        """
+
+        widgets = []
+
+        for widget in self.form.widgets:
+            widget_controller = widget_controller_factory(widget)
+            values = [r.get_widget_value(widget) for r in feedback_records]
+            widget_html = widget_controller.render_feedback_summary(values, request)
+            widgets.append(widget_html)
+
+        return widgets
 
     def populate_record_from_request(self, record, request):
         """
@@ -111,6 +145,18 @@ class IWidgetController(object):
     def render(self, value, request):
         """
         Render a widget with the given value
+        """
+        raise NotImplementedError
+
+    def render_value(self, value, request):
+        """
+        Render a read-only widget given a value
+        """
+        raise NotImplementedError
+
+    def render_feedback_summary(self, values, request):
+        """
+        Render a read-only summary of the values
         """
         raise NotImplementedError
 

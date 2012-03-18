@@ -1,18 +1,218 @@
-<metal:main use-macro="load:master.pt">
-<metal:title fill-slot="title">Home</metal:title>
-<metal:content fill-slot="content">
+<!DOCTYPE html>
+<html xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+    <meta charset="utf-8">
+    <title>CommitteeSpot</title>
 
-<div class="row">
+    <link rel="shortcut icon" href="/static/images/favicon.png" />
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="/static/css/cs.css" />
+
+    <script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAAYSkItflLWuecB8KaSnAoYBR9oVpe_xR_xcjrBDusQLi3eQlQ5RQJKyrcXPg_qXpQTcL7nfrqU3PhaA"></script>
+    <script type="text/javascript">
+        google.load("jquery", "1.7.1");
+        google.load("jqueryui", "1.8.16");
+    </script>  
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.js"></script>
+</head>
+<body tal:define="user request.user">
+
+<div id="header_homepage" class="container">
+    <div class="row">
     <div class="span12">
-
-        <h2>Hello World</h2>
-
-        <div class="padding">
-            <p>Future home of committeespot.com</p>
+        <div id="menu">
+            <a tal:condition="user" 
+               tal:attributes="href route_url('project:list', request)">my projects</a>
+            <a tal:attributes="href route_url('project:add',request)">new project</a>
+            <a tal:condition="user" 
+               tal:attributes="href route_url('user:profile', request, user_id=user.id)">my profile</a>
+            <a tal:condition="not user or user.is_temporary()" 
+               tal:attributes="href route_url('auth:login', request)">sign in</a>
+            <a tal:condition="user and not user.is_temporary()" 
+               tal:attributes="href route_url('auth:logout', request)">sign out</a>
         </div>
-
+    </div>
     </div>
 </div>
 
-</metal:content>
-</metal:main>
+<div id="mast">
+    <div class="container">
+        <img src="/static/images/mast_logo.png" alt="CommitteeSpot" height="105" width="460" >
+        <h2>The simple way for your team to review anything online.</h2>
+    
+        <a href="${route_url('project:add', request)}" class="btn btn-huge btn-primary">
+            Get Started Now!
+            <div class="tiny">one project free, no signup to start</div>
+        </a>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="page">
+
+    <div class="row">
+        <div class="span7">
+            <div class="box">
+
+                <h2>Make decisions, not busy work</h2>
+
+                <div class="padding">
+                    <img src="/static/images/diagram.png" width="387" height="212" alt="Process Diagram" id="diagram" >
+
+                    <p>
+                        The diagram illustrates the complexity of distributing and collecting feedback for 3 items and 3 team members.
+                    </p>
+            
+                    <p>
+                        Imagine a team of 10 trying to review 100 award nominations. Such a process would take thousands of e-mails, 
+                        or a mess of websites and online surveys.
+                    </p>
+    
+                    <p>
+                        <strong>Committee Spot makes it simple.</strong>
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="box">
+
+                <h2>Review anything</h2>
+
+                <div class="padding">
+    
+                    <p>
+                        Committee Spot is populated with templates for commonly reviewed documents or
+                        you can create your own.
+                    </p>
+
+                    <div class="row">
+                        <div class="span3">
+                            <ul>
+                                <li> Job candidates </li>
+                                <li> Award nominations </li>
+                                <li> Conference applications </li>
+                                <li> Project proposals </li>
+                            </ul>
+                        </div>
+        
+                        <div class="span3">
+                            <ul>
+                                <li> Scholarship applications </li>
+                                <li> Vendor agreements </li>
+                                <li> and more... </li>
+                            </ul> 
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div> <!-- end span7 -->
+
+        <div class="span5">
+            <div class="box">
+
+                <h2>4 simple steps</h2>
+
+                <div class="row" style="padding-top: 20px" >
+                    <div class="span1"><div class="items-icon"></div></div>
+                    <div class="span4">
+                        <div class="padding-right">
+
+                    <h3>Add items</h3>
+    
+                    <p>
+                        Create employment applications, project ideas, proposals, bids 
+                        or anything you need a team to review. Each item can range from a single file
+                        to a complex data record. You decide what information your team
+                        needs to see.
+                    </p>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span1"><div class="feedback-icon"></div></div>
+                    <div class="span4">
+                        <div class="padding-right">
+ 
+                    <h3>Create a feedback form</h3>
+    
+                    <p>
+                        Setup questions for your team to answer about each item. "Should we 
+                        consider this candidate?", "Pursue this project?", "Rank this proposal". 
+                        Again, you control the feedback.
+                    </p>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span1"><div class="team-icon"></div></div>
+                    <div class="span4"> 
+                        <div class="padding-right">
+    
+                    <h3>Add your team</h3>
+    
+                    <p>
+                        Enter an e-mail address for each team member. They recieve an e-mail 
+                        with a password and secure link to begin providing you with the 
+                        feedback you need to achieve your desired outcome.
+                    </p>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span1"><div class="decide-icon"></div></div>
+                    <div class="span4">
+                        <div class="padding-right">
+ 
+                    <h3>Get results, make decisions</h3>
+    
+                    <p>
+                        Easily view the feedback from your team online or export it to 
+                        Microsoft Excel for powerful analysis.
+                    </p>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div> <!-- end span5 -->
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="span12">
+        <div id="footer">
+            <a href="mailto:team@committeespot.com">contact us</a> | 
+            copyright &copy; 2012 committeespot llc 
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-29691323-1']);
+  _gaq.push(['_setDomainName', 'committeespot.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>
+

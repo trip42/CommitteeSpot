@@ -60,4 +60,13 @@ def user_profile(user, request):
 
         request.session.flash('User profile updated', 'messages')
 
+        if 'came_from' in request.session:
+            came_from = request.session['came_from']
+
+            del request.session['came_from']
+
+            return HTTPFound(
+                location=came_from
+            )
+
     return dict(user=user) 

@@ -46,7 +46,7 @@ def record(project, request):
         title = request.params.get('title', '')
         submit = request.params.get('submit','')
 
-        if not title:
+        if not title and not submit.find('finish') >= 0:
             request.session.flash('%s Name or Title is required!' % project.item_name, 'errors')
         else: 
 

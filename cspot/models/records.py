@@ -48,11 +48,18 @@ class ItemRecord(Record):
     __mapper_args__ = {'polymorphic_identity':'item'}
 
     title = Column(Unicode(500), nullable=False)
+    distributed = Column(DateTime)
     project = relationship('Project', backref='items')
 
     def __init__(self, project, title):
         Record.__init__(self, project)
         self.title = title
+
+    def distribute(self):
+        self.distributed = datetime.now()
+
+    def is_distributed(self):
+        return self.distributed is not None
 
 class FeedbackRecord(Record):
     __mapper_args__ = {'polymorphic_identity':'feedback'}
@@ -65,7 +72,18 @@ class FeedbackRecord(Record):
 
     project = relationship('Project', backref='feedback')
 
+    submitted = Column(Boolean, default=False)
     submitted_on = Column(DateTime)
+
+    def __init__(self, project, user, item):
+        Record.__init__(self, project)
+
+        self.user = user
+        self.item = item
+
+    def update_submitted(self):
+        self.submitted = True
+        self.submitted_on = datetime.now()
 
 class Value(Base):
     """

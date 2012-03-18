@@ -80,6 +80,36 @@ class MultipleChoiceWidgetController(IWidgetController):
             request
         )
 
+    def render_value(self, value, request):
+        return render(
+            'multiple_choice_value.pt',
+            dict(
+                widget=self.widget,
+                field_id=self.field_id(),
+                value=value,
+            ),
+            request
+        )
+
+    def render_feedback_summary(self, values, request):
+        summary = {}
+
+        for choice in self.widget.get_choices():
+            summary[choice] = 0
+
+        for value in values:
+            summary[value.value] = summary.get(value.value,0) + 1
+
+        return render(
+            'multiple_choice_summary.pt',
+            dict(
+                widget=self.widget,
+                field_id=self.field_id(),
+                summary=summary
+            ),
+            request
+        )
+
     def populate_record_from_request(self, record, request):
         session = DBSession()
         value = session.query(MultipleChoiceValue).filter(Value.record==record).filter(Value.widget==self.widget).first()

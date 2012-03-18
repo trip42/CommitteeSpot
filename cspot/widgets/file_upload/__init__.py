@@ -67,6 +67,28 @@ class FileUploadWidgetController(IWidgetController):
             request
         )
 
+    def render_value(self, value, request):
+        return render(
+            'file_upload_value.pt',
+            dict(
+                widget=self.widget,
+                field_id=self.field_id(),
+                value=value,
+            ),
+            request
+        )
+
+    def render_feedback_summary(self, values, request):
+        return render(
+            'file_upload_summary.pt',
+            dict(
+                widget=self.widget,
+                field_id=self.field_id(),
+                values=values
+            ),
+            request
+        )
+
     def populate_record_from_request(self, record, request):
         session = DBSession()
         value = session.query(FileUploadValue).filter(FileUploadValue.record==record).filter(FileUploadValue.widget==self.widget).first()

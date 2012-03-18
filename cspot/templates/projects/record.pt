@@ -46,10 +46,15 @@
                 <ul> 
             </div>
 
-            <div class="well">
-                <ul class="nav nav-list">
-                    <li tal:condition="not:project.items">No ${project.item_plural_short().lower()} exist</li>
-                    <li tal:repeat="item project.items"
+            <div class="well"
+                 tal:define="item_names python:project.get_item_names();">
+
+                <ul class="nav nav-list" 
+                    style="margin-top: 10px; max-height: 200px; overflow-y: scroll; overflow-x: hidden;">
+
+                    <li tal:condition="not:item_names">No ${project.item_plural_short().lower()} exist</li>
+
+                    <li tal:repeat="item item_names"
                         tal:define="record_id record.id | nothing;"
                         tal:attributes="class python:record_id == item.id and 'active' or '';">
                         <a tal:attributes="href route_url('project:record', request, project_id=project.id, record_id=item.id)"
@@ -62,15 +67,22 @@
 </div>
 
 <div class="row">
-    <div class="span7">
+    <div class="span12">
         <div class="padding">
-        <button type="submit" name="submit" value="save" class="btn btn-primary">Save</button>
-        <button type="submit" name="submit" value="save_and_add" class="btn btn-primary">Save and add another</button>
-        </div>
-    </div>
-    <div class="span5">
-        <div class="padding">
-        <button type="submit" name="submit" value="save_and_finish" class="btn btn-success">Done adding ${project.item_plural_short()}</button>
+            <div class="control-group">
+                <div class="controls">
+                <button type="submit" name="submit" value="save" class="btn btn-primary">Save</button>
+                <button type="submit" name="submit" value="save_and_add" class="btn btn-primary">Save and add another</button>
+                </div>
+            </div>
+            <hr>
+            <div class="control-group">
+                <div class="controls">
+                <button type="submit" name="submit" value="save_and_finish"
+                        class="btn btn-primary btn-large btn-success">
+                    <i class="icon-ok icon-white"></i> Done adding ${project.item_plural_short()}</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

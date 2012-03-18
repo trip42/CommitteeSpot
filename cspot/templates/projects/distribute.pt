@@ -1,0 +1,116 @@
+<metal:main use-macro="load:../master.pt">
+<metal:title fill-slot="title">${project.item_name} Template</metal:title>
+<metal:content fill-slot="content">
+
+<metal:header use-macro="load:header.pt" />
+
+<div class="row">
+    <div class="span12">
+         <h2>Distribute</h2>
+    </div>
+</div> 
+
+<div class="row">
+    <div class="span7">
+        <div class="padding" style="padding-bottom: 0px;">
+
+            <metal:alerts use-macro="load:../alerts.pt" />
+
+            <div tal:switch="show_section">
+                <div tal:case="'temporary_account'">
+                    <p>
+                        Before you can distribute ${project.item_plural.lower()} to your team, you need to save this project to a CommitteeSpot account.
+                    </p>
+    
+                    <p>
+                        <a href="${route_url('auth:signup',request)}" class="">Setup an account to continue</a>
+                        it takes less than a minute.
+                    </p>
+                </div>
+
+                <div tal:case="'incomplete'">
+                    <p>
+                        Before you can continue you need to:
+                    </p>
+
+                    <ul>
+                        <li tal:condition="not:project.items">
+                            <a href="${route_url('project:records', request, project_id=project.id)}">Add at least one ${project.item_name.lower()}</a>
+                        </li>
+
+                        <li tal:condition="not:project.feedback_form.has_widgets()">
+                            <a href="${route_url('project:feedback_form', request, project_id=project.id)}">Add at least one feedback question</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div tal:case="'no_items'">
+                    <p>
+                        All ${project.item_plural.lower()} have been distributed to team. Once you've
+                        <a href="${route_url('project:records', request, project_id=project.id)}">added new ${project.item_plural.lower()}</a>
+                        you can distribute them from this screen.
+                    </p>
+                </div>
+
+                <div tal:case="'items'">
+                    <p>
+                        There are <strong tal:content="len(items_to_distribute)">5</strong> new
+                        ${project.item_plural.lower()} to distribute to the team.
+                    </p>
+
+                    <form method="post" action="${route_url('project:distribute',request,project_id=project.id)}">
+                    <fieldset>
+                        <div class="control-group">
+                            <label>Select the ${project.item_plural.lower()} to distribute or choose "Distribute All" below</label>
+                            <div class="controls" style="margin-left: 20px;">
+                                <label class="checkbox" for="item-${item.id}"
+                                       tal:repeat="item items_to_distribute">
+                                    <input type="checkbox" name="item_ids" id="item-${item.id}"
+                                           value="${item.id}" />
+                                    ${item.title}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="message">Add a message to your team as part of the distribution:</label>
+                            <div class="controls">
+                                <textarea name="message" id="message" class="span5"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <button type="submit" name="submit" value="selected" class="btn btn-primary">
+                                    <i class="icon-share-alt icon-white"></i> Distribute Selected</button>
+                                <button type="submit" name="submit" value="all" class="btn btn-primary">
+                                    <i class="icon-share-alt icon-white"></i> Distribute All</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                    </form>
+
+                </div>
+
+            </div> <!-- end switch -->
+        </div> <!-- end padding -->
+    </div> <!-- end span7 -->
+
+    <div class="span5">
+        <metal:alerts use-macro="load:distribute_menu.pt" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="span12">
+        <div class="padding" style="padding-top: 0px">
+            <hr >
+            <a tal:attributes="href route_url('project:records', request, project_id=project.id)"
+               class="btn btn-primary btn-large btn-success"><i class="icon-ok icon-white"></i> Done distributing</a>
+        </div>
+    </div>
+</div>
+
+</metal:content>
+</metal:main>
+
