@@ -1,0 +1,61 @@
+<metal:main use-macro="load:../master.pt">
+<metal:title fill-slot="title">${project.item_name} Template</metal:title>
+<metal:content fill-slot="content">
+
+<metal:header use-macro="load:header.pt" />
+
+<div class="row">
+    <div class="span12">
+         <h2>Project Settings</h2>
+    </div>
+</div> 
+
+<div class="row">
+    <div class="span12">
+        <div class="padding">
+
+            <metal:alerts use-macro="load:../alerts.pt" />
+
+            <form method="post" action="${route_url('project:settings', request, project_id=project.id)}">
+            <fieldset>
+                <div class="control-group">
+                    <label for="name">Name of your team or project:</label>
+                    <div class="controls">
+                        <input type="text" name="name" id="name" class="span7"
+                               tal:attributes="value name | project.name" />
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="item_name">Item Name Singular:</label>
+                    <div class="controls">
+                        <input type="text" name="item_name" id="item_name" class="span3"
+                               tal:attributes="value item_name | project.item_name" />
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="item_plural">Item Name Plural:</label>
+                    <div class="controls">
+                        <input type="text" name="item_plural" id="item_plural" class="span3"
+                               tal:attributes="value item_plural | project.item_plural" />
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" name="submit" class="btn btn-primary">Save Settings</button>
+                    </div>
+                </div>
+
+            </fieldset>
+            </form>
+
+            <script>$(function() { $('#title').focus() })</script>
+        </div>
+    </div>
+</div>
+
+</metal:content>
+</metal:main>
+

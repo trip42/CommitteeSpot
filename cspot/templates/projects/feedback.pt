@@ -15,6 +15,7 @@
             <h2>No ${project.item_name.lower()} selected</h2>
 
             <div class="padding">
+            <metal:alerts use-macro="load:../alerts.pt" />
             <p>
                 No ${project.item_name.lower()} is available for your feedback.
             </p>
@@ -36,12 +37,15 @@
             <h2>Your Feedback</h2>
     
             <div class="padding">
+                <metal:alerts use-macro="load:../alerts.pt" />
+
                 <tal:widget tal:repeat="widget_html form_widgets"
                             tal:replace="structure widget_html" />
     
                 <div class="control-group">
                     <div class="controls">
-                        <button type="submit" class="btn btn-primary">Submit Feedback and Review Next</button>
+                        <button type="submit" name="submit" value="save" class="btn btn-primary">Submit Feedback</button>
+                        <button type="submit" name="submit" value="save_and_next" class="btn btn-primary">Submit Feedback and Load Next</button>
                     </div>
                 </div>
             </div>
@@ -51,10 +55,11 @@
         </tal:item>
 
     </div>
-    <div class="span5">
+    <div class="span5"
+         tal:define="item_id item.id | nothing">
         <h2>${project.item_plural_short()}</h2>
 
-        <div class="padding" style="padding-left: 0px;">
+        <div class="padding">
             <div class="well">
 
             <ul class="nav nav-list">
@@ -65,7 +70,7 @@
                 </li>
 
                 <li tal:repeat="i pending_items"
-                    tal:attributes="class test(i.id==item.id,'active','')">
+                    tal:attributes="class test(i.id==item_id,'active','')">
                     <a href="${route_url('project:feedback:item',request,project_id=project.id,item_id=i.id)}">
                         ${i.title}
                         <i tal:condition="i.submitted_on" class="icon-ok"></i>
@@ -85,7 +90,7 @@
                 </li>
 
                 <li tal:repeat="i completed_items"
-                    tal:attributes="class test(i.id==item.id,'active','')">
+                    tal:attributes="class test(i.id==item_id,'active','')">
                     <a href="${route_url('project:feedback:item',request,project_id=project.id,item_id=i.id)}">
                         ${i.title}
                         <i tal:condition="i.submitted_on" class="icon-ok"></i>

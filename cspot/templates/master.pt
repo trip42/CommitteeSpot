@@ -3,9 +3,12 @@
 <head>
     <meta charset="utf-8">
     <title>Committee Spot &mdash; <metal:title metal:define-slot="title" /></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="shortcut icon" href="/static/images/favicon.png" />
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css" />
+    <link tal:condition="responsive_layout | nothing" 
+          rel="stylesheet" href="/static/bootstrap/css/bootstrap-responsive.css" />
     <link rel="stylesheet" href="/static/css/cs.css" />
 
     <script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAAYSkItflLWuecB8KaSnAoYBR9oVpe_xR_xcjrBDusQLi3eQlQ5RQJKyrcXPg_qXpQTcL7nfrqU3PhaA"></script>
@@ -21,7 +24,7 @@
     <div class="container">
         <div class="row">
             <div class="span4">
-                <a href="/"><img src="/static/images/header_logo.png" height="60" width="235" alt="Committee Spot" id="header_logo"></a>
+                <a href="/" id="header_logo"><img src="/static/images/header_logo.png" height="60" width="235" alt="Committee Spot"></a>
             </div>
             <div class="span8">
                 <div id="menu-container">

@@ -20,6 +20,10 @@ def includeme(config):
 
     config.add_route('project:list', '/projects')
     config.add_route('project:add', '/projects/add')
+    config.add_route('project', '/projects/{project_id}',
+                     factory='cspot.views.projects.project_factory')
+    config.add_route('project:settings', '/projects/{project_id}/settings',
+                     factory='cspot.views.projects.project_factory')
 
     # Item Records
 

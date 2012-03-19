@@ -22,6 +22,7 @@
                 <th>E-mail</th>
                 <th>Name</th>
                 <th>Role</th>
+                <th>Last Login</th>
                 <th></th>
             </tr>
             </thead>
@@ -31,6 +32,7 @@
                 <td tal:content="user.email"></td>
                 <td tal:content="user.name"></td>
                 <td tal:content="user.role"></td>
+                <td tal:content="user.last_login | string:n/a"></td>
                 <td style="text-align: right;">
                     <a tal:attributes="href route_url('project:team:remove', request, project_id=project.id, user_id=user.id)"
                        tal:condition="user.role != 'owner'"><i class="icon-remove"></i> Remove</a>
@@ -79,6 +81,7 @@
                     </div>
                 </div>
             </fieldset>
+            <script>$(function() { $('#email').focus() })</script>
             </form>
                 
         </div>

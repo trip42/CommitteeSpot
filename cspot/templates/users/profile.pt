@@ -38,14 +38,10 @@
                 </div>
             </div>
 
-            <div class="alert alert-info"
-                 tal:condition="user.password_default">
-                We strongly recommend that you change your password
-                from the default password before continuing.
-            </div>
+            <h3>Change Password</h3>
 
             <div class="control-group">
-                <label for="signup_password">Change Password:</label>
+                <label for="signup_password">New Password:</label>
                 <div class="controls">
                     <input type="password" name="password" id="signup_password">
                 </div>

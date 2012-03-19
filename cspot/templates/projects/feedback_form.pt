@@ -7,6 +7,7 @@
 <div class="row">
     <div class="span12">
         <h1>Ask Questions</h1>
+        <metal:main use-macro="load:../alerts.pt" />
         <div class="padding">
             <p>
                 Create a feedback from for your team below. Your team members will answer

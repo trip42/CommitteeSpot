@@ -87,8 +87,9 @@ def login(request):
     login_url = route_url('auth:login', request)
     signup_url = route_url('auth:signup', request)
     home_url = route_url('home', request)
+    logout_url = route_url('auth:logout', request)
 
-    if came_from in [login_url, signup_url, home_url]:
+    if came_from in [login_url, signup_url, home_url, logout_url]:
         came_from = route_url('project:list', request)
 
     username = request.params.get('username','')
@@ -120,18 +121,12 @@ def login(request):
             request.session['logged_in'] = 'logged_in'
     
             if user.password_default:
-                request.session['came_from'] = came_from
-    
-                return HTTPFound(
-                    location=route_url('user:profile', request, user_id=user.id),
-                    headers=headers
-                )
-    
-            else:
-                return HTTPFound(
-                    location=came_from,
-                    headers=headers
-                )
+                user.password_default = ''
+
+            return HTTPFound(
+                location=came_from,
+                headers=headers
+            )
     
         else:
             request.session.flash('Incorrect username or password', 'login_errors')

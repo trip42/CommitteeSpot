@@ -13,44 +13,28 @@ from pyramid.renderers import render
 
 import simplejson
 
-class MultipleChoiceWidget(Widget):
-    widget_type = 'multiple_choice'
-    name = 'Multiple Choice'
+class SingleLineTextWidget(Widget):
+    widget_type = 'single_line_text'
+    name = 'Single Line Text'
 
     __mapper_args__ = {'polymorphic_identity':widget_type}
 
-    choices = Column(UnicodeText())
-    
     def __init__(self, form, label):
         Widget.__init__(self, form, label)
-        self.set_choices(['Choice 1','Choice 2','Choice 3'])
 
-    def get_choices(self):
-        return simplejson.loads(self.choices)
+class SingleLineTextValue(Value):
+    __mapper_args__ = {'polymorphic_identity':'single_line_text'}
 
-    def set_choices(self, choices=[]):
-        self.choices = simplejson.dumps(choices)
-
-class MultipleChoiceValue(Value):
-    __mapper_args__ = {'polymorphic_identity':'multiple_choice'}
-
-    value = Column(Unicode(500), default='')
-
-    def set_value(self, selected_choice=''):
-        self.value = selected_choice 
+    def set_value(self, value):
+        self.text_value = value
 
     def get_value(self):
-        return self.value
+        return self.text_value
 
-class MultipleChoiceWidgetController(IWidgetController):
-    def data(self):
-        return dict(
-            choices=self.widget.get_choices()
-        )
-
+class SingleLineTextController(IWidgetController):
     def options(self, request):
         return render(
-            'multiple_choice_options.pt',
+            'options.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),
@@ -59,18 +43,14 @@ class MultipleChoiceWidgetController(IWidgetController):
         )
 
     def process_options(self, request):
-        choices = request.params.getall('choices')
         label = request.params.get('label',None)
-
-        self.widget.set_choices(choices)
         self.widget.label = label
-
         session = DBSession()
         session.add(self.widget)
 
     def render(self, value, request):
         return render(
-            'multiple_choice.pt',
+            'widget.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),
@@ -80,8 +60,34 @@ class MultipleChoiceWidgetController(IWidgetController):
         )
 
     def render_value(self, value, request):
+        if value:
+            value = value.get_value()
+        else:
+            value = 'n/a'
+
+        import re
+        re1='(http)'    # Word 1
+        re2='.*?'   # Non-greedy match on filler
+        re3='(\\/www\\.youtube\\.com\\/watch)'  # Unix Path 1
+        re4='.*?'   # Non-greedy match on filler
+        re5='((?:[a-z][a-z]*[0-9]+[a-z0-9]*))'  # Alphanum 1
+        
+        rg = re.compile(re1+re2+re3+re4+re5,re.IGNORECASE|re.DOTALL)
+        m = rg.search(value)
+        if m:
+            word1=m.group(1)
+            unixpath1=m.group(2)
+            alphanum1=m.group(3)
+
+            value = """
+            <iframe width="100%%" height="300" src="http://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>
+            """ % alphanum1
+        else:
+            from cgi import escape
+            value = escape(value)
+
         return render(
-            'multiple_choice_value.pt',
+            'value.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),
@@ -91,39 +97,24 @@ class MultipleChoiceWidgetController(IWidgetController):
         )
 
     def render_feedback_summary(self, values, request):
-        summary = {}
-
-        for choice in self.widget.get_choices():
-            summary[choice] = {'count':0, 'percent':0.0}
-
-        total = 0.0
-        for value in values:
-            summary[value.value]['count'] = summary.get(value.value,{}).get('count',0) + 1
-            total += 1.0
-
-        if total:
-            for key in summary:
-                summary[key]['percent'] = int(summary[key]['count'] / total * 100.0)
-                
-
         return render(
-            'multiple_choice_summary.pt',
+            'summary.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),
-                summary=summary
+                values=values
             ),
             request
         )
 
     def populate_record_from_request(self, record, request):
         session = DBSession()
-        value = session.query(MultipleChoiceValue).filter(Value.record==record).filter(Value.widget==self.widget).first()
+        value = session.query(SingleLineTextValue).filter(Value.record==record).filter(Value.widget==self.widget).first()
 
         if not value:
-            value = MultipleChoiceValue(record, self.widget)
+            value = SingleLineTextValue(record, self.widget)
             
         value.set_value(request.params.get(self.field_id(), ''))
         session.add(value)
 
-register_widget(MultipleChoiceWidget, MultipleChoiceWidgetController)
+register_widget(SingleLineTextWidget, SingleLineTextController)

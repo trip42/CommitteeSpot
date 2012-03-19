@@ -9,7 +9,7 @@
 
         <div class="padding">
             <p>
-                Try <a tal:attributes="href route_url('auth:logout',request)">logging in as a differt user</a> or
+                Try <a tal:attributes="href route_url('auth:logout',request)">logging in as a different user</a> or
                 return to your <a tal:attributes="href route_url('project:list', request)">project list</a>.
             </p>
         </div>
@@ -18,7 +18,7 @@
 
     <div class="span12" tal:condition="not:request.user">
         <h2>Sign in</h2>
-   
+
         <div class="padding">
             <div class="alert alert-error"
                  tal:repeat="error request.session.pop_flash('login_errors')"
@@ -53,7 +53,9 @@
             </fieldset>
             </form>
         </div>
+        <script>$(function() { $('#username').focus() })</script>
     </div>
+
 </div>
 
 </metal:content>

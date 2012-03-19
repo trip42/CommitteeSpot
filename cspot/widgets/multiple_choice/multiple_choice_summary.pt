@@ -6,8 +6,11 @@
         <table class="table table-striped">
         <tbody>
         <tr tal:repeat="choice widget.get_choices()">
-            <td tal:content="summary.get(choice,0)"></td>
-            <td tal:content="choice"></td>
+            <td class="multiple-choice-summary-count" tal:content="summary.get(choice,{}).get('count',0)"></td>
+            <td class="multiple-choice-summary-choice" tal:content="choice"></td>
+            <td class="multiple-choice-summary-percent">
+                <div tal:attributes="style string:width: ${summary.get(choice,{}).get('percent',0)}%"></div>
+            </td>
         </tr>
         <tbody>
         </table>

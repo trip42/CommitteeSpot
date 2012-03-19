@@ -29,11 +29,11 @@
 
             <tbody>
             <tr tal:repeat="role project_roles">
-                <td><a tal:attributes="href route_url('project:records', request, project_id=role.project_id)"
+                <td><a tal:attributes="href route_url('project', request, project_id=role.project_id)"
                        tal:content="role.project.name"></a></td>
                 <td tal:content="role.role"></td>
-                <td tal:content="nothing"></td>
-                <td tal:content="nothing"></td>
+                <td tal:content="len(role.project.items)"></td>
+                <td tal:content="role.project.get_users().count()"></td>
             </tr>
             </tbody>
             </table>

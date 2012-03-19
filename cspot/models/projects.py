@@ -103,7 +103,7 @@ class Project(Base):
 
         session = DBSession()
 
-        roles = session.query(User.name, User.email, User.id, User.password_default, ProjectUserRole.role).join(ProjectUserRole.user).filter(ProjectUserRole.project==self)
+        roles = session.query(User.name, User.email, User.id, User.last_login, User.password_default, ProjectUserRole.role).join(ProjectUserRole.user).filter(ProjectUserRole.project==self)
 
         return roles
 

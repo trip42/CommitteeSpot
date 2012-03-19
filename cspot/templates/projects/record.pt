@@ -89,6 +89,8 @@
 
 </form>
 
+<script>$(function() { $('#title').focus(); })</script>
+
 </metal:content>
 </metal:main>
 

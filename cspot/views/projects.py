@@ -12,6 +12,7 @@ from cspot.auth import get_user
 from cspot.views.forms import FormController
 from cspot.widgets import all_widget_types
 from cspot.widgets.multiple_choice import MultipleChoiceWidget
+from cspot.widgets.paragraph_text import ParagraphTextWidget
 
 from pyramid.url import route_url
 from pyramid.view import view_config
@@ -99,6 +100,17 @@ def project_menu(project, request, section='records'):
 
     return items
 
+@view_config(route_name='project', permission='review_project')
+def project(project, request):
+    if project.has_role(request.user, 'owner') or project.has_role(request.user, 'administrator'):
+        return HTTPFound(
+            location=route_url('project:records', request, project_id=project.id)
+        )
+    else :
+        return HTTPFound(
+            location=route_url('project:feedback', request, project_id=project.id)
+        )
+
 @view_config(route_name='project:list', 
              permission='view_restricted',
              renderer='cspot:templates/projects/list.pt')
@@ -145,6 +157,8 @@ def projects_add(request):
             rate_question = MultipleChoiceWidget(project.feedback_form, 'Rate this %s' % (project.item_name))
             rate_question.set_choices(['Very Good', 'Good', 'Average', 'Poor', 'Very Poor'])
 
+            comments_question = ParagraphTextWidget(project.feedback_form, 'Comments')
+
             session = DBSession()
             session.add(project)
             session.flush() 
@@ -159,6 +173,27 @@ def projects_add(request):
     return dict(
         title=title,
         item_plural=item_plural
+    )
+
+@view_config(route_name='project:settings', permission='manage_project',
+             renderer='cspot:templates/projects/settings.pt')
+def project_settings(project, request):
+    if request.method == 'POST':
+        name = request.params.get('name','').strip()
+        item_name = request.params.get('item_name','').strip()
+        item_plural = request.params.get('item_plural','').strip()
+
+        if not (name and item_name and item_plural):
+            request.session.flash('Please complete all fields!', 'errors')
+        else:
+            project.name = name
+            project.item_name = item_name
+            project.item_plural = item_plural
+            request.session.flash('Project settings saved!', 'messages')
+        
+    return dict(
+        project=project,
+        menu=project_menu(project, request, '')
     )
 
 @view_config(route_name='project:item_form', permission='manage_project',
@@ -299,6 +334,7 @@ def distribute(project, request):
 
             data = {
                 'from_name':request.user.name,
+                'from_address':request.user.email,
                 'project_name':project.name,
                 'item_plural':project.item_plural,
                 'feedback_url':route_url('project:feedback',request, project_id=project.id),
@@ -317,6 +353,7 @@ def distribute(project, request):
 
                 msg = u"""
 To: %(to_address)s
+Reply-To: %(from_address)s
 From: %(from_name)s by way of CommitteeSpot <team@committeespot.com>
 Subject: %(project_name)s %(item_plural)s
 

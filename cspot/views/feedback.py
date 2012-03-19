@@ -17,13 +17,15 @@ from pyramid.httpexceptions import HTTPFound
 def feedback(project, request):
     session = DBSession()
 
-    items = project.get_items_for_user(request.user)
     item_id = request.matchdict.get('item_id',None)
+    items = project.get_items_for_user(request.user)
+    pending_items = [i for i in items if not i.submitted]
+    completed_items = [i for i in items if i.submitted]
 
     if item_id:
         item = project.get_item_for_user(request.user, item_id)
-    elif items:
-        item = items[0]
+    elif pending_items:
+        item = pending_items[0]
     else:
         item = None
 
@@ -44,12 +46,19 @@ def feedback(project, request):
         feedback.update_submitted()
         feedback_controller.populate_record_from_request(feedback, request)
 
+        request.session.flash('Feedback on %s submitted' % item.title, 'messages')
+
         # Once feedback is submitted, load the next
         # record from the top of the list
-        item = project.get_item(items[0].id)
 
-    pending_items = [i for i in items if not i.submitted]
-    completed_items = [i for i in items if i.submitted]
+        if request.params.get('submit','') == 'save_and_next':
+            return HTTPFound(
+                location=route_url('project:feedback', request, project_id=project.id)
+            )
+        else:
+            return HTTPFound(
+                location=route_url('project:feedback:item', request, project_id=project.id, item_id=item.id)
+            )
 
     return dict(
         pending_items=pending_items,
@@ -57,7 +66,8 @@ def feedback(project, request):
         item=item,
         item_values=item_controller.render_values(request, item),
         form_widgets=feedback_controller.render_widgets(request, feedback),
-        project=project
+        project=project,
+        responsive_layout=True,
     )
 
 @view_config(route_name='project:feedback:view', permission='manage_project',
