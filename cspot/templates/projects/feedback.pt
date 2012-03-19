@@ -16,9 +16,15 @@
 
             <div class="padding">
             <metal:alerts use-macro="load:../alerts.pt" />
-            <p>
-                No ${project.item_name.lower()} is available for your feedback.
+
+            <p tal:condition="completed_items">
+                Thank you! You have completed your review of all ${project.item_plural}.
             </p>
+
+            <p tal:condition="not:completed_items">
+                There are no ${project.item_plural()} available for your feedback at this time.
+            </p>
+
             </div>
         </tal:not-item>
 

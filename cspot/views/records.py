@@ -43,12 +43,18 @@ def record(project, request):
         record = None
 
     if request.method == 'POST':
-        title = request.params.get('title', '')
+        title = request.params.get('title', '').strip()
         submit = request.params.get('submit','')
 
-        if not title and not submit.find('finish') >= 0:
+        if not title and submit.find('finish') >= 0:
+            return HTTPFound(
+                location=route_url('project:feedback_form', request, project_id=project.id)
+            )
+
+        elif not title:
             request.session.flash('%s Name or Title is required!' % project.item_name, 'errors')
-        else: 
+
+        elif title:
 
             if record is None:
                 record = ItemRecord(project, title)

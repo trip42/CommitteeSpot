@@ -7,10 +7,10 @@
         <tbody>
         <tr tal:repeat="choice widget.get_choices()">
             <td class="multiple-choice-summary-count" tal:content="summary.get(choice,{}).get('count',0)"></td>
-            <td class="multiple-choice-summary-choice" tal:content="choice"></td>
             <td class="multiple-choice-summary-percent">
                 <div tal:attributes="style string:width: ${summary.get(choice,{}).get('percent',0)}%"></div>
             </td>
+            <td class="multiple-choice-summary-choice" tal:content="choice"></td>
         </tr>
         <tbody>
         </table>

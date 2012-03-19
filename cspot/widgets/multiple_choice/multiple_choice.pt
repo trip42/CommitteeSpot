@@ -6,7 +6,7 @@
         <label class="radio"
                tal:repeat="choice widget.get_choices()">
             <input type="radio" name="${field_id}" id="${field_id}-${repeat['choice'].number}"
-                   tal:attributes="checked python:value and choice == value.value;"
+                   tal:attributes="checked python:value and choice == value.get_value();"
                    value="${choice}">
             ${choice}
         </label>

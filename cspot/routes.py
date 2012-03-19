@@ -1,6 +1,11 @@
 
 def includeme(config):
+
+    # General
+
     config.add_route('home', '/')
+    config.add_route('terms', '/terms')
+    config.add_route('privacy', '/privacy')
 
     # Authentication
 

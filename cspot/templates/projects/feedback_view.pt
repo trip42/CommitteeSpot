@@ -13,6 +13,11 @@
 <div class="row">
     <div class="span12">
         <div class="padding">
+
+        <p tal:condition="not:item_summaries">
+            You have not yet collected any feedback.
+        </p>
+
         <div tal:repeat="item item_summaries">
             <h3 tal:content="item['item'].title"></h3>
 

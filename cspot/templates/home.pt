@@ -192,6 +192,8 @@
 <div class="row">
     <div class="span12">
         <div id="footer">
+            <a href="${route_url('terms', request)}">terms</a> |
+            <a href="${route_url('privacy', request)}">privacy</a> |
             <a href="mailto:team@committeespot.com">contact us</a> | 
             copyright &copy; 2012 committeespot llc 
         </div>

@@ -34,13 +34,11 @@ class MultipleChoiceWidget(Widget):
 class MultipleChoiceValue(Value):
     __mapper_args__ = {'polymorphic_identity':'multiple_choice'}
 
-    value = Column(Unicode(500), default='')
-
     def set_value(self, selected_choice=''):
-        self.value = selected_choice 
+        self.text_value = selected_choice 
 
     def get_value(self):
-        return self.value
+        return self.text_value
 
 class MultipleChoiceWidgetController(IWidgetController):
     def data(self):
@@ -98,8 +96,10 @@ class MultipleChoiceWidgetController(IWidgetController):
 
         total = 0.0
         for value in values:
-            summary[value.value]['count'] = summary.get(value.value,{}).get('count',0) + 1
-            total += 1.0
+            choice = value.get_value()
+            if choice in summary:
+                summary[choice]['count'] = summary.get(choice,{}).get('count',0) + 1
+                total += 1.0
 
         if total:
             for key in summary:

@@ -102,7 +102,7 @@ class Value(Base):
     record_id = Column(Integer, ForeignKey('records.id'))
     record = relationship(Record, backref=backref('values', cascade='all,delete'))
 
-    text_value = Column(UnicodeText(), default='')
+    text_value = Column(UnicodeText(), default=u'')
 
     def __init__(self, record, widget):
         self.record = record
