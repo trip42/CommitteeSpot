@@ -43,6 +43,14 @@
                 </div>
 
                 <div class="control-group">
+                    <label for="item_label">Item Label:</label>
+                    <div class="controls">
+                        <input type="text" name="item_label" id="item_label" class="span3"
+                               tal:attributes="value item_label | project.item_label" />
+                    </div>
+                </div>
+
+                <div class="control-group">
                     <div class="controls">
                         <button type="submit" name="submit" class="btn btn-primary">Save Settings</button>
                     </div>

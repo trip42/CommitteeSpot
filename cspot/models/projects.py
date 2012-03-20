@@ -35,7 +35,10 @@ class Project(Base):
     name = Column(Unicode(255), nullable=False)
     item_name = Column(Unicode(50), nullable=False)
     item_plural = Column(Unicode(55), nullable=False)
+    item_label = Column(Unicode(50), nullable=False)
     creation_date = Column(DateTime(), nullable=False)
+
+    template = Column(Boolean, default=False)
 
     __acl__ = [
         (Allow, 'owner', 'manage_project'),
@@ -50,12 +53,18 @@ class Project(Base):
         self.name = name
         self.item_name = item_name
         self.item_plural = item_plural
+        self.item_label = u"%s Name or Title" % item_name
+
         self.creation_date = datetime.now()
 
         session = DBSession()
 
         session.add(ItemForm(self))
         session.add(FeedbackForm(self))
+
+    def copy_to(self, p):
+        p.item_name = self.item_name
+        p.item_plural = self.item_plural
 
     def add_user(self, user, role):
         """

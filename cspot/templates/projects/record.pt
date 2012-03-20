@@ -19,7 +19,7 @@
             <metal:main use-macro="load:../alerts.pt" />
 
             <div class="control-group widget">
-                <label class="control-label" for="title">${project.item_name} Name or Title:</label>
+                <label class="control-label" for="title">${project.item_label}:</label>
                 <div class="controls">
                     <input type="text" name="title" id="title" class="span6"
                            tal:attributes="value record.title | nothing" >

@@ -28,19 +28,36 @@
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label" for="item_plural">What kind of items are you reviewing?</label>
+                    <label class="control-label">What kind of items are you reviewing?</label>
+                    <div class="controls" style="padding-left: 10px;">
+                        <label class="radio"
+                               tal:repeat="t templates">
+                            <input type="radio" name="template_id" value="${t.id}"
+                                   tal:attributes="checked repeat['t'].start" >
+                            ${t.item_plural}
+                        </label>
+
+                        <label class="radio">
+                            <input type="radio" name="template_id" value="other" id="other" />
+                            Custom type 
+                        </label>
+            
+                    </div>
+                </div>
+
+                <div class="control-group" id="other-details">
+                    <label class="control-label" for="item_plural">What should we call the items you are reviewing?</label>
                     <div class="controls">
-                        <input type="text" name="item_plural" id="item_plural" class="span3"
-                               tal:attributes="value item_plural">
+                        <input type="text" name="item_plural" id="item_plural" class="span3" tal:attributes="value item_plural">
                         <p class="help-block">
-                            Answer with a <strong>plural noun</strong>. Examples: Applicants,
-                            Candidates, RFPs, Proposals, Bids, People, etc.
+                            Enter a <strong>plural noun</strong>, e.g. flavors, cars, proposals, etc.
                         </p>
                     </div>
                 </div>
 
                 <div class="control-group">
                     <div class="controls">
+                        <hr>
                         <button type="submit" class="btn btn-primary">Create Project</button> or
                         <a tal:attributes="href route_url('project:list', request)">Cancel</a>
                     </div>
@@ -52,6 +69,20 @@
         </div>
     </div>
 </div>
+
+<script>
+$(function() {
+    $('#other-details').hide();
+
+    $('#other').change(function(e) {
+        if ($(this).is(':checked')) {
+            $('#other-details').show();
+        } else {
+            $('#other-details').hide();
+        }
+    });
+});
+</script>
 
 </metal:content>
 </metal:main>

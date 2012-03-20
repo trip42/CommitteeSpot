@@ -64,6 +64,15 @@ class Widget(Base):
         self.sort_order = len(form.widgets) + 1
         self.admin_only = False
 
+    def copy_to(self, widget):
+        """
+        Copy the values of this widget to another widget
+        """
+        widget.sort_order = self.sort_order
+        widget.label = self.label
+        widget.description = self.description
+        widget.admin_only = self.admin_only
+
 def widget_factory(widget_type):
     """
     Generate a widget model class for a type

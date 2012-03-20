@@ -25,6 +25,10 @@ class MultipleChoiceWidget(Widget):
         Widget.__init__(self, form, label)
         self.set_choices(['Choice 1','Choice 2','Choice 3'])
 
+    def copy_to(self, widget):
+        Widget.copy_to(self, widget)
+        widget.choices = self.choices
+
     def get_choices(self):
         return simplejson.loads(self.choices)
 

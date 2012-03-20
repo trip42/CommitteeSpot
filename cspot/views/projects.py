@@ -2,6 +2,7 @@ from cspot.models import DBSession
 from cspot.models.users import User
 
 from cspot.models.projects import Project
+from cspot.models.forms import widget_factory
 
 from cspot.util import plural_to_singular
 from cspot.util import validate_email
@@ -134,14 +135,62 @@ def projects_add(request):
     and associate the project with that user
     """
 
+    session = DBSession()
+
     title = request.params.get('title','')
+    template_id = request.params.get('template_id', '')
     item_plural = request.params.get('item_plural','').capitalize()
 
+    templates = session.query(Project).filter(Project.template==True).all()
+
     if request.method == 'POST':
-        if not (title and item_plural):
+
+        if template_id != 'other':
+            template = session.query(Project).filter(Project.template==True).filter(Project.id==template_id).first()
+        else:
+            template = None
+
+        if not title:
             request.session.flash('Oops! Please complete all fields to continue', 'errors')
 
-        else:
+        elif template:
+            # Create a new project from a template
+
+            if not request.user:
+                user = get_temp_user()
+                headers = remember(request, user.id)
+            else:
+                user = request.user
+                headers = None
+
+            project = Project(title, 'item', 'items')
+            project.add_user(user, 'owner')
+
+            template.copy_to(project)
+
+            for widget in template.item_form.widgets:
+                widget_class = widget_factory(widget.widget_type)
+                new_widget = widget_class(project.item_form, 'widget')
+                widget.copy_to(new_widget)
+
+            for widget in template.feedback_form.widgets:
+                widget_class = widget_factory(widget.widget_type)
+                new_widget = widget_class(project.feedback_form, 'widget')
+                widget.copy_to(new_widget)
+
+            session.add(project)
+            session.flush() 
+
+            request.session.flash('Project created', 'messages')
+
+            return HTTPFound(
+                location=route_url('project:records', request, project_id=project.id),
+                headers=headers
+            )
+
+        elif item_plural:
+            # Create a custom project from an item name
+
             item_name = plural_to_singular(item_plural)
 
             if not request.user:
@@ -159,7 +208,6 @@ def projects_add(request):
 
             comments_question = ParagraphTextWidget(project.feedback_form, 'Comments')
 
-            session = DBSession()
             session.add(project)
             session.flush() 
 
@@ -172,7 +220,8 @@ def projects_add(request):
 
     return dict(
         title=title,
-        item_plural=item_plural
+        item_plural=item_plural,
+        templates=templates,
     )
 
 @view_config(route_name='project:settings', permission='manage_project',
@@ -182,13 +231,15 @@ def project_settings(project, request):
         name = request.params.get('name','').strip()
         item_name = request.params.get('item_name','').strip()
         item_plural = request.params.get('item_plural','').strip()
+        item_label = request.params.get('item_label','').strip()
 
-        if not (name and item_name and item_plural):
+        if not (name and item_name and item_plural and item_label):
             request.session.flash('Please complete all fields!', 'errors')
         else:
             project.name = name
             project.item_name = item_name
             project.item_plural = item_plural
+            project.item_label = item_label
             request.session.flash('Project settings saved!', 'messages')
         
     return dict(
