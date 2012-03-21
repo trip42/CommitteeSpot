@@ -15,7 +15,7 @@
         <h2 tal:condition="record">Update ${project.item_name}</h2>
         <h2 tal:condition="not:record">Add ${project.item_name}</h2>
 
-        <div class="padding">
+        <div class="padding" id="form">
             <metal:main use-macro="load:../alerts.pt" />
 
             <div class="control-group widget">
@@ -29,6 +29,33 @@
             <tal:widget tal:repeat="widget_html form_widgets"
                         tal:replace="structure widget_html" />
 
+            <div class="alert alert-info" tal:condition="not:form_widgets">
+                <h3>Expand your ${project.item_name.lower()} records</h3>
+
+                <p>
+                    We're sure you would like to track more than just
+                    a name for each ${project.item_name.lower()}. Luckily,
+                    CommitteeSpot makes it easy to add more fields.
+                </p>
+
+                <p>
+                    Just click the <strong><i class="icon-pencil"></i> Edit ${project.item_name_short()} template</strong>
+                    in the box to the upper right to add more fields using our simple form editor. 
+                </p>
+
+                <p>
+                    Thank you for choosing CommitteeSpot!
+                </p>
+
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" name="submit" value="save" class="btn btn-primary">Save</button>
+                    <button type="submit" name="submit" value="save_and_add" class="btn btn-primary">Save and add another</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -38,6 +65,7 @@
         <h2>${project.item_plural}</h2>
 
         <div class="padding"> 
+
             <div class="well">
                 <ul class="nav nav-list">
                     <li> <a tal:attributes="href route_url('project:item_form', request, project_id=project.id)"><i class="icon-pencil"></i> Edit ${project.item_name_short()} template</a> </li>
@@ -46,7 +74,7 @@
                 <ul> 
             </div>
 
-            <div class="well"
+            <div class="well" id="item-list"
                  tal:define="item_names python:project.get_item_names();">
 
                 <ul class="nav nav-list" 
@@ -62,6 +90,7 @@
                     </li>
                 <ul> 
             </div>
+
         </div>
     </div>
 </div>
@@ -69,12 +98,6 @@
 <div class="row">
     <div class="span12">
         <div class="padding">
-            <div class="control-group">
-                <div class="controls">
-                <button type="submit" name="submit" value="save" class="btn btn-primary">Save</button>
-                <button type="submit" name="submit" value="save_and_add" class="btn btn-primary">Save and add another</button>
-                </div>
-            </div>
             <hr>
             <div class="control-group">
                 <div class="controls">
@@ -89,7 +112,11 @@
 
 </form>
 
-<script>$(function() { $('#title').focus(); })</script>
+<script>
+$(function() {
+    $('#title').focus(); 
+})
+</script>
 
 </metal:content>
 </metal:main>

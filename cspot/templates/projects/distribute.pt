@@ -62,7 +62,7 @@
                     <fieldset>
                         <div class="control-group">
                             <label>Select the ${project.item_plural.lower()} to distribute or choose "Distribute All" below</label>
-                            <div class="controls" style="margin-left: 20px;">
+                            <div class="controls">
                                 <label class="checkbox" for="item-${item.id}"
                                        tal:repeat="item items_to_distribute">
                                     <input type="checkbox" name="item_ids" id="item-${item.id}"
