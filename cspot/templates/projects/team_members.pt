@@ -30,12 +30,13 @@
             <tbody>
             <tr tal:repeat="user users">
                 <td tal:content="user.email"></td>
-                <td tal:content="user.name"></td>
+                <td class="name" tal:content="user.name"></td>
                 <td tal:content="user.role"></td>
                 <td tal:content="user.last_login | string:n/a"></td>
                 <td style="text-align: right;">
                     <a tal:attributes="href route_url('project:team:remove', request, project_id=project.id, user_id=user.id)"
-                       tal:condition="user.role != 'owner'"><i class="icon-remove"></i> Remove</a>
+                       tal:condition="user.role != 'owner'"
+                       class="remove-user"><i class="icon-remove"></i> Remove</a>
                 </td>
             </tr>
             </tbody>
@@ -87,6 +88,39 @@
         </div>
     </div>
 </div>
+
+<div id="delete-modal" class="modal" style="display: none;">
+    <div class="modal-header">
+        <h3>Delete <span id="member-name">team member</span>?</h3>
+    </div>
+    <div class="modal-body">
+        <p>
+            <strong>Team member responses will be lost!</strong>
+        </p>
+
+        <p>
+            This team member's responses will be removed if you
+            remove the team member from this project.
+        </p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal" style="float: left;">Cancel</a>
+        <a href="#" class="btn btn-danger" id="delete-button">Delete team member</a>
+    </div>
+</div>
+
+<script>
+$('.remove-user').click(function(e) {
+    e.preventDefault();
+    var delete_link = $(this).attr('href');
+
+    var name = $(this).parents('tr').find('.name').text();
+
+    $('#delete-modal #member-name').text(name);
+    $('#delete-modal #delete-button').attr('href',delete_link);
+    $('#delete-modal').modal('show');
+});
+</script>
 
 </metal:content>
 </metal:main>

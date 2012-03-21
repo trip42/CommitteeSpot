@@ -11,7 +11,7 @@
 </div> 
 
 <div class="row">
-    <div class="span12">
+    <div class="span7">
         <div class="padding">
 
             <metal:alerts use-macro="load:../alerts.pt" />
@@ -58,11 +58,58 @@
 
             </fieldset>
             </form>
-
-            <script>$(function() { $('#title').focus() })</script>
         </div>
     </div>
+    <div class="span5">
+
+        <div class="padding">
+            <div class="well">
+        
+                <h3>Delete Project</h3>
+
+                <p>
+                    Your account is limited to
+                    <strong>1</strong> active project.
+                    You may delete this project and start
+                    over.
+                </p>
+
+                <a href="#delete-modal" data-toggle="modal" class="btn btn-danger">Delete Project</a>
+
+            </div>
+        </div>
+
+        <div id="delete-modal" class="modal" style="display: none;">
+            <div class="modal-header">
+                <h3>Delete this project?</h3>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <strong>All data will be lost!</strong>
+                </p>
+
+                <p>
+                    Be sure to save a copy of all information in this project.
+                    It cannot be recovered.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <form method="post" action="${route_url('project:delete', request, project_id=project.id)}">
+                    <input type="hidden" name="csrf_token" value="${request.session.get_csrf_token()}">
+                    <a href="#" class="btn" data-dismiss="modal" style="float: left;">Cancel</a>
+                    <button type="submit" class="btn btn-danger">Delete this project</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
 </div>
+
+<script>
+$(function() { 
+    $('#title').focus() 
+})
+</script>
 
 </metal:content>
 </metal:main>

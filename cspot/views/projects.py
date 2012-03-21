@@ -224,6 +224,22 @@ def projects_add(request):
         templates=templates,
     )
 
+@view_config(route_name='project:delete', permission='manage_project')
+def project_delete(project, request):
+    if request.method != 'POST' or \
+       request.session.get_csrf_token() != request.POST['csrf_token']:
+        return HTTPFound(
+            location=route_url('project:settings',request,project_id=project.id)
+        )
+    else:
+        session = DBSession()
+        session.delete(project)
+        request.session.flash('%s deleted' % project.name, 'mesages')
+        return HTTPFound(
+            location=route_url('project:list',request)
+        )
+        
+
 @view_config(route_name='project:settings', permission='manage_project',
              renderer='cspot:templates/projects/settings.pt')
 def project_settings(project, request):
@@ -398,7 +414,8 @@ def distribute(project, request):
             server = smtplib.SMTP(settings['cspot.email_server'])
             server.login(settings['cspot.email_user'], settings['cspot.email_password'])
 
-            for user in project.get_users():
+            for user_role in project.user_roles:
+                user = user_role.user
                 data['to_address'] = user.email
                 data['to_name'] = user.name
 
@@ -417,8 +434,9 @@ To provide your feedback login at:
 %(feedback_url)s
                 """ % data
 
-                if user.password_default:
-                    data['to_password'] = user.password_default
+                if not user.password_hash:
+                    data['to_password'] = user.generate_password()
+
                     msg += u"""
 Login using your e-mail address and the password below.
 

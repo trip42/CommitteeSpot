@@ -27,6 +27,25 @@
     </div>
 </div>
 
+<div class="modal" id="delete-modal" style="display: none;">
+  <div class="modal-header">
+    <h3>Delete field?</h3>
+  </div>
+  <div class="modal-body">
+    <p>
+        The field will be <strong>removed from all items and feedback</strong>!
+    </p>
+
+    <p>
+        Once a field is removed, it cannot be recovered.
+    </p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" data-dismiss="modal" class="btn" style="float: left;">Cancel</a>
+    <a href="#" class="delete-button-confirm btn btn-danger">Delete field</a>
+  </div>
+</div>
+
 <script tal:content="string:var project_id = ${project.id};"></script>
 <script tal:content="string:var form_id = ${form.id};"></script>
 <script tal:content="string:var widget_route_base = '${route_url('form:widget:base',request, project_id=project.id, form_id=form.id)}';"></script>

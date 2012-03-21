@@ -18,14 +18,17 @@ from pyramid.security import Allow
 
 from cspot.models import Base
 
+from random import choice
+from string import letters, digits
+from crypt import crypt
+
 class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
     email = Column(String(255), nullable=False)
     name = Column(Unicode(255))
-    password_hash = Column(String(500), nullable=False)
-    password_default = Column(String(20))
+    password_hash = Column(String(500))
 
     creation_date = Column(DateTime())
     last_login = Column(DateTime())
@@ -72,23 +75,20 @@ class User(Base):
         self.email = email.lower().strip()
 
     def set_password(self, password):
-        from random import choice
-        from string import letters, digits
-        from crypt import crypt
+        if password:
+            salt = choice(letters+digits) + choice(letters+digits)
+            self.password_hash = crypt(password, salt)
 
-        if not password:
-            # Set a default password
-            password = ''.join([choice(letters+digits) for x in range(8)])
-            self.password_default = password
-        else:
-            self.password_default = ''
+    def generate_password(self):
+        if not self.password_hash:
+            password = ''.join([choice(letters+digits) for x in xrange(8)])
+            self.set_password(password)
 
-        salt = choice(letters+digits) + choice(letters+digits)
-        self.password_hash = crypt(password, salt)
+        return password
 
     def authenticate(self, password):
         from crypt import crypt
-        return self.password_hash == crypt(password, self.password_hash)
+        return self.password_hash and self.password_hash == crypt(password, self.password_hash)
 
     def set_last_login(self):
         self.last_login = datetime.now()

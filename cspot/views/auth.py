@@ -120,9 +120,6 @@ def login(request):
             headers = remember(request, user.id)
             request.session['logged_in'] = 'logged_in'
     
-            if user.password_default:
-                user.password_default = ''
-
             return HTTPFound(
                 location=came_from,
                 headers=headers
