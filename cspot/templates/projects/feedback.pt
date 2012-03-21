@@ -22,7 +22,7 @@
             </p>
 
             <p tal:condition="not:completed_items">
-                There are no ${project.item_plural()} available for your feedback at this time.
+                There are no ${project.item_plural} available for your feedback at this time.
             </p>
 
             </div>

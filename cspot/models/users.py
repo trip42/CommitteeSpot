@@ -29,6 +29,7 @@ class User(Base):
     email = Column(String(255), nullable=False)
     name = Column(Unicode(255))
     password_hash = Column(String(500))
+    max_projects = Column(Integer, default=1)
 
     creation_date = Column(DateTime())
     last_login = Column(DateTime())
@@ -67,6 +68,9 @@ class User(Base):
 
     def projects(self, role=None):
         return [r.project for r in self.project_roles]
+
+    def projects_remaining(self):
+        return self.max_projects - len(self.projects('owner'))
 
     def set_name(self, name):
         self.name = name.strip()

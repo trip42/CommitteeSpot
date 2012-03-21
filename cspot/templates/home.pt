@@ -2,7 +2,12 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal">
 <head>
     <meta charset="utf-8">
-    <title>CommitteeSpot</title>
+    <title>CommitteeSpot - The simplest way for teams to review job applicants, nominations, proposals, etc. online</title>
+
+    <meta name="description" content="CommitteeSpot helps teams make decisions by facilitating 
+                                      selection processes online. Whether you're hiring employees,
+                                      reviewing award nominations, or selecting a prize race horse,
+                                      CommitteeSpot can help.">
 
     <link rel="shortcut icon" href="/static/images/favicon.png" />
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css" />
@@ -227,7 +232,11 @@
         </div>
         <div class="span4">
             <div class="page">
-            <h2>Service and Support</h2>
+                <h2>Watch the demo</h2>
+                <div class="padding">
+                    <p>Video</p>
+
+                </div>
             </div>
         </div>
     </div>

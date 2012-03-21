@@ -145,6 +145,13 @@ def projects_add(request):
 
     if request.method == 'POST':
 
+        if request.user and request.user.projects_remaining() <= 0:
+            # Cannot add a project if you own more than 
+            # your plan allows for.
+            return HTTPFound(
+                location=route_url('project:add', request)
+            )
+
         if template_id != 'other':
             template = session.query(Project).filter(Project.template==True).filter(Project.id==template_id).first()
         else:

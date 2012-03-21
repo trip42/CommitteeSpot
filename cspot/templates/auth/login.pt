@@ -44,6 +44,12 @@
                         <input type="password" name="password" id="password" class="medium">
                     </div>
                 </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <p>By sign in you agree to our <a href="${route_url('terms', request)}">terms of service</a></p>
+                    </div>
+                </div>
         
                 <div class="control-group">
                     <div class="controls">
@@ -105,6 +111,12 @@
                     <div class="controls">
                         <input type="password" name="password_confirm" id="signup_password_confirm" class="medium" />
                         <p class="help-block">Retype your password</p>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <p>By signing up you agree to our <a href="${route_url('terms', request)}">terms of service</a></p>
                     </div>
                 </div>
         

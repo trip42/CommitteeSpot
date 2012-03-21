@@ -105,7 +105,7 @@
     <div class="span12">
         <div class="padding" style="padding-top: 0px">
             <hr >
-            <a tal:attributes="href route_url('project:records', request, project_id=project.id)"
+            <a tal:attributes="href route_url('project:feedback:view', request, project_id=project.id)"
                class="btn btn-primary btn-large btn-success"><i class="icon-ok icon-white"></i> Done distributing</a>
         </div>
     </div>

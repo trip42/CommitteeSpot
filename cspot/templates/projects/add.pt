@@ -10,61 +10,86 @@
             
             <metal:main use-macro="load:../alerts.pt" />
 
-            <p>
-            We need some basic information about your team's and
-            what you will be reviewing. These questions help us
-            customize the rest of the system to your specific needs.
-            </p>
+            <div class="alert alert-error"
+                 tal:condition="request.user and request.user.projects_remaining() <= 0">
 
-            <form method="post"
-                  tal:attributes="href route_url('project:add', request)">
-            <fieldset>
-                <div class="control-group">
-                    <label class="control-label" for="title">What is the name of your team or project?</label>
-                    <div class="controls">
-                        <input type="text" name="title" id="title" class="span7"
-                               tal:attributes="value title">
+                <h3>No Projects Available</h3>
+
+                <p>
+                    Your account is allowed <strong tal:content="request.user.max_projects">5</strong>
+                    projects at a time. You have <strong tal:content="request.user.projects_remaining()">0</strong>
+                    projects remaining at this time.
+                </p>
+
+                <p>
+                    Before you can create a new project, you will need to delete an
+                    existing project from the "Project Settings" screen.
+                </p>
+
+                <p>
+                    <a href="${route_url('project:list', request)}" class="btn btn-primary">Go to my projects</a>
+                </p>
+
+            </div>
+
+            <div tal:condition="not request.user or request.user.projects_remaining() > 0">
+
+                <p>
+                We need some basic information about your team's and
+                what you will be reviewing. These questions help us
+                customize the rest of the system to your specific needs.
+                </p>
+    
+                <form method="post"
+                      tal:attributes="href route_url('project:add', request)">
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="title">What is the name of your team or project?</label>
+                        <div class="controls">
+                            <input type="text" name="title" id="title" class="span7"
+                                   tal:attributes="value title">
+                        </div>
                     </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label">What kind of items are you reviewing?</label>
-                    <div class="controls" style="padding-left: 10px;">
-                        <label class="radio"
-                               tal:repeat="t templates">
-                            <input type="radio" name="template_id" value="${t.id}"
-                                   tal:attributes="checked repeat['t'].start" >
-                            ${t.item_plural}
-                        </label>
-
-                        <label class="radio">
-                            <input type="radio" name="template_id" value="other" id="other" />
-                            Custom type 
-                        </label>
-            
+    
+                    <div class="control-group">
+                        <label class="control-label">What kind of items are you reviewing?</label>
+                        <div class="controls" style="padding-left: 10px;">
+                            <label class="radio"
+                                   tal:repeat="t templates">
+                                <input type="radio" name="template_id" value="${t.id}"
+                                       tal:attributes="checked repeat['t'].start" >
+                                ${t.item_plural}
+                            </label>
+    
+                            <label class="radio">
+                                <input type="radio" name="template_id" value="other" id="other" />
+                                Custom type 
+                            </label>
+                
+                        </div>
                     </div>
-                </div>
-
-                <div class="control-group" id="other-details">
-                    <label class="control-label" for="item_plural">What should we call the items you are reviewing?</label>
-                    <div class="controls">
-                        <input type="text" name="item_plural" id="item_plural" class="span3" tal:attributes="value item_plural">
-                        <p class="help-block">
-                            Enter a <strong>plural noun</strong>, e.g. flavors, cars, proposals, etc.
-                        </p>
+    
+                    <div class="control-group" id="other-details" style="display: none;">
+                        <label class="control-label" for="item_plural">What should we call the items you are reviewing?</label>
+                        <div class="controls">
+                            <input type="text" name="item_plural" id="item_plural" class="span3" tal:attributes="value item_plural">
+                            <p class="help-block">
+                                Enter a <strong>plural noun</strong>, e.g. flavors, cars, proposals, etc.
+                            </p>
+                        </div>
                     </div>
-                </div>
-
-                <div class="control-group">
-                    <div class="controls">
-                        <hr>
-                        <button type="submit" class="btn btn-primary">Create Project</button> or
-                        <a tal:attributes="href route_url('project:list', request)">Cancel</a>
+    
+                    <div class="control-group">
+                        <div class="controls">
+                            <hr>
+                            <button type="submit" class="btn btn-primary">Create Project</button> or
+                            <a tal:attributes="href route_url('project:list', request)">Cancel</a>
+                        </div>
                     </div>
-                </div>
-
-            </fieldset>
-            </form>
+    
+                </fieldset>
+                </form>
+            </div>
 
         </div>
     </div>
@@ -72,8 +97,6 @@
 
 <script>
 $(function() {
-    $('#other-details').hide();
-
     $('#other').change(function(e) {
         if ($(this).is(':checked')) {
             $('#other-details').show();

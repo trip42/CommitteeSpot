@@ -228,7 +228,7 @@ class ProjectUserRole(Base):
     __tablename__ = 'project_users'
 
     project_id = Column(Integer, ForeignKey('projects.id'), primary_key=True)
-    project = relationship(Project, backref='user_roles')
+    project = relationship(Project, backref=backref('user_roles', cascade='all,delete'))
 
     user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
     user = relationship(User, backref='project_roles')
