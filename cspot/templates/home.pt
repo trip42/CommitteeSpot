@@ -19,19 +19,19 @@
 
 <div id="header_homepage" class="container">
     <div class="row">
-    <div class="span12">
-        <div id="menu">
-            <a tal:condition="user" 
-               tal:attributes="href route_url('project:list', request)">my projects</a>
-            <a tal:attributes="href route_url('project:add',request)">new project</a>
-            <a tal:condition="user" 
-               tal:attributes="href route_url('user:profile', request, user_id=user.id)">my profile</a>
-            <a tal:condition="not user or user.is_temporary()" 
-               tal:attributes="href route_url('auth:login', request)">sign in</a>
-            <a tal:condition="user and not user.is_temporary()" 
-               tal:attributes="href route_url('auth:logout', request)">sign out</a>
+        <div class="span12">
+            <div id="menu">
+                <a tal:condition="user" 
+                   tal:attributes="href route_url('project:list', request)">my projects</a>
+                <a tal:attributes="href route_url('project:add',request)">new project</a>
+                <a tal:condition="user" 
+                   tal:attributes="href route_url('user:profile', request, user_id=user.id)">my profile</a>
+                <a tal:condition="not user or user.is_temporary()" 
+                   tal:attributes="href route_url('auth:login', request)">sign in</a>
+                <a tal:condition="user and not user.is_temporary()" 
+                   tal:attributes="href route_url('auth:logout', request)">sign out</a>
+            </div>
         </div>
-    </div>
     </div>
 </div>
 
@@ -39,7 +39,6 @@
     <div class="container">
         <img src="/static/images/mast_logo.png" alt="CommitteeSpot" height="105" width="460" >
         <h2>The simple way for your team to review anything online.</h2>
-    
         <a href="${route_url('project:add', request)}" class="btn btn-huge btn-primary">
             Get Started Now!
             <div class="tiny">one project free, no signup to start</div>
@@ -47,155 +46,202 @@
     </div>
 </div>
 
-<div class="container">
-
-    <div class="page">
-
+<div class="container page">
     <div class="row">
-        <div class="span7">
-            <div class="box">
+        <div class="span8">
 
-                <h2>Make decisions, not busy work</h2>
+            <h2>Make decisions, not busy work</h2>
 
-                <div class="padding">
-                    <img src="/static/images/diagram.png" width="387" height="212" alt="Process Diagram" id="diagram" >
+            <img src="/static/images/diagram_small.png" width="232" height="127" alt="Process Diagram"
+                 class="home-image-right" >
 
-                    <p>
-                        The diagram illustrates the complexity of distributing and collecting feedback for 3 items and 3 team members.
-                    </p>
-            
-                    <p>
-                        Imagine a team of 10 trying to review 100 award nominations. Such a process would take thousands of e-mails, 
-                        or a mess of websites and online surveys.
-                    </p>
-    
-                    <p>
-                        <strong>Committee Spot makes it simple.</strong>
-                    </p>
-                </div>
+            <div class="padding" style="margin-right: 240px;">
 
-            </div>
-
-            <div class="box">
-
-                <h2>Review anything</h2>
-
-                <div class="padding">
-    
-                    <p>
-                        Committee Spot is populated with templates for commonly reviewed documents or
-                        you can create your own.
-                    </p>
-
-                    <div class="row">
-                        <div class="span3">
-                            <ul>
-                                <li> Job candidates </li>
-                                <li> Award nominations </li>
-                                <li> Conference applications </li>
-                                <li> Project proposals </li>
-                            </ul>
-                        </div>
+                <p>
+                    You want to hire someone or select a proposal, not spend time routing 
+                    records to your team, sending reminders, and correlating feedback.
+                </p>
         
-                        <div class="span3">
-                            <ul>
-                                <li> Scholarship applications </li>
-                                <li> Vendor agreements </li>
-                                <li> and more... </li>
-                            </ul> 
-                        </div>
-                    </div>
-                </div>
+                <p>
+                    CommitteeSpot elimnates the busy work of team based decisions! No more
+                    mess of email, surveys, and intranets.
+                </p>
 
             </div>
+
+            <h2>Review anything</h2>
+
+            <img src="/static/images/types.png" width="232" height="127" alt="Types of review processes"
+                 class="home-image-left" >
+
+            <div class="padding" style="margin-left: 240px;">
+                <p>
+                    Whether your team is hiring a contractor or choosing a venue for
+                    an awards banquet CommitteeSpot can help.
+                </p>
+
+                <p>
+                    Committee Spot is populated with templates for commonly reviewed documents or
+                    you can create your own.
+                </p>
+
+                <p>
+                    If you need feedback from your team to review anything
+                    <a href="${route_url('project:add',request)}">try it out.</a>
+                </p>
+
+            </div>
+
+            <h2>Simple pricing plans</h2>
+
+            <div class="padding" style="padding: 20px 50px;">
+                <table class="table" id="pricing">
+                <thead>
+                <tr>
+                    <th>Tiny</th>
+                    <th>Small</th>
+                    <th>Medium</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>1 <small>administrator</small></td>
+                    <td>1 <small>administrator</small></td>
+                    <td>5 <small>administrators</small></td>
+                </tr>
+
+                <tr>
+                    <td>5 <small>team members</small></td>
+                    <td>20 <small>team members</small></td>
+                    <td>50 <small>team members</small></td>
+                </tr>
+
+                <tr>
+                    <td>1 <small>project at a time</small></td>
+                    <td>5 <small>projects at a time</small></td>
+                    <td>20 <small>projects at a time</small></td>
+                </tr>
+
+                <tr>
+                    <td>n/a</td>
+                    <td colspan="2"> 
+                        Collect applications and nominations online<br >
+                        Collect public/anonymous feedback<br >
+                        Custom logos and branding
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><a href="#" class="btn btn-success" style="width: 90%;"><strong>FREE!</strong> <small>get started now</small></a></td>
+                    <td><a class="btn disabled" style="width: 90%">Coming Soon! <small>per month</small></a></td>
+                    <td><a class="btn disabled" style="width: 90%">Coming Soon! <small>per month</small></a></td>
+                </tr>
+                </tbody>
+                </table>
+
+            </div>
+
         </div> <!-- end span7 -->
 
-        <div class="span5">
-            <div class="box">
+        <div class="span4">
 
-                <h2>4 simple steps</h2>
+            <h2>5 simple steps</h2>
 
-                <div class="row" style="padding-top: 20px" >
-                    <div class="span1"><div class="items-icon"></div></div>
-                    <div class="span4">
-                        <div class="padding-right">
+            <div class="padding" id="simple-steps">
+            
+                <h3 id="icon-items">Add items</h3>
 
-                    <h3>Add items</h3>
-    
-                    <p>
-                        Create employment applications, project ideas, proposals, bids 
-                        or anything you need a team to review. Each item can range from a single file
-                        to a complex data record. You decide what information your team
-                        needs to see.
-                    </p>
+                <p>
+                    Create employment applications, project ideas, proposals, bids 
+                    or anything you need a team to review. Each item can range from a single file
+                    to a complex data record. You decide what information your team
+                    needs to see.
+                </p>
 
-                        </div>
-                    </div>
-                </div>
+                <h3 id="icon-feedback">Create a feedback form</h3>
 
-                <div class="row">
-                    <div class="span1"><div class="feedback-icon"></div></div>
-                    <div class="span4">
-                        <div class="padding-right">
- 
-                    <h3>Create a feedback form</h3>
-    
-                    <p>
-                        Setup questions for your team to answer about each item. "Should we 
-                        consider this candidate?", "Pursue this project?", "Rank this proposal". 
-                        Again, you control the feedback.
-                    </p>
+                <p>
+                    Setup questions for your team to answer about each item. "Should we 
+                    consider this candidate?", "Pursue this project?", "Rank this proposal". 
+                    Again, you control the feedback.
+                </p>
 
-                        </div>
-                    </div>
-                </div>
+                <h3 id="icon-team">Add your team</h3>
 
-                <div class="row">
-                    <div class="span1"><div class="team-icon"></div></div>
-                    <div class="span4"> 
-                        <div class="padding-right">
-    
-                    <h3>Add your team</h3>
-    
-                    <p>
-                        Enter an e-mail address for each team member. They recieve an e-mail 
-                        with a password and secure link to begin providing you with the 
-                        feedback you need to achieve your desired outcome.
-                    </p>
+                <p>
+                    Enter an e-mail address for each team member. A secure account
+                    is generated for each member of your team.
+                </p>
 
-                        </div>
-                    </div>
-                </div>
+                <h3 id="icon-team">Distribute</h3>
 
-                <div class="row">
-                    <div class="span1"><div class="decide-icon"></div></div>
-                    <div class="span4">
-                        <div class="padding-right">
- 
-                    <h3>Get results, make decisions</h3>
-    
-                    <p>
-                        Easily view the feedback from your team online or export it to 
-                        Microsoft Excel for powerful analysis.
-                    </p>
+                <p>
+                    Once everything is ready to go distribute items to your
+                    team with a single click. Notification and reminder e-mails 
+                    with review instructions are automatically sent to the team.
+                </p>
 
-                        </div>
-                    </div>
-                </div>
+                <h3 id="icon-decide" >Get results, make decisions</h3>
+
+                <p>
+                    Easily view the feedback from your team online or export it to 
+                    Microsoft Excel for powerful analysis.
+                </p>
 
             </div>
         </div> <!-- end span5 -->
     </div>
-
 </div>
 
-<div class="row">
-    <div class="span12">
-        <div id="footer">
-            <a href="${route_url('terms', request)}">terms</a> |
-            <a href="${route_url('privacy', request)}">privacy</a> |
-            <a href="mailto:team@committeespot.com">contact us</a> | 
-            copyright &copy; 2012 committeespot llc 
+<div class="container" id="box-row">
+    <div class="row">
+        <div class="span4">
+            <div class="page">
+                <h2>Service and support</h2>
+                <div class="padding">
+                    <p>
+                        We want you to love CommitteeSpot.
+                        If you ever need help, have a complaint,
+                        or an idea for a new feature we want to know
+                    </p>
+
+                    <p>
+                        <a href="mailto:team@committeespot.com">Send us e-mail</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="span4">
+            <div class="page">
+                <h2>Free to use</h2>
+                <div class="padding">
+                    <p>
+                        You get one free project, no credit card required. You don't need
+                        an account to get started.
+                    </p>
+
+                    <a href="${route_url('project:add',request)}">Create your project</a>
+                </div>
+            </div>
+        </div>
+        <div class="span4">
+            <div class="page">
+            <h2>Service and Support</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <div id="footer">
+                <a href="${route_url('terms', request)}">terms</a> |
+                <a href="${route_url('privacy', request)}">privacy</a> |
+                <a href="mailto:team@committeespot.com">contact us</a> | 
+                <span>copyright &copy; 2012 committeespot llc</span>
+            </div>
         </div>
     </div>
 </div>

@@ -18,6 +18,10 @@
             You have not yet collected any feedback.
         </p>
 
+        <p tal:condition="item_summaries">
+            <a href="${route_url('project:feedback:download',request,project_id=project.id)}">Download Feedback (.csv)</a>
+        </p>
+
         <div tal:repeat="item item_summaries">
             <h3 tal:content="item['item'].title"></h3>
 

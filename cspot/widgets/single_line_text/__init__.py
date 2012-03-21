@@ -107,6 +107,9 @@ class SingleLineTextController(IWidgetController):
             request
         )
 
+    def value(self, value):
+        return value.get_value()
+
     def populate_record_from_request(self, record, request):
         session = DBSession()
         value = session.query(SingleLineTextValue).filter(Value.record==record).filter(Value.widget==self.widget).first()

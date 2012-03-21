@@ -107,6 +107,9 @@ class FileUploadWidgetController(IWidgetController):
             value.set_filename(filename)
             value.set_file(file)
 
+    def value(self, value):
+        return value.filename
+
     def download(self, value, request):
         from mimetypes import guess_type
         content_type, encoding = guess_type(value.filename)

@@ -4,9 +4,11 @@ from cspot.models.records import FeedbackRecord
 
 from pyramid.url import route_url
 from pyramid.view import view_config
+from pyramid.response import Response
 
 from cspot.views.projects import project_menu
 from cspot.views.forms import FormController
+from cspot.views.forms import widget_controller_factory
 
 from pyramid.httpexceptions import HTTPFound
 
@@ -90,4 +92,40 @@ def feedback_view(project, request):
         item_summaries=item_summaries,
         menu=project_menu(project, request, 'feedback')
     )
+
+@view_config(route_name='project:feedback:download', permission='manage_project')
+def feedback_download(project, request):
+    items = project.items_distributed()
+
+    feedback_controller = FormController(project.feedback_form)
+
+    import csv
+    import StringIO
+
+    file = StringIO.StringIO()
+    writer = csv.writer(file)
+
+    headers = ['Reviewer', project.item_label]
+    widget_controllers = []
+
+    for widget in project.feedback_form.widgets:
+        widget_controllers.append(widget_controller_factory(widget))
+        headers.append(widget.label)
+
+    writer.writerow(headers)
+
+    for item in items:
+        for feedback in item.feedback:
+            row = [feedback.user.name, item.title]
+
+            for widget_controller in widget_controllers:
+                value = feedback.get_widget_value(widget_controller.widget)
+                row.append(widget_controller.value(value))
+
+            writer.writerow(row)
+
+    csv_data = file.getvalue()
+    file.close()
+
+    return Response(csv_data, content_type='text/csv', content_disposition='attachment; filename=feedback.csv')
 

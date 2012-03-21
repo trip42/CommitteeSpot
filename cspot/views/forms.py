@@ -160,6 +160,12 @@ class IWidgetController(object):
         """
         raise NotImplementedError
 
+    def value(self, value):
+        """
+        return the value as a string
+        """
+        raise NotImplemented
+
     def download(self, value, request):
         """
         return a Response object which represents a

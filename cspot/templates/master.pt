@@ -24,7 +24,7 @@
     <div class="container">
         <div class="row">
             <div class="span4">
-                <a href="/" id="header_logo"><img src="/static/images/header_logo.png" height="60" width="235" alt="Committee Spot"></a>
+                <a href="/" id="header_logo"><img src="/static/images/header_logo.png" height="70" width="307" alt="CommitteeSpot"></a>
             </div>
             <div class="span8">
                 <div id="menu-container">
@@ -39,7 +39,6 @@
                         <a tal:condition="user and not user.is_temporary()" 
                            tal:attributes="href route_url('auth:logout', request)">sign out</a>
                     </div>
-                    <div id="user-info" tal:condition="user" tal:content="user.name or user.email"></div>
                 </div>
             </div>
         </div>
@@ -55,11 +54,11 @@
 </div>
 </tal:block>
 
-<div class="container">
-    <div class="page">
+<div class="container page">
         <metal:content define-slot="content" />
-    </div>
+</div>
 
+<div class="container">
     <div class="row">
         <div class="span12">
             <div id="footer">
