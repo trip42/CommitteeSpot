@@ -41,7 +41,7 @@ class FileUploadValue(Value):
 class FileUploadWidgetController(IWidgetController):
     def options(self, request):    
         return render(
-            'file_upload_options.pt',
+            'options.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),
@@ -58,7 +58,7 @@ class FileUploadWidgetController(IWidgetController):
 
     def render(self, value, request):
         return render(
-            'file_upload.pt',
+            'render.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),
@@ -69,7 +69,7 @@ class FileUploadWidgetController(IWidgetController):
 
     def render_value(self, value, request):
         return render(
-            'file_upload_value.pt',
+            'value.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),
@@ -80,7 +80,7 @@ class FileUploadWidgetController(IWidgetController):
 
     def render_feedback_summary(self, values, request):
         return render(
-            'file_upload_summary.pt',
+            'summary.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),

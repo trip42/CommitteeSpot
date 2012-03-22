@@ -1,4 +1,3 @@
-
 <form method="post" class="well"
       tal:attributes="action route_url('form:widget:options', request, project_id=widget.form.project.id, form_id=widget.form.id, widget_id=widget.id)">
 <legend>Edit Field</legend>
@@ -12,22 +11,10 @@
     </div>
 </div>
 
-<div class="control-group">
-    <label for="choices">Choices:</label>
-    <div class="controls">
-        <div id="choices">
-            <div id="choice-template" class="choice">
-                <input type="text" name="choices" value="" class="span3" />
-                <a href="#" class="remove-choice" title="Remove choice"><i class="icon-remove"></i></a>
-            </div>
-        </div>
-        <div>
-            <a href="#" id="add-choice">Add a choice</a>
-        </div>
-    </div>
-</div>
+<metal:content define-slot="content" />
 
-<div class="control-group" style="margin-top: 30px;">
+<hr>
+<div class="control-group">
     <div class="controls">
         <button type="submit" class="btn btn-primary">Save Changes</button>
         <a tal:attributes="href route_url('form:widget:delete', request, project_id=widget.form.project.id, form_id=widget.form.id, widget_id=widget.id)"

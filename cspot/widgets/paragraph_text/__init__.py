@@ -50,7 +50,7 @@ class ParagraphTextController(IWidgetController):
 
     def render(self, value, request):
         return render(
-            'widget.pt',
+            'render.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),

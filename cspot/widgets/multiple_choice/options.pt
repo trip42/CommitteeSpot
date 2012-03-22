@@ -1,0 +1,20 @@
+<metal:main use-macro="load:../options.pt">
+<metal:slot fill-slot="content">
+
+<div class="control-group">
+    <label for="choices">Choices:</label>
+    <div class="controls">
+        <div id="choices">
+            <div id="choice-template" class="choice">
+                <input type="text" name="choices" value="" class="span3" />
+                <a href="#" class="remove-choice" title="Remove choice"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div>
+            <a href="#" id="add-choice">Add a choice</a>
+        </div>
+    </div>
+</div>
+
+</metal:slot>
+</metal:main>

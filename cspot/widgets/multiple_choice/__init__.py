@@ -52,7 +52,7 @@ class MultipleChoiceWidgetController(IWidgetController):
 
     def options(self, request):
         return render(
-            'multiple_choice_options.pt',
+            'options.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),
@@ -72,7 +72,7 @@ class MultipleChoiceWidgetController(IWidgetController):
 
     def render(self, value, request):
         return render(
-            'multiple_choice.pt',
+            'render.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),
@@ -83,7 +83,7 @@ class MultipleChoiceWidgetController(IWidgetController):
 
     def render_value(self, value, request):
         return render(
-            'multiple_choice_value.pt',
+            'value.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),
@@ -111,7 +111,7 @@ class MultipleChoiceWidgetController(IWidgetController):
                 
 
         return render(
-            'multiple_choice_summary.pt',
+            'summary.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),
