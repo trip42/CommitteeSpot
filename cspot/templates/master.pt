@@ -29,6 +29,8 @@
             </div>
             <div class="span8">
                 <div id="menu-container">
+                    <div id="user-info"
+                         tal:condition="user">logged in as <strong>${user.name.lower()}</strong></div> 
                     <div id="menu">
                         <a tal:condition="user" 
                            tal:attributes="href route_url('project:list', request)">my projects</a>

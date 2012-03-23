@@ -23,6 +23,10 @@
             <div class="alert alert-error"
                  tal:repeat="error request.session.pop_flash('login_errors')"
                  tal:content="error"></div>
+
+            <div class="alert alert-message"
+                 tal:repeat="msg request.session.pop_flash('login_messages')"
+                 tal:content="msg"></div>
     
             <form method="post"
                   tal:attributes="action route_url('auth:login', request)">
@@ -44,16 +48,17 @@
                         <input type="password" name="password" id="password" class="medium">
                     </div>
                 </div>
-
-                <div class="control-group">
-                    <div class="controls">
-                        <p>By sign in you agree to our <a href="${route_url('terms', request)}">terms of service</a></p>
-                    </div>
-                </div>
         
                 <div class="control-group">
                     <div class="controls">
                         <button type="submit" name="submit" value="signin" class="btn btn-primary">Sign in</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <p><a href="${route_url('auth:password', request)}">Forgot your password?</a></p>
+                        <p>By sign in you agree to our <a href="${route_url('terms', request)}">terms of service</a></p>
                     </div>
                 </div>
             </fieldset>

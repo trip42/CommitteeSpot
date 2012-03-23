@@ -20,13 +20,15 @@ def root_factory(request):
 
     return Root()
 
-def get_user(user_id=None, email=None):
+def get_user(user_id=None, email=None, password_reset_key=None):
     session = DBSession()
 
     if user_id:
-        return session.query(User).filter_by(id=user_id).first()
+        return session.query(User).filter(User.id==user_id).first()
     elif email:
-        return session.query(User).filter_by(email=email.lower()).first()
+        return session.query(User).filter(User.email==email.lower()).first()
+    elif password_reset_key:
+        return session.query(User).filter(User.password_reset_key==password_reset_key).first()
     else:
         return None
 

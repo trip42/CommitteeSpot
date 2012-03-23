@@ -1,11 +1,20 @@
-<div class="control-group widget"
+<div class="control-group widget file-upload-widget"
      tal:attributes="data-widget_id widget.id;
                      id string:${field_id}-container;">
     <label for="${field_id}" class="control-label" tal:attributes="for field_id">${widget.label}</label>
     <div class="controls">
-        <div tal:condition="value">
-            <a tal:attributes="href route_url('project:record:download',request, project_id=value.record.project.id, record_id=value.record.id, widget_id=widget.id, filename=value.filename)">Download ${value.filename}</a>
-        </div>
+
+        <tal:value tal:condition="value">
+        <tal:define tal:define="file_url route_url('project:record:download',request, project_id=value.record.project.id, record_id=value.record.id, widget_id=widget.id, filename=value.filename)">
+            <div tal:condition="value.file_type().startswith('image')">
+                <img src="${file_url}">
+            </div>
+            <div>
+                <a href="${file_url}">Download ${value.filename}</a>
+            </div>
+        </tal:define>
+        </tal:value>
+
         <input type="file" name="${field_id}" id="${field_id}" />
     </div>
 </div>

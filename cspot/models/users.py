@@ -29,6 +29,8 @@ class User(Base):
     email = Column(String(255), nullable=False)
     name = Column(Unicode(255))
     password_hash = Column(String(500))
+    password_reset_key = Column(String(35))
+
     max_projects = Column(Integer, default=1)
 
     creation_date = Column(DateTime())
@@ -90,11 +92,18 @@ class User(Base):
 
         return password
 
+    def generate_password_reset_key(self):
+        # generate a key, include the user id to prevent
+        # conflicts. the key is reset on each login.
+        key = str(self.id) + ''.join([choice(letters+digits) for x in range(20)])
+        self.password_reset_key = key
+        return key
+
     def authenticate(self, password):
-        from crypt import crypt
         return self.password_hash and self.password_hash == crypt(password, self.password_hash)
 
     def set_last_login(self):
+        self.password_reset_key = ''
         self.last_login = datetime.now()
 
     def is_temporary(self):

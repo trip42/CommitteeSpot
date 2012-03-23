@@ -1,0 +1,46 @@
+<metal:main use-macro="load:../master.pt">
+<metal:title fill-slot="title">Collect ${project.item_plural} Online</metal:title>
+<metal:content fill-slot="content">
+
+<metal:header use-macro="load:header.pt" />
+
+<div class="row">
+    <div class="span12">
+         <h2>Import ${project.item_plural} from .CSV</h2>
+    </div>
+</div> 
+
+<div class="row">
+    <div class="span7">
+        <div class="padding">
+
+            <p>
+                Importing lets you create ${project.item_plural.lower()} from a spreadsheet.
+                We help you assign the columns in your spreadsheet to the fields in your
+                ${project.item_plural} records.
+            </p>
+
+            <p>
+                Unfortunately, importing is only 
+                available in our premium plans and we haven't launched our premium plans yet!
+            </p>
+
+            <p>
+                If you're really interested in trying it out, let us know! We would love
+                to let you into our beta program.
+                You will get to <strong>try the premium features for free</strong>, and we will get 
+                feedback from a valuable user.
+            </p>
+
+            <p>
+                E-mail us at <a href="mailto:team@committeespot.com">team@committeespot.com</a> if you
+                are interested.
+            </p>
+ 
+        </div>
+    </div>
+</div>
+
+</metal:content>
+</metal:main>
+

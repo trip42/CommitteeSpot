@@ -1,0 +1,45 @@
+<metal:main use-macro="load:../master.pt">
+<metal:title fill-slot="title">Collect ${project.item_plural} Online</metal:title>
+<metal:content fill-slot="content">
+
+<metal:header use-macro="load:header.pt" />
+
+<div class="row">
+    <div class="span12">
+         <h2>Collect ${project.item_plural} Online</h2>
+    </div>
+</div> 
+
+<div class="row">
+    <div class="span7">
+        <div class="padding">
+
+            <p>
+                Online ${project.item_name.lower()} collection lets you collect ${project.item_plural}
+                directly from your users by providing them with a special link.
+            </p>
+
+            <p>
+                Unfortunately, online ${project.item_name_short().lower()} colletion is only 
+                available in our premium plans and we haven't launched our premium plans yet!
+            </p>
+
+            <p>
+                If you're really interested in trying it out, let us know! We would love
+                to let you into our beta program.
+                You will get to <strong>try the premium features for free</strong>, and we will get 
+                feedback from a valuable user.
+            </p>
+
+            <p>
+                E-mail us at <a href="mailto:team@committeespot.com">team@committeespot.com</a> if you
+                are interested.
+            </p>
+ 
+        </div>
+    </div>
+</div>
+
+</metal:content>
+</metal:main>
+

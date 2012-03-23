@@ -1,5 +1,5 @@
 <metal:main use-macro="load:master.pt">
-<metal:title fill-slot="title">Home</metal:title>
+<metal:title fill-slot="title">Privacy Policy</metal:title>
 <metal:content fill-slot="content">
 
 <div class="row">

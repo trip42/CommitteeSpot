@@ -17,13 +17,13 @@ from pyramid.httpexceptions import HTTPFound
 @view_config(route_name='project:records',
              permission='manage_project')
 def record_first(project, request):
-    if False and project.items.records:
+    if project.items:
         return HTTPFound(
-            location=route_url('project:record', request, project_id=project.id, record_id=project.records[0].id)
+            location=route_url('project:record', request, project_id=project.id, record_id=project.items[0].id)
         )
     else:
         return HTTPFound(
-            location=route_url('project:record:add', request, project_id=project.id)
+            location=route_url('project:records', request, project_id=project.id)
         )
 
 @view_config(route_name='project:record:add',
@@ -103,4 +103,20 @@ def file_download(project, request):
 
     form_controller = FormController(project.item_form)
     return form_controller.download_widget(request, record, widget_id)
+
+@view_config(route_name='project:record:import', permission='review_project',
+             renderer='cspot:templates/projects/premium_import.pt')
+def record_import(project, request):
+    return dict(
+        project=project,
+        menu=project_menu(project, request, 'records'),
+    )
+
+@view_config(route_name='project:record:collect', permission='review_project',
+             renderer='cspot:templates/projects/premium_collect.pt')
+def record_collect(project, request):
+    return dict(
+        project=project,
+        menu=project_menu(project, request, 'records'),
+    )
 

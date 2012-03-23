@@ -12,6 +12,8 @@ from pyramid.security import forget
 from pyramid.url import route_url
 from pyramid.view import view_config
 
+import smtplib
+
 def forbidden(request):
     came_from = request.url
 
@@ -147,3 +149,89 @@ def logout(request):
 
     else:
         return dict()
+
+@view_config(route_name='auth:password', renderer='cspot:templates/auth/password.pt')
+def reset_password(request):
+    email = request.params.get('username','')
+
+    if request.method == 'POST' and email:
+        user = get_user(email=email)
+
+        if not user:
+            request.session.flash('No account found for %s' % email, 'errors')
+        
+        else:
+            settings = request.registry.settings
+            server = smtplib.SMTP(settings['cspot.email_server'])
+            server.login(settings['cspot.email_user'], settings['cspot.email_password'])
+
+            reset_key = user.generate_password_reset_key()
+
+            data = {}
+            data['to_address'] = user.email
+            data['to_name'] = user.name
+            data['reset_url'] = route_url('auth:password:reset', request, password_reset_key=reset_key)
+
+            msg = u"""
+To: %(to_address)s
+From: CommitteeSpot <team@committeespot.com>
+Subject: CommitteeSpot password reset
+
+%(to_name)s,
+
+This e-mail is response to your e-mail password reset request.
+
+If you requested this password change, please set a new password by following the link below:
+
+%(reset_url)s
+
+If you don't want to change your password, just ignore this message.
+
+Thanks,
+CommitteeSpot Team
+            """ % data
+
+            msg = msg.strip()
+
+            server.sendmail('team@committeespot.com', user.email, msg)
+            server.quit()
+
+            request.session.flash('An e-mail has been sent to %s' % user.email, 'messages')
+
+            return HTTPFound(
+                location=route_url('auth:password',request)
+            )
+
+
+    return dict()
+
+@view_config(route_name='auth:password:reset', renderer='cspot:templates/auth/password_reset.pt')
+def reset_password_key(request):
+    password_reset_key = request.matchdict['password_reset_key']
+
+    password = request.params.get('password','')
+    password_confirm = request.params.get('password_confirm','')
+
+    if request.method == 'POST':
+        user = get_user(password_reset_key=password_reset_key)
+
+        if not password or password != password_confirm:
+            request.session.flash('Passwords do not match', 'errors')
+        elif user:
+            user.set_password(password)
+            user.password_reset_key = ''
+
+            headers = remember(request, user.id)
+
+            request.session.flash('Password successfully reset!', 'messages')
+
+            return HTTPFound(
+                location=route_url('project:list', request),
+                headers=headers
+            )
+
+    return dict(
+        password_reset_key=password_reset_key
+    )
+
+

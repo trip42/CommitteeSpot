@@ -12,6 +12,12 @@ def includeme(config):
     config.add_route('auth:login', '/login')
     config.add_route('auth:logout', '/logout')
     config.add_route('auth:signup', '/signup')
+    config.add_route('auth:password', '/password')
+    config.add_route('auth:password:reset', '/password/{password_reset_key}')
+
+    # Demo
+
+    config.add_route('demo', '/demo/{demo_key}')
 
     # User Profile
 
@@ -38,6 +44,12 @@ def includeme(config):
                      factory='cspot.views.projects.project_factory')
 
     config.add_route('project:record:add', '/projects/{project_id}/records/add',
+                     factory='cspot.views.projects.project_factory')
+
+    config.add_route('project:record:import', '/projects/{project_id}/records/import',
+                     factory='cspot.views.projects.project_factory')
+
+    config.add_route('project:record:collect', '/projects/{project_id}/records/collect',
                      factory='cspot.views.projects.project_factory')
 
     config.add_route('project:record', '/projects/{project_id}/records/{record_id}',

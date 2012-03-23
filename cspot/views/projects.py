@@ -498,5 +498,3 @@ def distribute_history(project, request):
         project=project,
         menu=project_menu(project, request, 'distribute')
     )
-
-

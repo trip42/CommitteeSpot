@@ -14,6 +14,8 @@ from cspot.widgets import register_widget
 from pyramid.renderers import render
 from pyramid.response import Response
 
+import mimetypes
+
 class FileUploadWidget(Widget):
     widget_type = 'file_upload'
     name = 'File Upload'
@@ -27,6 +29,10 @@ class FileUploadValue(Value):
     def file_path(self):
         settings = get_current_registry().settings
         return "%s/%s" % (settings['cspot.file_storage_root'], self.id)
+
+    def file_type(self):
+        type, subtype = mimetypes.guess_type(self.filename)
+        return type or ''
 
     def set_filename(self, filename):
         self.filename = filename

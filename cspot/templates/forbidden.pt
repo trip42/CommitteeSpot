@@ -1,5 +1,5 @@
 <metal:main use-macro="load:master.pt">
-<metal:title fill-slot="title">Home</metal:title>
+<metal:title fill-slot="title">Login</metal:title>
 <metal:content fill-slot="content">
 
 <div class="row">
@@ -47,13 +47,14 @@
 
                 <div class="control-group">
                     <div class="controls">
-                        <p>By signing in you agree to our <a href="${route_url('terms', request)}">terms of service</a></p>
+                        <button type="submit" name="submit" value="signin" class="btn btn-primary">Sign in</button>
                     </div>
                 </div>
-        
+
                 <div class="control-group">
                     <div class="controls">
-                        <button type="submit" name="submit" value="signin" class="btn btn-primary">Sign in</button>
+                        <p><a href="${route_url('auth:password', request)}">Forgot your password?</a></p>
+                        <p>By sign in you agree to our <a href="${route_url('terms', request)}">terms of service</a></p>
                     </div>
                 </div>
             </fieldset>

@@ -10,8 +10,7 @@
             
             <metal:main use-macro="load:../alerts.pt" />
 
-            <div class="alert alert-error"
-                 tal:condition="request.user and request.user.projects_remaining() <= 0">
+            <div tal:condition="request.user and request.user.projects_remaining() <= 0">
 
                 <h3>No Projects Available</h3>
 
