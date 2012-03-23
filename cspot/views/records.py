@@ -23,7 +23,7 @@ def record_first(project, request):
         )
     else:
         return HTTPFound(
-            location=route_url('project:records', request, project_id=project.id)
+            location=route_url('project:record:add', request, project_id=project.id)
         )
 
 @view_config(route_name='project:record:add',
