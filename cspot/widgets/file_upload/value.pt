@@ -1,4 +1,4 @@
-<div class="control-group widget"
+<div class="control-group widget file-upload-widget"
      tal:attributes="data-widget_id widget.id;
                      id string:${field_id}-container;">
     <label for="${field_id}" class="control-label" tal:attributes="for field_id">${widget.label}</label>
