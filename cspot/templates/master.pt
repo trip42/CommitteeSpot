@@ -18,6 +18,7 @@
         google.load("jqueryui", "1.8.16");
     </script>  
     <script type="text/javascript" src="/static/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/static/js/cs.js"></script>
 </head>
 <body tal:define="user request.user">
 

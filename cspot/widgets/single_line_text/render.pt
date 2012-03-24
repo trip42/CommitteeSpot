@@ -4,6 +4,6 @@
     <label for="${field_id}" class="control-label" tal:attributes="for field_id">${widget.label}</label>
     <div class="controls">
         <input name="${field_id}" class="span6"
-               tal:attributes="value value.get_value() | nothing">
+               tal:attributes="value value | nothing">
     </div>
 </div>

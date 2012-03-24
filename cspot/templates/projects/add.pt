@@ -50,18 +50,18 @@
                     </div>
     
                     <div class="control-group">
-                        <label class="control-label">What kind of items are you reviewing?</label>
+                        <label class="control-label">What kind of review is your team conducting?</label>
                         <div class="controls" style="padding-left: 10px;">
                             <label class="radio"
                                    tal:repeat="t templates">
-                                <input type="radio" name="template_id" value="${t.id}"
+                                <input type="radio" name="template_id" class="template-option" value="${t.id}"
                                        tal:attributes="checked repeat['t'].start" >
-                                ${t.item_plural}
+                                ${t.name}
                             </label>
     
                             <label class="radio">
-                                <input type="radio" name="template_id" value="other" id="other" />
-                                Custom type 
+                                <input type="radio" name="template_id" class="template-option" value="other" id="other" />
+                                Custom review type
                             </label>
                 
                         </div>
@@ -95,8 +95,8 @@
 
 <script>
 $(function() {
-    $('#other').change(function(e) {
-        if ($(this).is(':checked')) {
+    $('.template-option').change(function(e) {
+        if ($('#other').is(':checked')) {
             $('#other-details').show();
         } else {
             $('#other-details').hide();

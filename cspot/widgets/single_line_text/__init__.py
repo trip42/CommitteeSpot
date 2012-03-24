@@ -49,8 +49,15 @@ class SingleLineTextController(IWidgetController):
         session.add(self.widget)
 
     def render(self, value, request):
+        if value:
+            value = value.get_value()
+        else:
+            value = ''
+
+        value = request.params.get(self.field_id(), value)
+
         return render(
-            'widget.pt',
+            'render.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),

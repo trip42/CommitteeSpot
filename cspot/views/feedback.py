@@ -72,9 +72,30 @@ def feedback(project, request):
         responsive_layout=True,
     )
 
+@view_config(route_name='project:feedback:by_item', permission='manage_project',
+             renderer='cspot:templates/projects/feedback_by_item.pt')
+def feedback_view_by_item(project, request):
+    items = project.items_distributed()
+
+    feedback_controller = FormController(project.feedback_form)
+
+    item_summaries = []
+
+    for item in items:
+        item_summaries.append(dict(
+            item=item,
+            summary=feedback_controller.render_feedback_summary(request, item.feedback)
+        ))
+
+    return dict(
+        project=project,
+        item_summaries=item_summaries,
+        menu=project_menu(project, request, 'feedback')
+    )
+
 @view_config(route_name='project:feedback:view', permission='manage_project',
              renderer='cspot:templates/projects/feedback_view.pt')
-def feedback_view(project, request):
+def feedback_view_by_item(project, request):
     items = project.items_distributed()
 
     feedback_controller = FormController(project.feedback_form)

@@ -49,7 +49,7 @@
             <div class="span6">
 
                 <img src="/static/images/mast_logo.png" alt="CommitteeSpot" id="mast-logo" height="105" width="460" >
-                <h2>The simple way for your team to review anything online.</h2>
+                <h2>Share documents, get feedback, make decisions.<br />Get organized and stay efficient.</h2>
                 <a href="${route_url('project:add', request)}" class="btn btn-huge btn-primary">
                     Get Started Now!
                     <div class="tiny">one project free, no signup to start</div>
@@ -57,7 +57,7 @@
 
             </div>
             <div class="span6">
-                <img src="/static/images/screenshot2.png" id="mast-screenshot" height="253" width="421">
+                <a href="#video-modal" data-toggle="modal"><img src="/static/images/screenshot_watch.png" id="mast-screenshot" height="253" width="421" alt="Watch our demo"></a>
             </div>
         </div>
     </div>
@@ -76,11 +76,12 @@
                 <h3>Add items</h3>
 
                 <p>
-                    Create employment applications, project ideas, proposals, bids 
-                    or anything you need a team to review. Each item can range from a single file
+                    Add documents and information for your team to review.
+                    Each item can range from a single file
                     to a complex data record. You decide what information your team
                     needs to see.
                 </p>
+
             </div>
         </div>
         <div class="span3">
@@ -90,7 +91,7 @@
 
                 <p>
                     Setup questions for your team to answer about each item. "Should we 
-                    consider this candidate?", "Pursue this project?", "Rank this proposal". 
+                    consider this candidate?", "Pursue this project?" 
                     Again, you control the feedback.
                 </p>
 
@@ -99,11 +100,10 @@
         <div class="span3">
             <div class="padding">
                 <div class="cs-icon team"></div>
-                <h3>Add your team</h3>
+                <h3>Share with your team</h3>
 
                 <p>
-                    Enter an e-mail address for each team member. A secure account
-                    is generated for each member of your team.
+                    Enter an e-mail address for each team member.
                     Notification and reminder e-mails 
                     with review instructions are automatically sent to the team.
                 </p>
@@ -115,7 +115,8 @@
                 <h3>Get results, make decisions</h3>
 
                 <p>
-                    Easily view the feedback from your team online or export it to 
+                    Generate online reports 
+                    or export feedback to 
                     Microsoft Excel for powerful analysis.
                 </p>
             </div>
@@ -131,16 +132,16 @@
 
             <div class="row">
                 <div class="span6">
-                    <div class="padding" style="padding: 55px 55px; padding-bottom: 0px;">
+                    <div class="padding" style="padding: 50px 55px;">
 
                         <p>
-                            You want to hire someone or select a proposal, not spend time routing 
-                            records to your team, sending reminders, and correlating feedback.
+                            Stop wasting time manually sending, collecting, and organizing 
+                            communications.
                         </p>
                 
                         <p>
-                            CommitteeSpot elimnates the busy work of team based decisions! No more
-                            mess of email, surveys, and intranets.
+                            CommitteeSpot automates the busy work so that you can concentrate
+                            on making decisions and getting work done.
                         </p>
 
                     </div>
@@ -164,16 +165,11 @@
                     <img src="/static/images/word_cloud.png" alt="types of reviews" style="padding-top: 10px;">
                 </div>
                 <div class="span6">
-                    <div class="padding" style="padding: 50px 55px; padding-bottom: 0px;">
+                    <div class="padding" style="padding: 50px 55px;;">
  
                 <p>
                     Whether your team is hiring a contractor or choosing a venue for
                     an awards banquet CommitteeSpot can help.
-                </p>
-
-                <p>
-                    CommitteeSpot is populated with templates for commonly reviewed documents or
-                    you can create your own.
                 </p>
 
                 <p>
@@ -208,7 +204,8 @@
             <div class="page">
                 <h2>Watch the demo</h2>
                 <div class="padding" style="text-align: center;"> 
-                    <a href="#"><img src="/static/images/video_small.jpg" alt="demo video"></a>
+                    <a href="#video-modal" data-toggle="modal">
+                        <img src="/static/images/video_small.jpg" alt="demo video"></a>
                 </div>
             </div>
         </div>
@@ -238,7 +235,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="span6 offset3">
+        <div class="span8 offset2">
             <div class="padding">
                 <table class="table" id="pricing">
                 <thead>
@@ -257,24 +254,15 @@
                 </tr>
 
                 <tr>
-                    <td>5 <small>team members</small></td>
-                    <td>20 <small>team members</small></td>
-                    <td>50 <small>team members</small></td>
-                </tr>
-
-                <tr>
                     <td>1 <small>project at a time</small></td>
                     <td>5 <small>projects at a time</small></td>
                     <td>20 <small>projects at a time</small></td>
                 </tr>
 
                 <tr>
-                    <td>n/a</td>
-                    <td colspan="2"> 
-                        Collect applications and nominations online<br >
-                        Collect public/anonymous feedback<br >
-                        Custom logos and branding
-                    </td>
+                    <td>Basic<small>features</small></td>
+                    <td>Basic + Premium<small>features</small></td>
+                    <td>Basic + Premium<small>features</small></td>
                 </tr>
 
                 <tr>
@@ -290,7 +278,6 @@
     </div>
 </div>
 
-
 <div class="container">
     <div class="row">
         <div class="span12">
@@ -301,6 +288,16 @@
                 <span>copyright &copy; 2012 committeespot llc</span>
             </div>
         </div>
+    </div>
+</div>
+
+<div id="video-modal" class="modal" style="display: none;">
+    <div class="modal-header">
+        CommitteeSpot Demo
+        <a class="close" data-dismiss="modal"><i class="icon-remove"></i></a>
+    </div>
+    <div id="video">
+        <iframe id="demo-iframe" width="559" height="410" src="" frameborder="0" allowfullscreen></iframe>
     </div>
 </div>
 
@@ -316,6 +313,16 @@
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
+
+  $(function() {
+    $('#video-modal').on('shown', function() {
+        document.getElementById('demo-iframe').src = 'https://www.youtube.com/embed/i8qtyzcB6b4?rel=0&modestbranding=1&autoplay=1&controls=0';
+    });
+
+    $('#video-modal').on('hide', function() {
+        document.getElementById('demo-iframe').src = '';
+    });
+  });
 
 </script>
 

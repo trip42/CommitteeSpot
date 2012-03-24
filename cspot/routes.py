@@ -90,6 +90,9 @@ def includeme(config):
     config.add_route('project:feedback', '/project/{project_id}/feedback',
                      factory='cspot.views.projects.project_factory')
 
+    config.add_route('project:feedback:by_item', '/project/{project_id}/feedback/by_item',
+                     factory='cspot.views.projects.project_factory')
+
     config.add_route('project:feedback:view', '/project/{project_id}/feedback/view',
                      factory='cspot.views.projects.project_factory')
 

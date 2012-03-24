@@ -49,6 +49,13 @@ class ParagraphTextController(IWidgetController):
         session.add(self.widget)
 
     def render(self, value, request):
+        if value:
+            value = value.get_value()
+        else:
+            value = ''
+
+        value = request.params.get(self.field_id(), value)
+
         return render(
             'render.pt',
             dict(
