@@ -1,6 +1,8 @@
 from cspot.models import DBSession
 from cspot.models.users import User
 from cspot.models.projects import Project
+from cspot.models.forms import Widget
+from cspot.models.records import Record
 from cspot.models.records import ItemRecord
 
 from cspot.util import plural_to_singular
@@ -8,6 +10,7 @@ from cspot.auth import get_temp_user
 
 from cspot.views.projects import project_menu
 from cspot.views.forms import FormController
+from cspot.views.forms import widget_controller_factory
 
 from pyramid.url import route_url
 from pyramid.view import view_config
@@ -96,13 +99,19 @@ def file_download(project, request):
     Download a file from a widget
     """
 
+    session = DBSession()
+
     record_id = request.matchdict['record_id']
     widget_id = request.matchdict['widget_id']
 
-    record = project.get_item(record_id)
+    record = session.query(Record).filter(Record.project_id==project.id).filter(Record.id==record_id).first()
+    widget = session.query(Widget).filter(Widget.id==widget_id).first()
+    widget_controller = widget_controller_factory(widget)
 
-    form_controller = FormController(project.item_form)
-    return form_controller.download_widget(request, record, widget_id)
+    value = record.get_widget_value(widget)
+
+    return widget_controller.download(value, request)
+
 
 @view_config(route_name='project:record:import', permission='review_project',
              renderer='cspot:templates/projects/premium_import.pt')

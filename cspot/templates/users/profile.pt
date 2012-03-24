@@ -58,9 +58,9 @@
             <div class="control-group">
                 <div class="controls">
                     <button tal:condition="'came_from' in request.session"
-                            type="submit" class="btn btn-primary">Save and Continue</button> 
+                            type="submit" class="btn btn-primary">Save and continue</button> 
                     <button tal:condition="'came_from' not in request.session"
-                            type="submit" class="btn btn-primary">Save Changes</button> 
+                            type="submit" class="btn btn-primary">Save changes</button> 
                 </div>
             </div>
 

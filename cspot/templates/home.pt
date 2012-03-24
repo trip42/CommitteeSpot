@@ -234,9 +234,11 @@
 <div class="container page">
     <div class="row">
         <div class="span12">
-
             <h2>Simple pricing plans</h2>
-
+        </div>
+    </div>
+    <div class="row">
+        <div class="span6 offset3">
             <div class="padding">
                 <table class="table" id="pricing">
                 <thead>
@@ -284,7 +286,6 @@
                 </table>
 
             </div>
-
         </div> 
     </div>
 </div>

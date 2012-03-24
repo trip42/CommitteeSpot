@@ -16,7 +16,7 @@
 <hr>
 <div class="control-group">
     <div class="controls">
-        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
         <a tal:attributes="href route_url('form:widget:delete', request, project_id=widget.form.project.id, form_id=widget.form.id, widget_id=widget.id)"
            class="btn btn-danger delete-button" style="float: right;"><i class="icon-white icon-remove"></i> Remove</a>
     </div>

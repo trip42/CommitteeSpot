@@ -6,8 +6,15 @@
 
 <div class="row">
     <div class="span12">
-         <h2 style="margin-bottom: 20px;">Edit ${project.item_name.lower()} template</h2>
-         <metal:main use-macro="load:../alerts.pt" />
+        <h2 style="margin-bottom: 0px;">Edit ${project.item_name.lower()} template</h2>
+        <div class="padding">
+            <metal:main use-macro="load:../alerts.pt" />
+            <p>
+                Edit your the template for ${project.item_plural.lower()} below. Add as many fields
+                to the template as you like. You can return to this screen at anytime to add or update
+                the template.
+            </p>
+        </div>
     </div>
 </div> 
 

@@ -61,7 +61,7 @@
                     <form method="post" action="${route_url('project:distribute',request,project_id=project.id)}">
                     <fieldset>
                         <div class="control-group">
-                            <label>Select the ${project.item_plural.lower()} to distribute or choose "Distribute All" below</label>
+                            <label>Select the ${project.item_plural.lower()} to distribute or choose "Distribute all" below.</label>
                             <div class="controls">
                                 <label class="checkbox" for="item-${item.id}"
                                        tal:repeat="item items_to_distribute">
@@ -75,16 +75,16 @@
                         <div class="control-group">
                             <label for="message">Add a message to your team as part of the distribution:</label>
                             <div class="controls">
-                                <textarea name="message" id="message" class="span5"></textarea>
+                                <textarea name="message" id="message" class="span6" rows="5"></textarea>
                             </div>
                         </div>
 
                         <div class="control-group">
                             <div class="controls">
                                 <button type="submit" name="submit" value="selected" class="btn btn-primary">
-                                    <i class="icon-share-alt icon-white"></i> Distribute Selected</button>
+                                    <i class="icon-share-alt icon-white"></i> Distribute selected</button>
                                 <button type="submit" name="submit" value="all" class="btn btn-primary">
-                                    <i class="icon-share-alt icon-white"></i> Distribute All</button>
+                                    <i class="icon-share-alt icon-white"></i> Distribute all</button>
                             </div>
                         </div>
                     </fieldset>

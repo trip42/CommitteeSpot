@@ -96,7 +96,7 @@
                 <div class="controls">
                 <button type="submit" name="submit" value="save_and_finish"
                         class="btn btn-primary btn-large btn-success">
-                    <i class="icon-ok icon-white"></i> Done adding ${project.item_plural_short()}</button>
+                    <i class="icon-ok icon-white"></i> Done adding ${project.item_plural.lower()}</button>
                 </div>
             </div>
         </div>
@@ -105,7 +105,7 @@
 
 </form>
 
-<script>
+<script tal:condition="not:record | nothing">
 $(function() {
     $('#title').focus(); 
 })

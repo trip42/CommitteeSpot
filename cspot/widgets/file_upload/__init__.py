@@ -124,7 +124,10 @@ class FileUploadWidgetController(IWidgetController):
             value.set_file(file)
 
     def value(self, value):
-        return value.filename
+        if value:
+            return value.filename
+        else:
+            return ''
 
     def download(self, value, request):
         from mimetypes import guess_type

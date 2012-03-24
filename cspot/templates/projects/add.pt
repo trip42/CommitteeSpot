@@ -12,12 +12,11 @@
 
             <div tal:condition="request.user and request.user.projects_remaining() <= 0">
 
-                <h3>No Projects Available</h3>
+                <h3>All of your projects are in use</h3>
 
                 <p>
-                    Your account is allowed <strong tal:content="request.user.max_projects">5</strong>
-                    projects at a time. You have <strong tal:content="request.user.projects_remaining()">0</strong>
-                    projects remaining at this time.
+                    Your account is on our <strong>tiny plan</strong> (free), which allows for 
+                    <strong>one active project at a time</strong>.
                 </p>
 
                 <p>

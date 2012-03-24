@@ -6,9 +6,9 @@
 
 <div class="row">
     <div class="span12">
-        <h1>Ask Questions</h1>
-        <metal:main use-macro="load:../alerts.pt" />
+        <h2 style="margin-bottom: 0px;">Ask Questions</h2>
         <div class="padding">
+            <metal:main use-macro="load:../alerts.pt" />
             <p>
                 Create a feedback from for your team below. Your team members will answer
                 these questions about each ${project.item_name.lower()}. Phrase your questions

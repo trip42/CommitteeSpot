@@ -49,7 +49,7 @@ class ItemRecord(Record):
 
     title = Column(Unicode(500), nullable=False)
     distributed = Column(DateTime)
-    project = relationship('Project', backref='items')
+    project = relationship('Project', backref=backref('items', order_by=title))
 
     def __init__(self, project, title):
         Record.__init__(self, project)

@@ -1,13 +1,13 @@
             <div class="well">
                 <ul class="nav nav-list">
-                    <li> <a tal:attributes="href route_url('project:item_form', request, project_id=project.id)">
-                            Edit ${project.item_name_short()} template</a> </li>
-                    <li> <a tal:attributes="href route_url('project:record:import', request, project_id=project.id)">
-                            Import ${project.item_plural_short()} from .CSV</a> </li>
-                    <li> <a tal:attributes="href route_url('project:record:collect', request, project_id=project.id)">
-                            Collect ${project.item_plural_short()} online</a> </li>
                     <li> <a tal:attributes="href route_url('project:record:add', request, project_id=project.id)">
-                            Add ${project.item_name_short()}</a> </li>
+                            Add ${project.item_name_short().lower()}</a> </li>
+                    <li> <a tal:attributes="href route_url('project:item_form', request, project_id=project.id)">
+                            Edit ${project.item_name_short().lower()} template</a> </li>
+                    <li> <a tal:attributes="href route_url('project:record:import', request, project_id=project.id)">
+                            Import ${project.item_plural_short().lower()} from a spreadsheet</a> </li>
+                    <li> <a tal:attributes="href route_url('project:record:collect', request, project_id=project.id)">
+                            Collect ${project.item_plural_short().lower()} online</a> </li>
 
                 <ul> 
             </div>

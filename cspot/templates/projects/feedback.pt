@@ -36,6 +36,8 @@
             <fieldset>
     
             <div class="padding" style="padding-bottom: 0px;">
+            <metal:alerts use-macro="load:../alerts.pt" />
+
             <tal:widget tal:repeat="widget_html item_values"
                         tal:replace="structure widget_html" />
             </div>
@@ -43,7 +45,6 @@
             <h2>Your Feedback</h2>
     
             <div class="padding">
-                <metal:alerts use-macro="load:../alerts.pt" />
 
                 <tal:widget tal:repeat="widget_html form_widgets"
                             tal:replace="structure widget_html" />

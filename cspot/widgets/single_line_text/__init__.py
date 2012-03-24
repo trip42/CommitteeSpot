@@ -108,7 +108,10 @@ class SingleLineTextController(IWidgetController):
         )
 
     def value(self, value):
-        return value.get_value()
+        if value:
+            return value.get_value()
+        else:
+            return ''
 
     def populate_record_from_request(self, record, request):
         session = DBSession()
