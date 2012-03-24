@@ -14,7 +14,7 @@ from cspot.widgets import register_widget
 from pyramid.renderers import render
 from pyramid.response import Response
 
-import mimetypes
+import mimetypes, os
 
 class FileUploadWidget(Widget):
     widget_type = 'file_upload'
@@ -38,11 +38,21 @@ class FileUploadValue(Value):
         self.filename = filename
 
     def set_file(self, file):
-        open(self.file_path(), 'wb').write(file.read())
+        file.seek(0)
+        out = open(self.file_path(), 'wb')
+
+        while True:
+            data = file.read(4096)
+            if not data: break
+            out.write(data)
+
+        out.close()
 
     def get_file(self):
         return open(self.file_path(), 'rb').read()
 
+    def get_image_size(self):
+        return '',''
 
 class FileUploadWidgetController(IWidgetController):
     def options(self, request):    
@@ -119,6 +129,16 @@ class FileUploadWidgetController(IWidgetController):
     def download(self, value, request):
         from mimetypes import guess_type
         content_type, encoding = guess_type(value.filename)
-        return Response(content_type=content_type, body=value.get_file())
+
+        res = Response(content_type=content_type, conditional_response=True)
+        res.app_iter = open(value.file_path(),'rb')
+        res.content_length = os.path.getsize(value.file_path())
+        res.last_modified = os.path.getmtime(value.file_path())
+        res.etag = '%s-%s-%s' % (os.path.getmtime(value.file_path()),
+                                 os.path.getsize(value.file_path()),
+                                 hash(value.file_path()))
+
+        return res
+
 
 register_widget(FileUploadWidget, FileUploadWidgetController)

@@ -7,3 +7,4 @@ pyramid_debugtoolbar
 zope.sqlalchemy
 deform-bootstrap
 simplejson
+PIL

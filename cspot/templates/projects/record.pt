@@ -64,21 +64,8 @@
     <div class="span5">
         <h2>${project.item_plural}</h2>
 
-        <div class="padding"> 
-
-            <div class="well">
-                <ul class="nav nav-list">
-                    <li> <a tal:attributes="href route_url('project:item_form', request, project_id=project.id)">
-                            Edit ${project.item_name_short()} template</a> </li>
-                    <li> <a tal:attributes="href route_url('project:record:import', request, project_id=project.id)">
-                            Import ${project.item_plural_short()} from .CSV</a> </li>
-                    <li> <a tal:attributes="href route_url('project:record:collect', request, project_id=project.id)">
-                            Collect ${project.item_plural_short()} online</a> </li>
-                    <li> <a tal:attributes="href route_url('project:record:add', request, project_id=project.id)">
-                            Add ${project.item_name_short()}</a> </li>
-
-                <ul> 
-            </div>
+        <div class="padding">
+            <metal:menu use-macro="load:record_menu.pt" />
 
             <div class="well" id="item-list"
                  tal:define="item_names python:project.get_item_names();">

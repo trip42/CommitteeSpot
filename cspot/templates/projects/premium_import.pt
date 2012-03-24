@@ -39,6 +39,11 @@
  
         </div>
     </div>
+    <div class="span5">
+        <div class="padding">
+            <metal:menu use-macro="load:record_menu.pt" />
+        </div>
+    </div>
 </div>
 
 </metal:content>

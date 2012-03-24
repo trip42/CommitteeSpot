@@ -7,7 +7,9 @@
         <tal:value tal:condition="value">
         <tal:define tal:define="file_url route_url('project:record:download',request, project_id=value.record.project.id, record_id=value.record.id, widget_id=widget.id, filename=value.filename)">
             <div tal:condition="value.file_type().startswith('image')">
-                <img src="${file_url}">
+                <tal:size tal:define="size value.get_image_size()">
+                <img src="${file_url}" height="${size[0]}" width="${size[1]}">
+                </tal:size>
             </div>
             <div>
                 <a href="${file_url}">Download ${value.filename}</a>
