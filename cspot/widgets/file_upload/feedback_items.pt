@@ -1,0 +1,5 @@
+<tal:block tal:repeat="summary summaries">
+    <h3>${summary.item.title}</h3>
+    <div tal:replace="structure summary.summary" />
+</tal:block>
+
