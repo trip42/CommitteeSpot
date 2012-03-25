@@ -65,7 +65,9 @@
         <h2>${project.item_plural}</h2>
 
         <div class="padding">
+            <tal:block tal:define="menu_item test(record, '', 'add')">
             <metal:menu use-macro="load:record_menu.pt" />
+            </tal:block>
 
             <div class="well" id="item-list"
                  tal:define="item_names python:project.get_item_names();">

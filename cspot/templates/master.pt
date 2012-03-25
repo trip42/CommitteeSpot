@@ -6,11 +6,18 @@
     <meta tal:condition="responsive_layout | nothing"
           name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta name="description" content="CommitteeSpot helps teams make decisions by facilitating 
+                                      selection processes online. Whether you're hiring employees,
+                                      reviewing award nominations, or selecting a prize race horse,
+                                      CommitteeSpot can help.">
+
     <link rel="shortcut icon" href="/static/images/favicon.png" />
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css" />
     <link tal:condition="responsive_layout | nothing" 
           rel="stylesheet" href="/static/bootstrap/css/bootstrap-responsive.css" />
     <link rel="stylesheet" href="/static/css/cs.css" />
+    <link tal:condition="responsive_layout | nothing"
+          rel="stylesheet" href="/static/css/cs-responsive.css" />
 
     <script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAAYSkItflLWuecB8KaSnAoYBR9oVpe_xR_xcjrBDusQLi3eQlQ5RQJKyrcXPg_qXpQTcL7nfrqU3PhaA"></script>
     <script type="text/javascript">
@@ -49,18 +56,23 @@
     </div>
 </div>
 
-<tal:block tal:condition="user">
-<div tal:condition="python:user.is_temporary()" id="temp-user-bar">
-    Your project is <strong>not saved</strong> please
-    <a tal:attributes="href route_url('auth:signup', request)">signup</a> or 
-    <a tal:attributes="href route_url('auth:login', request)">login</a>
-      to save this project for future use. Unsaved projects are <strong>removed after 24 hours</strong>.
-</div>
-</tal:block>
+<metal:content define-slot="raw">
 
-<div class="container page">
-        <metal:content define-slot="content" />
-</div>
+<tal:block tal:condition="not:hide_content | nothing">
+
+    <tal:block tal:condition="user">
+    <div tal:condition="python:user.is_temporary()" id="temp-user-bar">
+        Your project is <strong>not saved</strong> please
+        <a tal:attributes="href route_url('auth:signup', request)">signup</a> or 
+        <a tal:attributes="href route_url('auth:login', request)">login</a>
+          to save this project for future use. Unsaved projects are <strong>removed after 24 hours</strong>.
+    </div>
+    </tal:block>
+    
+    <div class="container page">
+            <metal:content define-slot="content" />
+    </div>
+</tal:block>
 
 <div class="container">
     <div class="row">

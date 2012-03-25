@@ -1,17 +1,18 @@
 <metal:main use-macro="load:../master.pt">
-<metal:title fill-slot="title">Feedback - ${project.name} - CommitteeSpot</metal:title>
+<metal:title fill-slot="title">${project.name} - CommitteeSpot</metal:title>
 <metal:content fill-slot="content">
 
 <metal:header use-macro="load:header.pt" />
 
 <div class="row">
     <div class="span12">
-         <h2>View Feedback by ${project.item_name}</h2>
+         <h2>View Feedback by Question</h2>
     </div>
 </div> 
 
 <div class="row">
     <div class="span8">
+
         <div class="padding" tal:condition="not:summaries">
             <p>
                 You have not yet collected any feedback.
@@ -20,18 +21,13 @@
 
         <div tal:repeat="summary summaries">
             <h2>${repeat.summary.number}. ${summary.title}</h2>
-            <div class="padding">
-                <tal:widget tal:repeat="widget summary.widgets">
-                    <h3 tal:content="widget.title"></h3>
-                    <div tal:replace="structure widget.summary"></div>
-                </tal:widget>
-            </div>
+            <div class="padding" tal:content="structure summary.summary"></div>
         </div>
 
     </div>
     <div class="span4">
         <div class="padding"
-             tal:define="by_item_class string:active">
+             tal:define="by_widget_class string:active">
             <metal:menu use-macro="load:feedback_menu.pt" />
         </div>
     </div>

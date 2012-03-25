@@ -92,30 +92,74 @@ class MultipleChoiceWidgetController(IWidgetController):
             request
         )
 
-    def render_feedback_summary(self, values, request):
-        summary = {}
+    def render_feedback_for_items(self, items, request):
+        rows = []
 
-        for choice in self.widget.get_choices():
-            summary[choice] = {'count':0, 'percent':0.0}
+        choices = self.widget.get_choices()
+        headers = [''] + choices
+        rows.append(headers)
 
-        total = 0.0
-        for value in values:
-            choice = value.get_value()
-            if choice in summary:
-                summary[choice]['count'] = summary.get(choice,{}).get('count',0) + 1
-                total += 1.0
+        for item in items:
+            item_totals = {}
+            for choice in choices:
+                item_totals[choice] = {'count':0, 'percent':255}
+    
+            num_feedback = len(item.feedback)
+        
+            for feedback in item.feedback:
+                value = feedback.get_widget_value(self.widget) 
+                choice = value.get_value()
+           
+                if choice in item_totals: 
+                    item_totals[choice]['count'] += 1
+                    item_totals[choice]['percent'] = '%d' % (255 - 50 * item_totals[choice]['count']/num_feedback)
 
-        if total:
-            for key in summary:
-                summary[key]['percent'] = int(summary[key]['count'] / total * 100.0)
-                
-
+            row = [item.title] + [item_totals.get(choice, {'count':0, 'percent':1}) for choice in choices]
+            rows.append(row)
+ 
         return render(
-            'summary.pt',
+            'feedback_items.pt',
             dict(
                 widget=self.widget,
                 field_id=self.field_id(),
-                summary=summary
+                rows=rows
+            ),
+            request
+        )
+
+    def render_feedback_for_item(self, item, request):
+
+        choices = self.widget.get_choices()
+
+        data = {}
+        for choice in choices:
+            data[choice] = {
+                'percent':0,
+                'count':0,
+                'color':128
+            }
+
+        num_feedback = len(item.feedback)
+
+        for feedback in item.feedback:
+            value = feedback.get_widget_value(self.widget)
+            choice = value.get_value()
+
+            if choice in data:
+                data[choice]['count'] += 1
+
+        for choice in data:
+            if data[choice]['count']:
+                data[choice]['percent'] = int(100 * data[choice]['count'] / num_feedback)
+                data[choice]['color'] = int(128 - 128 * data[choice]['percent']/100)
+
+        return render(
+            'feedback_item.pt',
+            dict(
+                widget=self.widget,
+                field_id=self.field_id(),
+                choices=choices,
+                data=data
             ),
             request
         )

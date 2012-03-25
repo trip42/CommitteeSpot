@@ -1,0 +1,17 @@
+<table class="table multiple-choice-summary">
+<thead>
+<tr>
+    <th tal:repeat="header rows[0]"
+        tal:content="header"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr tal:repeat="row rows[1:]">
+    <th tal:content="row[0]"></th>
+    <td tal:repeat="value row[1:]"
+        tal:attributes="style string:background-color: rgb(${value.percent}, ${value.percent}, ${value.percent});"
+        tal:content="value.count"></td>
+</tr>
+</tbody>
+</table>

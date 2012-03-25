@@ -82,13 +82,42 @@ class ParagraphTextController(IWidgetController):
             request
         )
 
-    def render_feedback_summary(self, values, request):
+    def render_feedback_for_items(self, items, request):
+        summaries = []
+
+        for item in items:
+            summary = self.render_feedback_for_item(item, request)
+            summaries.append({
+                'item':item,
+                'summary':summary
+            })
+
         return render(
-            'summary.pt',
+            'feedback_items.pt',
             dict(
                 widget=self.widget,
-                field_id=self.field_id(),
-                values=values
+                summaries=summaries
+            ),
+            request
+        )
+
+    def render_feedback_for_item(self, item, request):
+        summaries = []
+
+        for feedback in item.feedback:
+            value = feedback.get_widget_value(self.widget)
+            value = value.get_value()
+
+            summaries.append({
+                'reviewer':feedback.user.name,
+                'comment':value
+            })
+
+        return render(
+            'feedback_item.pt',
+            dict(
+                widget=self.widget,
+                summaries=summaries
             ),
             request
         )

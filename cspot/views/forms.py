@@ -78,21 +78,6 @@ class FormController(object):
 
         return widgets
 
-    def render_feedback_summary(self, request, feedback_records):
-        """
-        Return rendered summary of all feedback for the given record
-        """
-
-        widgets = []
-
-        for widget in self.form.widgets:
-            widget_controller = widget_controller_factory(widget)
-            values = [r.get_widget_value(widget) for r in feedback_records]
-            widget_html = widget_controller.render_feedback_summary(values, request)
-            widgets.append(widget_html)
-
-        return widgets
-
     def populate_record_from_request(self, record, request):
         """
         Given a record and a request create or update
@@ -154,17 +139,22 @@ class IWidgetController(object):
         """
         raise NotImplementedError
 
-    def render_feedback_summary(self, values, request):
+    def render_feedback_for_items(self, items, request):
         """
-        Render a read-only summary of the values
+        Summarize the responses to this widget for all items
         """
         raise NotImplementedError
+
+    def render_feedback_for_item(self, item, request):
+        """
+        Summarize the responses to this widget for a single item
+        """
 
     def value(self, value):
         """
         return the value as a string
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     def download(self, value, request):
         """

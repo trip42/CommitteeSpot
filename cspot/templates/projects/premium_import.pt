@@ -40,7 +40,8 @@
         </div>
     </div>
     <div class="span5">
-        <div class="padding">
+        <div class="padding"
+             tal:define="menu_item string:import">
             <metal:menu use-macro="load:record_menu.pt" />
         </div>
     </div>

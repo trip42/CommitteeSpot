@@ -1,0 +1,9 @@
+<table class="table multiple-choice-summary-item">
+<tbody>
+<tr tal:repeat="choice choices">
+    <td class="count">${data[choice].count}</td>
+    <td class="graph"><div style="background-color: rgb(${data[choice].color}, ${data[choice].color}, ${data[choice].color}); width: ${data[choice].percent}%;"></div></td>
+    <th>${choice}</th>
+</tr>
+</tbody>
+</table>

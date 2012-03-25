@@ -1,0 +1,4 @@
+<tal:block tal:repeat="comment summaries">
+    <h4>Response from ${comment.reviewer}</h4>
+    <p tal:content="comment.comment"></p>
+</tal:block>

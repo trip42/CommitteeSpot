@@ -79,38 +79,45 @@ def feedback_view_by_item(project, request):
 
     feedback_controller = FormController(project.feedback_form)
 
-    item_summaries = []
+    summaries = []
 
     for item in items:
-        item_summaries.append(dict(
-            item=item,
-            summary=feedback_controller.render_feedback_summary(request, item.feedback)
-        ))
+        widget_summaries = []
+        for widget in project.feedback_form.widgets:
+            widget_controller = widget_controller_factory(widget)
+            widget_summaries.append({
+                'title':widget.label,
+                'summary':widget_controller.render_feedback_for_item(item, request)
+            })
+
+        summaries.append({
+            'title':item.title,
+            'widgets':widget_summaries
+        })
 
     return dict(
         project=project,
-        item_summaries=item_summaries,
+        summaries=summaries,
         menu=project_menu(project, request, 'feedback')
     )
 
 @view_config(route_name='project:feedback:view', permission='manage_project',
-             renderer='cspot:templates/projects/feedback_view.pt')
-def feedback_view_by_item(project, request):
+             renderer='cspot:templates/projects/feedback_by_widget.pt')
+def feedback_view_by_widget(project, request):
     items = project.items_distributed()
 
-    feedback_controller = FormController(project.feedback_form)
+    summaries = []
 
-    item_summaries = []
-
-    for item in items:
-        item_summaries.append(dict(
-            item=item,
-            summary=feedback_controller.render_feedback_summary(request, item.feedback)
+    for widget in project.feedback_form.widgets:
+        widget_controller = widget_controller_factory(widget)
+        summaries.append(dict(
+            title=widget.label,
+            summary=widget_controller.render_feedback_for_items(items, request)
         ))
 
     return dict(
         project=project,
-        item_summaries=item_summaries,
+        summaries=summaries,
         menu=project_menu(project, request, 'feedback')
     )
 

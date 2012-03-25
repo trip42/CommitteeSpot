@@ -1,0 +1,17 @@
+<div class="well">
+    <ul class="nav nav-list">
+        <li class="nav-header">Feedback Options</li>
+
+        <li class="${by_widget_class | nothing}">
+            <a href="${route_url('project:feedback:view',request,project_id=project.id)}">Feedback by question </a>
+        </li>
+
+        <li class="${by_item_class | nothing}">
+            <a href="${route_url('project:feedback:by_item',request,project_id=project.id)}">Feedback by ${project.item_name.lower()} </a>
+        </li>
+
+        <li>
+            <a href="${route_url('project:feedback:download',request,project_id=project.id)}">Download feedback (.csv)</a>
+        </li>
+    </ul>
+</div>
