@@ -65,6 +65,7 @@ class Project(Base):
     def copy_to(self, p):
         p.item_name = self.item_name
         p.item_plural = self.item_plural
+        p.item_label = self.item_label
 
     def add_user(self, user, role):
         """
