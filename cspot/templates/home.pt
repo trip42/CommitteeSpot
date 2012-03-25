@@ -251,7 +251,11 @@
         <a class="close" data-dismiss="modal"><i class="icon-remove icon-white"></i></a>
     </div>
     <div id="video">
-        <iframe id="demo-iframe" width="559" height="410" src="" frameborder="0" allowfullscreen></iframe>
+        <p style="color: white; text-align: center; padding: 50px;">
+            Demo coming soon!<br />
+            How did you find us anyway?
+        </p>
+        <!-- iframe id="demo-iframe" width="559" height="410" src="" frameborder="0" allowfullscreen></iframe -->
     </div>
 </div>
 
@@ -270,11 +274,11 @@
 
   $(function() {
     $('#video-modal').on('shown', function() {
-        document.getElementById('demo-iframe').src = 'https://www.youtube.com/embed/i8qtyzcB6b4?rel=0&modestbranding=1&autoplay=1&controls=0';
+        // document.getElementById('demo-iframe').src = 'video';
     });
 
     $('#video-modal').on('hide', function() {
-        document.getElementById('demo-iframe').src = '';
+        // document.getElementById('demo-iframe').src = '';
     });
   });
 
