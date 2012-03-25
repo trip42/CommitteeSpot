@@ -2,3 +2,7 @@
     <h4>Response from ${comment.reviewer}</h4>
     <p tal:content="comment.comment"></p>
 </tal:block>
+
+<p tal:condition="not:summaries">
+    No responses
+</p>

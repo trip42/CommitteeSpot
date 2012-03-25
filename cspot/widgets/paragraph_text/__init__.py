@@ -106,12 +106,12 @@ class ParagraphTextController(IWidgetController):
 
         for feedback in item.feedback:
             value = feedback.get_widget_value(self.widget)
-            value = value.get_value()
 
-            summaries.append({
-                'reviewer':feedback.user.name,
-                'comment':value
-            })
+            if value and value.get_value():
+                summaries.append({
+                    'reviewer':feedback.user.name,
+                    'comment':value.get_value()
+                })
 
         return render(
             'feedback_item.pt',
