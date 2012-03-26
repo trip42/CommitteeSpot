@@ -9,8 +9,8 @@
             <div class="span6">
 
                 <div>
-                <h1>Share documents,<br />get feedback, make decisions.</h1>
-                <h2>Keep your team organized and efficient.</h2>
+                <h1><span>Simplify your team-based<br />review processes</span></h1>
+                <h2>Share information, get feedback, make decisions.</h2>
 
                 <a href="${route_url('project:add', request)}" class="btn btn-huge btn-primary">
                     Get Started Now!
@@ -38,14 +38,12 @@
         <div class="span3">
             <div class="padding">
                 <div class="cs-icon items"></div>
-                <h3>Add items</h3>
+                <h3>Add Items</h3>
 
                 <p>
-                    Post documents and information for your team to review.
-                    Ideal for reviewing proposals, employment applications, award nominations, whatever
-                    suits your project.
-                    You decide what information your team
-                    needs to see.
+                    Post information and files for each item your team needs to review.
+                    Create proposals, employment applications, award nominations, 
+                    or anything you need to collect feedback on.
                 </p>
 
             </div>
@@ -58,7 +56,7 @@
                 <p>
                     Setup questions for your team to answer about each item. "Should we 
                     consider this candidate?", "Pursue this project?" 
-                    Again, you control the feedback.
+                    You control the feedback.
                 </p>
 
             </div>
@@ -81,6 +79,8 @@
                 <h3>Get results, make decisions</h3>
 
                 <p>
+                    View your team's feedback and 
+                    make decisions.
                     Generate online reports 
                     or export feedback to 
                     Microsoft Excel for powerful analysis.
@@ -101,13 +101,12 @@
                     <div class="padding" style="padding: 50px 55px;">
 
                         <p>
-                            Stop wasting time manually sending, collecting, and organizing 
-                            communications.
+                            Stop wasting time manually sending, collecting, and organizing information.
                         </p>
                 
                         <p>
-                            CommitteeSpot automates the busy work so that you can concentrate
-                            on making decisions and getting work done.
+                            CommitteeSpot automates the busy work of review and selection processes 
+                            so that you can concentrate on making decisions and getting work done.
                         </p>
 
                     </div>
@@ -135,12 +134,12 @@
  
                 <p>
                     Whether your team is hiring a contractor or choosing a venue for
-                    an awards banquet CommitteeSpot can help.
+                    an awards banquet CommitteeSpot can help. You choose the items
+                    to share and the type of feedback your team needs to provide.
                 </p>
 
                 <p>
-                    If you need feedback from your team 
-                    <a href="${route_url('project:add',request)}">try it out</a>.
+                    It truly works for any team-based review process.
                 </p>
 
                     </div>
@@ -251,11 +250,7 @@
         <a class="close" data-dismiss="modal"><i class="icon-remove icon-white"></i></a>
     </div>
     <div id="video">
-        <p style="color: white; text-align: center; padding: 50px;">
-            Demo coming soon!<br />
-            How did you find us anyway?
-        </p>
-        <!-- iframe id="demo-iframe" width="559" height="410" src="" frameborder="0" allowfullscreen></iframe -->
+        <iframe id="demo-iframe" width="559" height="410" src="" frameborder="0" allowfullscreen></iframe>
     </div>
 </div>
 
@@ -274,11 +269,11 @@
 
   $(function() {
     $('#video-modal').on('shown', function() {
-        // document.getElementById('demo-iframe').src = 'video';
+        document.getElementById('demo-iframe').src = 'https://www.youtube.com/embed/mJWcGw5PBiw?rel=0&hd=1&autoplay=1&modestbranding=1&controls=1';
     });
 
     $('#video-modal').on('hide', function() {
-        // document.getElementById('demo-iframe').src = '';
+        document.getElementById('demo-iframe').src = '';
     });
   });
 
