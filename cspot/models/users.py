@@ -21,17 +21,23 @@ from cspot.models import Base
 from random import choice
 from string import letters, digits
 from crypt import crypt
+from uuid import uuid4
 
 class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
-    email = Column(String(255), nullable=False)
+
+    email = Column(String(255), nullable=False, unique=True)
+    email_change = Column(String(255))
+    
+    temporary = Column(Boolean, default=0)
+
     name = Column(Unicode(255))
     password_hash = Column(String(500))
     password_reset_key = Column(String(35))
 
-    max_projects = Column(Integer, default=1)
+    max_projects = Column(Integer, default=1, nullable=False)
 
     creation_date = Column(DateTime())
     last_login = Column(DateTime())
@@ -40,10 +46,17 @@ class User(Base):
         (Allow, 'owner', 'manage_profile'),
     ]
 
-    def __init__(self, email, name='', password=None):
+    def __init__(self, email=None, name='', password=None):
         self.creation_date = datetime.now()
 
-        if not name:
+        if not email:
+            # If no e-mail is supplied the user
+            # is a temporary user object 
+            email = 'temp-' + str(uuid4())
+            name = 'Temporary User'
+            self.temporary = True
+
+        elif email and not name:
             name = email.split('@')[0]
 
         self.set_name(name)
@@ -78,12 +91,15 @@ class User(Base):
         self.name = name.strip()
 
     def set_email(self, email):
+        # Update the e-mail address
         self.email = email.lower().strip()
+        self.temporary = False
 
     def set_password(self, password):
         if password:
             salt = choice(letters+digits) + choice(letters+digits)
             self.password_hash = crypt(password, salt)
+            self.temporary = False
 
     def generate_password(self):
         if not self.password_hash:
@@ -100,6 +116,9 @@ class User(Base):
         return key
 
     def authenticate(self, password):
+        if self.is_temporary():
+            return False
+
         return self.password_hash and self.password_hash == crypt(password, self.password_hash)
 
     def set_last_login(self):
@@ -107,8 +126,5 @@ class User(Base):
         self.last_login = datetime.now()
 
     def is_temporary(self):
-        return len(self.email) == 0
-
-    def authenticated(self):
-        return not self.is_temporary()
+        return self.temporary
 

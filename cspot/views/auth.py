@@ -49,7 +49,7 @@ def signup(request):
         elif password != password_confirm:
             request.session.flash('Your passwords did not match', 'signup_errors')
         else:
-            if user:
+            if user and user.is_temporary():
                 # user is logged in with a temporary account
                 # update the account information to transfer the current
                 # project
@@ -57,6 +57,7 @@ def signup(request):
                 user.set_name(name)
                 user.set_email(email)
                 user.set_password(password)
+
                 location = came_from
 
             else:

@@ -37,16 +37,12 @@ def user_profile(user, request):
     View and edit a user profile
     """
 
-    if request.method == 'POST' and  not user.is_temporary():
+    if request.method == 'POST' and not user.is_temporary():
 
         name = request.params.get('name','')
-        email = request.params.get('email','')
 
         if name.strip():
             user.set_name(name)
-
-        if email.strip():
-            user.set_email(email)
 
         password = request.params.get('password','')
         password_confirm = request.params.get('password_confirm','')

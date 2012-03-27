@@ -26,7 +26,7 @@ def get_user(user_id=None, email=None, password_reset_key=None):
     if user_id:
         return session.query(User).filter(User.id==user_id).first()
     elif email:
-        return session.query(User).filter(User.email==email.lower()).first()
+        return session.query(User).filter(User.email==email.strip().lower()).first()
     elif password_reset_key:
         return session.query(User).filter(User.password_reset_key==password_reset_key).first()
     else:
@@ -35,7 +35,7 @@ def get_user(user_id=None, email=None, password_reset_key=None):
 def get_temp_user():
     session = DBSession()
 
-    user = User('', 'Unsaved Project', '')
+    user = User()
     session.add(user)
     session.flush()
 
