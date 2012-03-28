@@ -462,6 +462,12 @@ Message from %(from_name)s:
 %(message)s
                     """ % data
 
+                msg += u"""
+----------------------------
+Powered by CommitteeSpot.com
+Simplify your team-based review processes
+                """
+
                 msg = msg.strip()
 
                 server.sendmail('team@committeespot.com', user.email, msg)
