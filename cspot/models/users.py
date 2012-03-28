@@ -91,9 +91,7 @@ class User(Base):
         self.name = name.strip()
 
     def set_email(self, email):
-        # Update the e-mail address
         self.email = email.lower().strip()
-        self.temporary = False
 
     def set_password(self, password):
         if password:

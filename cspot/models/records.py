@@ -35,7 +35,7 @@ class Record(Base):
 
     id = Column(Integer, primary_key=True)
     type = Column(String(16), nullable=False)
-    project_id = Column(Integer, ForeignKey('projects.id'))
+    project_id = Column(Integer, ForeignKey('projects.id'), nullable=False)
 
     def __init__(self, project):
         self.project = project
@@ -49,7 +49,7 @@ class ItemRecord(Record):
 
     title = Column(Unicode(500), nullable=False)
     distributed = Column(DateTime)
-    project = relationship('Project', backref=backref('items', order_by=title))
+    project = relationship('Project', backref=backref('items', order_by=title, cascade='all,delete'))
 
     def __init__(self, project, title):
         Record.__init__(self, project)
@@ -65,10 +65,10 @@ class FeedbackRecord(Record):
     __mapper_args__ = {'polymorphic_identity':'feedback'}
 
     user_id = Column(Integer, ForeignKey('users.id'))
-    user = relationship(User, backref=backref('feedback'))
+    user = relationship(User, backref=backref('feedback', cascade='all,delete'))
 
     item_id = Column(Integer, ForeignKey('records.id'))
-    item = relationship(ItemRecord, backref=backref('feedback'), remote_side=[ItemRecord.id])
+    item = relationship(ItemRecord, backref=backref('feedback', cascade='all,delete'), remote_side=[ItemRecord.id])
 
     project = relationship('Project', backref='feedback')
 
