@@ -29,7 +29,6 @@ class User(Base):
     id = Column(Integer, primary_key=True)
 
     email = Column(String(255), nullable=False, unique=True)
-    email_change = Column(String(255))
     
     temporary = Column(Boolean, default=0)
 
