@@ -13,13 +13,14 @@
 <div class="row">
     <div class="span8">
 
-        <div class="padding" tal:condition="not:summaries">
+        <div class="padding" tal:condition="not:project.feedback">
             <p>
                 You have not yet collected any feedback.
             </p>
         </div>
 
-        <div tal:repeat="summary summaries">
+        <div tal:condition="project.feedback"
+             tal:repeat="summary summaries">
             <h2>${repeat.summary.number}. ${summary.title}</h2>
             <div class="padding" tal:content="structure summary.summary"></div>
         </div>

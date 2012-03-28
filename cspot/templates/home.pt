@@ -252,6 +252,9 @@
     <div id="video">
         <iframe id="demo-iframe" width="559" height="410" src="" frameborder="0" allowfullscreen></iframe>
     </div>
+    <div id="video-instructions">
+        go full-screen for improved quality <i class="icon-chevron-up icon-white"></i>
+    </div>
 </div>
 
 <script type="text/javascript">

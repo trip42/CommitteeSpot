@@ -75,7 +75,7 @@
                         <div class="control-group">
                             <label for="message">Add a message to your team as part of the distribution:</label>
                             <div class="controls">
-                                <textarea name="message" id="message" class="span6" rows="5"></textarea>
+                                <textarea name="message" id="message" class="span6" rows="5" cols="45"></textarea>
                             </div>
                         </div>
 

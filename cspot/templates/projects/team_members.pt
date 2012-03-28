@@ -29,7 +29,10 @@
 
             <tbody>
             <tr tal:repeat="user users">
-                <td tal:content="user.email"></td>
+                <td>
+                    <span tal:condition="not:user.temporary"
+                          tal:content="user.email"></span>
+                </td>
                 <td class="name" tal:content="user.name"></td>
                 <td tal:content="user.role"></td>
                 <td tal:content="user.last_login | string:n/a"></td>
