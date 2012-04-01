@@ -1,6 +1,6 @@
 <tal:block tal:define="hide_content python:True; responsive_layout python:True;">
 <metal:main use-macro="load:master.pt">
-<metal:title fill-slot="title">The simple way for teams to review job applicants, nominations, proposals, etc. online</metal:title>
+<metal:title fill-slot="title">Simple decision support system for teams</metal:title>
 <metal:slot fill-slot="raw">
 
 <div id="mast">
@@ -9,7 +9,7 @@
             <div class="span6">
 
                 <div>
-                <h1><span>Simplify your team-based<br />review processes</span></h1>
+                <h1><span>Simplify your team-based selection process</span></h1>
                 <h2>Share information, get feedback, make decisions.</h2>
 
                 <a href="${route_url('project:add', request)}" class="btn btn-huge btn-primary">
@@ -38,12 +38,11 @@
         <div class="span3">
             <div class="padding">
                 <div class="cs-icon items"></div>
-                <h3>Add Items</h3>
+                <h3>Collect items to review</h3>
 
                 <p>
-                    Post information and files for each item your team needs to review.
-                    Create proposals, employment applications, award nominations, 
-                    or anything you need to collect feedback on.
+                    Collect information and files for each item your team needs to review using
+                    a custom online form. If you've already received items, you can add those too. 
                 </p>
 
             </div>
@@ -127,7 +126,7 @@
 
             <div class="row">
                 <div class="span6 home-left-image">
-                    <img src="/static/images/word_cloud.png" alt="types of reviews" style="padding-top: 10px;">
+                    <img src="/static/images/word_cloud.png" alt="Review vendors, candidates, papers, rfps, proposals, scholarships, nominations, applications, anything!" style="padding-top: 10px;">
                 </div>
                 <div class="span6">
                     <div class="padding" style="padding: 50px 55px;;">

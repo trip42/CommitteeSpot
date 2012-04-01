@@ -6,10 +6,10 @@
     <meta tal:condition="responsive_layout | nothing"
           name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="CommitteeSpot helps teams make decisions by facilitating 
-                                      selection processes online. Whether you're hiring employees,
-                                      reviewing award nominations, or selecting a prize race horse,
-                                      CommitteeSpot can help.">
+    <meta name="description" content="Simplify your team-based selectio process.
+                                      The easiest decision support system for reviewing and
+                                      selecting candidates, applications, nominations, proposals, 
+                                      rfps, grants, bids, etc.">
 
     <link rel="shortcut icon" href="/static/images/favicon.png" />
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css" />
