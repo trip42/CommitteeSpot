@@ -103,6 +103,7 @@ def file_download(project, request):
 
     record_id = request.matchdict['record_id']
     widget_id = request.matchdict['widget_id']
+    filename = request.matchdict['filename']
 
     record = session.query(Record).filter(Record.project_id==project.id).filter(Record.id==record_id).first()
     widget = session.query(Widget).filter(Widget.id==widget_id).first()
@@ -110,7 +111,7 @@ def file_download(project, request):
 
     value = record.get_widget_value(widget)
 
-    return widget_controller.download(value, request)
+    return widget_controller.download(value, filename, request)
 
 
 @view_config(route_name='project:record:import', permission='review_project',

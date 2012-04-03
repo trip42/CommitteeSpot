@@ -156,7 +156,7 @@ class IWidgetController(object):
         """
         raise NotImplementedError
 
-    def download(self, value, request):
+    def download(self, value, filename, request):
         """
         return a Response object which represents a
         download of this file

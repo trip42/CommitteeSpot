@@ -3,20 +3,40 @@
                      id string:${field_id}-container;">
     <label for="${field_id}" class="control-label" tal:attributes="for field_id">${widget.label}</label>
     <div class="controls">
-
-        <tal:value tal:condition="value">
-        <tal:define tal:define="file_url route_url('project:record:download',request, project_id=value.record.project.id, record_id=value.record.id, widget_id=widget.id, filename=value.filename)">
-            <div tal:condition="value.file_type().startswith('image')">
-                <tal:size tal:define="size value.get_image_size()">
-                <img src="${file_url}" height="${size[0]}" width="${size[1]}">
-                </tal:size>
+        <div class="file-upload-list">
+            <tal:value tal:condition="value">
+            <tal:repeat tal:repeat="filename value.get_filenames()">
+            <tal:define tal:define="file_url route_url('project:record:download',request, project_id=value.record.project.id, record_id=value.record.id, widget_id=widget.id, filename=filename)">
+            <div class="file-upload">
+                <input type="hidden" name="${field_id}_filenames" value="${filename}">
+                <div class="file-upload-info">
+                    <a href="${file_url}">${filename}</a>
+                    <a href="#" class="file-upload-remove-link"><i class="icon-remove"></i> remove</a>
+                </div>
+                <div tal:condition="value.file_type(filename).startswith('image')">
+                    <tal:size tal:define="size value.get_image_size(filename)">
+                    <img src="${file_url}">
+                    </tal:size>
+                </div>
             </div>
-            <div>
-                <a href="${file_url}">Download ${value.filename}</a>
+            </tal:define>
+            </tal:repeat>
+            </tal:value>
+    
+            <div class="file-upload file-upload-template">
+                <div class="file-upload-input">
+                    <input type="file" name="${field_id}" id="" class="file-upload-input" />
+                </div>
+                <div class="file-upload-info" style="display: none;">
+                    <span class="file-upload-filename"></span>
+                    <a href="#" class="file-upload-remove-link"><i class="icon-remove"></i> remove</a>
+                </div>
+                <div class="file-upload-label">
+                    <label for="" class="btn"><i class="icon-plus"></i> Add file to ${widget.label}</label>
+                </div>
             </div>
-        </tal:define>
-        </tal:value>
 
-        <input type="file" name="${field_id}" id="${field_id}" />
+        </div>
     </div>
 </div>
+

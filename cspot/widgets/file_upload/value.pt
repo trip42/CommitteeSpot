@@ -5,14 +5,16 @@
     <div class="controls">
 
         <tal:value tal:condition="value">
-        <tal:define tal:define="file_url route_url('project:record:download',request, project_id=value.record.project.id, record_id=value.record.id, widget_id=widget.id, filename=value.filename)">
-            <div tal:condition="value.file_type().startswith('image')">
+        <tal:repeat tal:repeat="filename value.get_filenames()">
+        <tal:define tal:define="file_url route_url('project:record:download',request, project_id=value.record.project.id, record_id=value.record.id, widget_id=widget.id, filename=filename)">
+            <div tal:condition="value.file_type(filename).startswith('image')">
                 <img src="${file_url}">
             </div>
             <div>
-                <a href="${file_url}">Download ${value.filename}</a>
+                <a href="${file_url}">Download ${filename}</a>
             </div>
         </tal:define>
+        </tal:repeat>
         </tal:value>
 
         <div tal:condition="not:value">

@@ -1,8 +1,13 @@
 <tal:block tal:repeat="value values">
     <h4>Response from ${value.reviewer}</h4>
-    <tal:define tal:define="value value.file_value;
-                            file_url route_url('project:record:download',request, project_id=value.record.project.id, record_id=value.record.id, widget_id=widget.id, filename=value.filename)">
-       <p> <a href="${file_url}">Download ${value.filename}</a> </p>
+    <tal:define tal:define="value value.file_value">
+    <tal:repeat tal:repeat="filename value.get_filenames()">
+    <tal:define tal:define="file_url route_url('project:record:download',request, project_id=value.record.project.id, record_id=value.record.id, widget_id=widget.id, filename=filename)">
+        <div>
+            <a href="${file_url}">${filename}</a>
+        </div>
+    </tal:define>
+    </tal:repeat>
     </tal:define>
 </tal:block>
 

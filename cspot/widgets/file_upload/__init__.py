@@ -15,6 +15,7 @@ from pyramid.renderers import render
 from pyramid.response import Response
 
 import mimetypes, os
+import simplejson
 
 class FileUploadWidget(Widget):
     widget_type = 'file_upload'
@@ -24,22 +25,45 @@ class FileUploadWidget(Widget):
 
 class FileUploadValue(Value):
     __mapper_args__ = {'polymorphic_identity':'file'}
-    filename = Column(Unicode(200))
 
-    def file_path(self):
+    def __init__(self, record, widget):
+        Value.__init__(self, record, widget)
+
+        self.set_filenames([])
+
+    def dir_path(self):
         settings = get_current_registry().settings
-        return "%s/%s" % (settings['cspot.file_storage_root'], self.id)
+        dir_path = "%s/%s" % (settings['cspot.file_storage_root'], self.id)
 
-    def file_type(self):
-        type, subtype = mimetypes.guess_type(self.filename)
+        if not os.access(dir_path, os.F_OK):
+            os.mkdir(dir_path)
+
+        return dir_path
+
+    def file_path(self, filename):
+        return self.dir_path() + '/' + filename
+
+    def file_type(self, filename):
+        type, subtype = mimetypes.guess_type(filename)
         return type or ''
 
-    def set_filename(self, filename):
-        self.filename = filename
+    def add_filename(self, filename):
+        filenames = self.get_filenames()
+        if filename not in filenames:
+            filenames.append(filename)
+        self.set_filenames(filenames)
 
-    def set_file(self, file):
+    def set_filenames(self, filenames):
+        self.text_value = simplejson.dumps(filenames)
+
+    def get_filenames(self):
+        return simplejson.loads(self.text_value)
+
+    def add_file(self, filename, file):
+        self.add_filename(filename)
+
         file.seek(0)
-        out = open(self.file_path(), 'wb')
+        out = open(self.file_path(filename), 'wb')
 
         while True:
             data = file.read(4096)
@@ -48,10 +72,10 @@ class FileUploadValue(Value):
 
         out.close()
 
-    def get_file(self):
-        return open(self.file_path(), 'rb').read()
+    def get_file(self, filename):
+        return open(self.file_path(filename), 'rb').read()
 
-    def get_image_size(self):
+    def get_image_size(self, filename):
         return '',''
 
 class FileUploadWidgetController(IWidgetController):
@@ -138,37 +162,54 @@ class FileUploadWidgetController(IWidgetController):
         session = DBSession()
         value = session.query(FileUploadValue).filter(FileUploadValue.record==record).filter(FileUploadValue.widget==self.widget).first()
 
-        if self.field_id() in request.POST and \
-           hasattr(request.POST[self.field_id()], 'filename'):
+        if value:
+            # Update the filenames based on the filenames
+            # included in the request
+            # XXX we should remove the files as well
+            old_filenames = value.get_filenames()
+            new_filenames = request.POST.getall(self.field_id() + '_filenames')
 
-            if not value:
-                value = FileUploadValue(record, self.widget)
-                session.add(value)
-                session.flush()
+            # remove any filename that wasn't already part
+            # of the value
+            for filename in new_filenames:
+                if filename not in old_filenames:
+                    new_filenames.remove(filename)
 
-            filename = request.POST[self.field_id()].filename
-            file = request.POST[self.field_id()].file
+            value.set_filenames(new_filenames)
+    
+        if self.field_id() in request.POST:
+            for file_upload in request.POST.getall(self.field_id()):
+                if hasattr(file_upload, 'filename'):
+
+                    if not value:
+                        value = FileUploadValue(record, self.widget)
+                        session.add(value)
+                        session.flush()
+
+                    filename = file_upload.filename
+                    file = file_upload.file
                 
-            value.set_filename(filename)
-            value.set_file(file)
+                    value.add_file(filename, file)
 
     def value(self, value):
         if value:
-            return value.filename
+            return ', '.join(self.get_filenames())
         else:
             return ''
 
-    def download(self, value, request):
+    def download(self, value, filename, request):
         from mimetypes import guess_type
-        content_type, encoding = guess_type(value.filename)
+        content_type, encoding = guess_type(filename)
+
+        file_path = value.file_path(filename)
 
         res = Response(content_type=content_type, conditional_response=True)
-        res.app_iter = open(value.file_path(),'rb')
-        res.content_length = os.path.getsize(value.file_path())
-        res.last_modified = os.path.getmtime(value.file_path())
-        res.etag = '%s-%s-%s' % (os.path.getmtime(value.file_path()),
-                                 os.path.getsize(value.file_path()),
-                                 hash(value.file_path()))
+        res.app_iter = open(file_path,'rb')
+        res.content_length = os.path.getsize(file_path)
+        res.last_modified = os.path.getmtime(file_path)
+        res.etag = '%s-%s-%s' % (os.path.getmtime(file_path),
+                                 os.path.getsize(file_path),
+                                 hash(file_path))
 
         return res
 
