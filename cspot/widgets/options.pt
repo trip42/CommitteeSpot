@@ -13,6 +13,17 @@
 
 <metal:content define-slot="content" />
 
+<div class="control-group">
+    <label>Options:</label>
+    <div class="controls">
+        <label class="checkbox" for="required-${widget.id}">
+            <input type="checkbox" name="required" id="required-${widget.id}" value="1"
+                   tal:attributes="checked widget.required | nothing" >
+            Required field
+        </label>
+    </div>
+</div>
+
 <hr>
 <div class="control-group">
     <div class="controls">

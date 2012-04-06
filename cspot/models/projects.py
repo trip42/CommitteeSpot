@@ -28,6 +28,8 @@ from cspot.models.forms import FeedbackForm
 from cspot.models.records import ItemRecord
 from cspot.models.records import FeedbackRecord
 
+from uuid import uuid4
+
 class Project(Base):
     __tablename__ = 'projects'
 
@@ -37,6 +39,7 @@ class Project(Base):
     item_plural = Column(Unicode(55), nullable=False)
     item_label = Column(Unicode(50), nullable=False)
     creation_date = Column(DateTime(), nullable=False)
+    collect_code = Column(Unicode(30), nullable=False)
 
     template = Column(Boolean, default=False)
 
@@ -54,6 +57,8 @@ class Project(Base):
         self.item_name = item_name
         self.item_plural = item_plural
         self.item_label = u"%s Name or Title" % item_name
+
+        self.collect_code = str(uuid4())
 
         self.creation_date = datetime.now()
 

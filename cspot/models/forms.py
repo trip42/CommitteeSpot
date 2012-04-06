@@ -55,6 +55,7 @@ class Widget(Base):
     label = Column(Unicode(500), nullable=False)
     description = Column(UnicodeText())
     admin_only = Column(Boolean)
+    required = Column(Boolean, default=False)
 
     __mapper_args__ = {'polymorphic_on': type}
 
@@ -63,6 +64,7 @@ class Widget(Base):
         self.label = label
         self.sort_order = len(form.widgets) + 1
         self.admin_only = False
+        self.required = False
 
     def copy_to(self, widget):
         """
@@ -72,6 +74,7 @@ class Widget(Base):
         widget.label = self.label
         widget.description = self.description
         widget.admin_only = self.admin_only
+        widget.required = self.required
 
 def widget_factory(widget_type):
     """

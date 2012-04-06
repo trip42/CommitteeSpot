@@ -1,0 +1,19 @@
+<div class="control-group widget ${widget.type}-widget ${test(errors, 'error', '')}"
+     tal:attributes="data-widget_id widget.id;
+                     id string:${field_id}-container;">
+    <label for="${field_id}" class="control-label" tal:attributes="for field_id">
+        ${widget.label}
+        <i class="required" tal:condition="widget.required">*</i>
+    </label>
+    <div class="controls">
+
+        <p class="help-block"
+           tal:condition="errors"
+           tal:repeat="error errors"
+           tal:content="error"></p>
+
+        <metal:content define-slot="content" />
+
+    </div>
+</div>
+

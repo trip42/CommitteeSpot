@@ -14,6 +14,7 @@ from cspot.views.forms import FormController
 from cspot.widgets import all_widget_types
 from cspot.widgets.multiple_choice import MultipleChoiceWidget
 from cspot.widgets.paragraph_text import ParagraphTextWidget
+from cspot.widgets.file_upload import FileUploadWidget
 
 from pyramid.url import route_url
 from pyramid.view import view_config
@@ -210,6 +211,8 @@ def projects_add(request):
             project = Project(title, item_name, item_plural)
             project.add_user(user, 'owner')
 
+            documents_field = FileUploadWidget(project.item_form, 'Documents')
+
             rate_question = MultipleChoiceWidget(project.feedback_form, 'Rate this %s' % (project.item_name))
             rate_question.set_choices(['Very Good', 'Good', 'Average', 'Poor', 'Very Poor'])
 
@@ -217,8 +220,6 @@ def projects_add(request):
 
             session.add(project)
             session.flush() 
-
-            request.session.flash('Project created', 'messages')
 
             return HTTPFound(
                 location=route_url('project:records', request, project_id=project.id),

@@ -34,6 +34,7 @@ class FormController(object):
     def __init__(self, form):
         self.form = form
         self.widget_controllers = dict([(widget.id, widget_controller_factory(widget)) for widget in self.form.widgets])
+        self.errors = []
 
     def get_widget_controller(self, widget_id):
         return self.widget_controllers.get(int(widget_id), None)
@@ -46,7 +47,7 @@ class FormController(object):
         widgets = []
 
         for widget in self.form.widgets:
-            widget_controller = widget_controller_factory(widget)
+            widget_controller = self.widget_controllers[widget.id]
             
             if record is not None:
                 value = record.get_widget_value(widget)
@@ -78,15 +79,24 @@ class FormController(object):
 
         return widgets
 
+    def validate_from_request(self, request):
+        """
+        Call validate on each widget
+        """
+
+        for widget_controller in self.widget_controllers.values():
+            widget_controller.validate_from_request(request)
+            self.errors.extend(widget_controller.errors)
+
+        return self.errors
+
     def populate_record_from_request(self, record, request):
         """
         Given a record and a request create or update
         values on the record for each widget in the form
         """
 
-        widget_controllers = [widget_controller_factory(w) for w in self.form.widgets]
-
-        for widget_controller in widget_controllers:
+        for widget_controller in self.widget_controllers.values():
             widget_controller.populate_record_from_request(record, request)
       
     def download_widget(self, request, record, widget_id):
@@ -101,6 +111,7 @@ class IWidgetController(object):
 
     def __init__(self, widget):
         self.widget = widget
+        self.errors = []
 
     def field_id(self):
         return 'widget-%s' % self.widget.id
@@ -120,12 +131,21 @@ class IWidgetController(object):
         """
         raise NotImplementedError
  
-    def process_options(self, request):
+    def process_type_options(self, request):
         """
         Process the options for the widget
         from the request
         """
         raise NotImplementedError
+
+    def process_options(self, request):
+        if request.method == 'POST':
+            if request.params.get('required', None):
+                self.widget.required = True
+            else:
+                self.widget.required = False
+
+        self.process_type_options(request)
 
     def render(self, value, request):
         """
@@ -168,6 +188,19 @@ class IWidgetController(object):
         Generate a value from the request
         """
         raise NotImplementedError
+
+    def validate_from_request(self, request):
+        """
+        Validate a value from the request
+        return any error messages
+        """
+
+        value = request.POST.get(self.field_id(), u'').strip()
+
+        if self.widget.required and not value:
+            self.errors.append('This field is required') 
+
+        return self.errors
 
     def delete(self):
         """

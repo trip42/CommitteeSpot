@@ -60,7 +60,7 @@ class MultipleChoiceWidgetController(IWidgetController):
             request
         )
 
-    def process_options(self, request):
+    def process_type_options(self, request):
         choices = request.params.getall('choices')
         label = request.params.get('label',None)
 
@@ -77,6 +77,7 @@ class MultipleChoiceWidgetController(IWidgetController):
                 widget=self.widget,
                 field_id=self.field_id(),
                 value=value,
+                errors=self.errors,
             ),
             request
         )

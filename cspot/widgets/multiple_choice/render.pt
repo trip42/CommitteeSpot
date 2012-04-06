@@ -1,14 +1,14 @@
-<div class="control-group widget"
-     tal:attributes="data-widget_id widget.id;
-                     id string:${field_id}-container;">
-    <label for="${field_id}" class="control-label" tal:attributes="for field_id">${widget.label}</label>
-    <div class="controls">
+<metal:main use-macro="load:../render.pt">
+<metal:slot fill-slot="content">
+
         <label class="radio"
+               tal:define="current_choice request.POST[field_id] | value.get_value() | nothing"
                tal:repeat="choice widget.get_choices()">
             <input type="radio" name="${field_id}" id="${field_id}-${repeat['choice'].number}"
-                   tal:attributes="checked python:value and choice == value.get_value();"
+                   tal:attributes="checked python:choice == current_choice;"
                    value="${choice}">
             ${choice}
         </label>
-    </div>
-</div>
+
+</metal:slot>
+</metal:main>

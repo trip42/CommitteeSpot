@@ -1,9 +1,8 @@
-<div class="control-group widget"
-     tal:attributes="data-widget_id widget.id;
-                     id string:${field_id}-container;">
-    <label for="${field_id}" class="control-label" tal:attributes="for field_id">${widget.label}</label>
-    <div class="controls">
+<metal:main use-macro="load:../render.pt">
+<metal:slot fill-slot="content">
+
         <input name="${field_id}" class="span6"
                tal:attributes="value value | nothing">
-    </div>
-</div>
+
+</metal:slot>
+</metal:main>

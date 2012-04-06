@@ -22,32 +22,12 @@
                 <label class="control-label" for="title">${project.item_label}:</label>
                 <div class="controls">
                     <input type="text" name="title" id="title" class="span6"
-                           tal:attributes="value record.title | nothing" >
+                           tal:attributes="value request.POST['title'] | record.title | nothing" >
                 </div>
             </div>
 
             <tal:widget tal:repeat="widget_html form_widgets"
                         tal:replace="structure widget_html" />
-
-            <div class="alert alert-info" tal:condition="not:form_widgets">
-                <h3>Expand your ${project.item_name.lower()} records</h3>
-
-                <p>
-                    We're sure you would like to track more than just
-                    a name for each ${project.item_name.lower()}. Luckily,
-                    CommitteeSpot makes it easy to add more fields.
-                </p>
-
-                <p>
-                    Just click the <strong><i class="icon-pencil"></i> Edit ${project.item_name_short()} template</strong>
-                    in the box to the upper right to add more fields using our simple form editor. 
-                </p>
-
-                <p>
-                    Thank you for choosing CommitteeSpot!
-                </p>
-
-            </div>
 
             <div class="control-group">
                 <div class="controls">

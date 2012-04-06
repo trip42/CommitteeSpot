@@ -89,7 +89,7 @@ class FileUploadWidgetController(IWidgetController):
             request
         )
 
-    def process_options(self, request):
+    def process_type_options(self, request):
         label = request.params.get('label',None)
         self.widget.label = label
 
@@ -103,6 +103,7 @@ class FileUploadWidgetController(IWidgetController):
                 widget=self.widget,
                 field_id=self.field_id(),
                 value=value,
+                errors=self.errors,
             ),
             request
         )
@@ -157,6 +158,21 @@ class FileUploadWidgetController(IWidgetController):
             ),
             request
         )
+
+    def validate_from_request(self, request):
+        """
+        Validate that an acceptable value was submitted
+        """
+
+        filenames = request.POST.getall(self.field_id() + '_filenames')
+        files = [file for file in request.POST.getall(self.field_id()) if hasattr(file, 'filename')]
+        
+        num_files = len(filenames) + len(files)
+
+        if self.widget.required and num_files == 0:
+            self.errors.append('You must select at least one file')
+
+        return self.errors
 
     def populate_record_from_request(self, record, request):
         session = DBSession()

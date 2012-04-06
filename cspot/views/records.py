@@ -58,31 +58,36 @@ def record(project, request):
             request.session.flash('%s Name or Title is required!' % project.item_name, 'errors')
 
         elif title:
-
-            if record is None:
-                record = ItemRecord(project, title)
-
-            request.session.flash('%s saved!' % title, 'messages')
-
-            record.title = title
-
             form_controller = FormController(project.item_form)
-            form_controller.populate_record_from_request(record, request)
+            form_controller.validate_from_request(request)
 
-            session = DBSession()
-            session.add(record)
-            session.flush()
+            if form_controller.errors:
+                request.session.flash('There was a problem with your submission', 'errors')
 
-            if submit.find('add') >= 0:
-                route = 'project:record:add'
-            elif submit.find('finish') >= 0:
-                route = 'project:feedback_form'
             else:
-                route = 'project:record'
+                request.session.flash('%s saved!' % title, 'messages')
 
-            return HTTPFound(
-                location=route_url(route, request, project_id=project.id, record_id=record.id)
-            )
+                if record is None:
+                    record = ItemRecord(project, title)
+
+                record.title = title
+
+                form_controller.populate_record_from_request(record, request)
+    
+                session = DBSession()
+                session.add(record)
+                session.flush()
+    
+                if submit.find('add') >= 0:
+                    route = 'project:record:add'
+                elif submit.find('finish') >= 0:
+                    route = 'project:feedback_form'
+                else:
+                    route = 'project:record'
+    
+                return HTTPFound(
+                    location=route_url(route, request, project_id=project.id, record_id=record.id)
+                )
 
     return dict(
         project=project,

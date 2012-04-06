@@ -1,8 +1,6 @@
-<div class="control-group widget file-upload-widget"
-     tal:attributes="data-widget_id widget.id;
-                     id string:${field_id}-container;">
-    <label for="${field_id}" class="control-label" tal:attributes="for field_id">${widget.label}</label>
-    <div class="controls">
+<metal:main use-macro="load:../render.pt">
+<metal:slot fill-slot="content">
+
         <div class="file-upload-list">
             <tal:value tal:condition="value">
             <tal:repeat tal:repeat="filename value.get_filenames()">
@@ -37,6 +35,6 @@
             </div>
 
         </div>
-    </div>
-</div>
 
+</metal:slot>
+</metal:main>

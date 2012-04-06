@@ -49,6 +49,7 @@ class ItemRecord(Record):
 
     title = Column(Unicode(500), nullable=False)
     distributed = Column(DateTime)
+    reviewed = Column(Boolean, default=True)
     project = relationship('Project', backref=backref('items', order_by=title, cascade='all,delete'))
 
     def __init__(self, project, title):

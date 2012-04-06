@@ -41,26 +41,31 @@ def feedback(project, request):
     feedback_controller = FormController(project.feedback_form)
 
     if request.method == 'POST' and item:
-        if not feedback:
-            feedback = FeedbackRecord(project, request.user, item)
-            session.add(feedback)
+        feedback_controller.validate_from_request(request)
 
-        feedback.update_submitted()
-        feedback_controller.populate_record_from_request(feedback, request)
-
-        request.session.flash('Feedback on %s submitted' % item.title, 'messages')
-
-        # Once feedback is submitted, load the next
-        # record from the top of the list
-
-        if request.params.get('submit','') == 'save_and_next':
-            return HTTPFound(
-                location=route_url('project:feedback', request, project_id=project.id)
-            )
+        if feedback_controller.errors:
+            request.session.flash('There was a problem with your feedback', 'errors')
         else:
-            return HTTPFound(
-                location=route_url('project:feedback:item', request, project_id=project.id, item_id=item.id)
-            )
+            if not feedback:
+                feedback = FeedbackRecord(project, request.user, item)
+                session.add(feedback)
+    
+            feedback.update_submitted()
+            feedback_controller.populate_record_from_request(feedback, request)
+    
+            request.session.flash('Feedback on %s submitted' % item.title, 'messages')
+    
+            # Once feedback is submitted, load the next
+            # record from the top of the list
+    
+            if request.params.get('submit','') == 'save_and_next':
+                return HTTPFound(
+                    location=route_url('project:feedback', request, project_id=project.id)
+                )
+            else:
+                return HTTPFound(
+                    location=route_url('project:feedback:item', request, project_id=project.id, item_id=item.id)
+                )
 
     return dict(
         pending_items=pending_items,
