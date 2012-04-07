@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css" />
     <link tal:condition="responsive_layout | nothing" 
           rel="stylesheet" href="/static/bootstrap/css/bootstrap-responsive.css" />
-    <link rel="stylesheet" href="/static/css/cs.css" />
+    <link rel="stylesheet" href="/static/css/cs.css?version=3" />
     <link tal:condition="responsive_layout | nothing"
           rel="stylesheet" href="/static/css/cs-responsive.css" />
 
@@ -25,7 +25,7 @@
         google.load("jqueryui", "1.8.16");
     </script>  
     <script type="text/javascript" src="/static/bootstrap/js/bootstrap.js"></script>
-    <script type="text/javascript" src="/static/js/cs.js"></script>
+    <script type="text/javascript" src="/static/js/cs.js?version=3"></script>
 </head>
 <body tal:define="user request.user">
 

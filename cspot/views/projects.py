@@ -189,8 +189,6 @@ def projects_add(request):
             session.add(project)
             session.flush() 
 
-            request.session.flash('Project created', 'messages')
-
             return HTTPFound(
                 location=route_url('project:records', request, project_id=project.id),
                 headers=headers

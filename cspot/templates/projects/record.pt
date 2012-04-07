@@ -18,8 +18,40 @@
         <div class="padding" id="form">
             <metal:main use-macro="load:../alerts.pt" />
 
+            <div class="alert alert-info"
+                 tal:condition="not:project.items">
+                <h3 class="alert-heading">Congratulations!</h3>
+
+                <p>
+                    You're a few minutes away from changing
+                    the way your team makes decision.
+                </p>
+                    
+                <p>
+                    First, review the template for ${project.item_plural.lower()}
+                    created below. You can add or remove fields 
+                    from the <strong><a href="${route_url('project:item_form', request, project_id=project.id)}">edit ${project.item_name.lower()} template</a></strong> section.
+                </p>
+
+                <p>
+                    Next, enter 
+                    ${project.item_plural.lower()} below or collect them
+                    directly from others from the
+                    <strong><a href="${route_url('project:record:collect', request, project_id=project.id)}">collect ${project.item_plural.lower()} online</a></strong> section.
+                </p>
+
+                <p>
+                    If you have any questions or suggestions we're only an
+                    e-mail away at <strong><a href="mailto:team@committeespot.com">team@committeespot.com</a></strong>
+                </p>
+
+            </div>
+
             <div class="control-group widget">
-                <label class="control-label" for="title">${project.item_label}:</label>
+                <label class="control-label" for="title">
+                    ${project.item_label}:
+                    <i class="required">*</i>
+                </label>
                 <div class="controls">
                     <input type="text" name="title" id="title" class="span6"
                            tal:attributes="value request.POST['title'] | record.title | nothing" >

@@ -199,34 +199,45 @@
         </div>
     </div>
     <div class="row">
-        <div class="span8 offset2">
+        <div class="span8">
             <div class="padding">
                 <table class="table" id="pricing">
                 <thead>
                 <tr>
-                    <th>Tiny</th>
                     <th>Small</th>
                     <th>Medium</th>
+                    <th>Large</th>
                 </tr>
                 </thead>
 
                 <tbody>
                 <tr>
-                    <td>1 <small>administrator</small></td>
-                    <td>1 <small>administrator</small></td>
-                    <td>5 <small>administrators</small></td>
+                    <td><strong>1</strong> administrator</td>
+                    <td><strong>5</strong> administrators</td>
+                    <td><strong>15</strong> administrators</td>
                 </tr>
 
                 <tr>
-                    <td>1 <small>project at a time</small></td>
-                    <td>5 <small>projects at a time</small></td>
-                    <td>20 <small>projects at a time</small></td>
+                    <td><strong>1</strong> project</td>
+                    <td><strong>10</strong> projects</td>
+                    <td><strong>25</strong> projects</td>
                 </tr>
 
                 <tr>
-                    <td>Basic<small>features</small></td>
-                    <td>Basic + Premium<small>features</small></td>
-                    <td>Basic + Premium<small>features</small></td>
+                    <td><strong>25</strong> review items</td>
+                    <td><strong>100</strong> review items</td>
+                    <td><strong>500</strong> review items</td>
+                </tr>
+
+                <tr>
+                    <td><strong>10</strong> reviewers</td>
+                    <td><strong>25</strong> reviewers</td>
+                    <td><strong>50</strong> reviewers</td>
+                </tr>
+                
+                <tr>
+                    <td>Basic Features</td>
+                    <td colspan="2">Basic + Premium Features</td>
                 </tr>
 
                 <tr>
@@ -239,6 +250,30 @@
 
             </div>
         </div> 
+        <div class="span4">
+            <div class="padding">
+                <h3>Basic Features</h3>
+
+                <ul>
+                    <li> Online collection forms </li>
+                    <li> Custom review item formats </li>
+                    <li> Custom feedback form </li>
+                    <li> Automated team notifications </li>
+                    <li> Secure via SSL Encryption </li>
+                    <li> Export Feedback </li>
+                </ul>
+
+                <h3>Premium Features</h3>
+
+                <ul>
+                    <li> Custom branding and Logo </li>
+                    <li> Import record items from Excel </li>
+                    <li> Export record items and files </li>
+                    <li> Create reusable project templates </li>
+                </ul>
+
+            </div>
+        </div>
     </div>
 </div>
 </div>
