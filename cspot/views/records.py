@@ -45,7 +45,7 @@ def record(project, request):
     else:
         record = None
 
-    if not record.reviewed:
+    if record and not record.reviewed:
         record.reviewed = True
 
     if request.method == 'POST':
