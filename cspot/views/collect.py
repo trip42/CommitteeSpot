@@ -48,8 +48,6 @@ def record_collect(request):
                 request.session.flash('There was a problem with your submission', 'errors')
 
             else:
-                request.session.flash('%s saved!' % title, 'messages')
-
                 record = ItemRecord(project, title)
                 record.title = title
                 record.reviewed = False
@@ -76,4 +74,16 @@ def record_collect_settings(project, request):
         project=project,
         menu=project_menu(project, request, 'records'),
     )
+
+@view_config(route_name='project:collect:thanks',
+             renderer='cspot:templates/projects/collect_thanks.pt')
+def record_collect_thanks(request):
+    session = DBSession()
+    collect_code = request.matchdict['collect_code']
+    project = session.query(Project).filter(Project.collect_code == collect_code).first()
+
+    return dict(
+        project=project
+    )
+
 

@@ -1,0 +1,26 @@
+<metal:main use-macro="load:../master.pt">
+<metal:title fill-slot="title" tal:content="record.title | project.item_name"></metal:title>
+<metal:content fill-slot="content">
+
+<div class="row">
+    <div class="span12">
+        <h2>Thank You</h2>
+        <div class="padding">
+
+        <p>
+            Thank you, your ${project.item_name.lower()} was successfully submitted to
+            ${project.name}.
+        </p>
+
+        <p>
+            <a href="${route_url('project:collect', request, collect_code=project.collect_code)}">
+                Submit another ${project.item_name.lower()}</a>
+        </p>
+
+        </div>
+    </div>
+</div>
+
+</metal:content>
+</metal:main>
+
