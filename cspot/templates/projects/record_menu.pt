@@ -14,7 +14,7 @@
                             Import ${project.item_plural_short().lower()} from a spreadsheet</a> </li>
 
                     <li class="${test(menu_item=='collect', 'active', '')}"> 
-                        <a tal:attributes="href route_url('project:record:collect', request, project_id=project.id)">
+                        <a tal:attributes="href route_url('project:collect:settings', request, project_id=project.id)">
                             Collect ${project.item_plural_short().lower()} online</a> </li>
 
                 <ul> 

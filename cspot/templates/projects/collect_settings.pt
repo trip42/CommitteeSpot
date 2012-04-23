@@ -1,0 +1,54 @@
+<metal:main use-macro="load:../master.pt">
+<metal:title fill-slot="title">Collect ${project.item_plural} Online</metal:title>
+<metal:content fill-slot="content">
+
+<metal:header use-macro="load:header.pt" />
+
+<div class="row">
+    <div class="span12">
+         <h2>Collect ${project.item_plural} Online</h2>
+    </div>
+</div> 
+
+<div class="row">
+    <div class="span7">
+        <div class="padding">
+
+            <p>
+                Your users can submit ${project.item_plural.lower()} directly to
+                your CommitteeSpot project via the link below.
+            </p>
+
+            <p>
+                ${project.item_plural} collected through this form will appear on
+                the Add ${project.item_plural} screen with a <span class="label label-info">New</span>
+                indicator.
+            </p>
+
+            <p>
+                Share this URL via a webpage or e-mail to collect 
+                ${project.item_plural.lower()} online:
+            </p>
+
+            <input type="text" class="span6" onclick="this.select()" 
+                   value="${route_url('project:collect', request, collect_code=project.collect_code)}" />
+
+            <p>
+                <a href="${route_url('project:collect', request, collect_code=project.collect_code)}">
+                    Preview the ${project.item_name.lower()} collection form
+                </a>
+            </p>
+
+        </div>
+    </div>
+    <div class="span5">
+        <div class="padding"
+             tal:define="menu_item string:collect">
+            <metal:menu use-macro="load:record_menu.pt" />
+        </div>
+    </div>
+</div>
+
+</metal:content>
+</metal:main>
+

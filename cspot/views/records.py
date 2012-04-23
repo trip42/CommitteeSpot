@@ -45,6 +45,9 @@ def record(project, request):
     else:
         record = None
 
+    if not record.reviewed:
+        record.reviewed = True
+
     if request.method == 'POST':
         title = request.params.get('title', '').strip()
         submit = request.params.get('submit','')
@@ -122,14 +125,6 @@ def file_download(project, request):
 @view_config(route_name='project:record:import', permission='review_project',
              renderer='cspot:templates/projects/premium_import.pt')
 def record_import(project, request):
-    return dict(
-        project=project,
-        menu=project_menu(project, request, 'records'),
-    )
-
-@view_config(route_name='project:record:collect', permission='review_project',
-             renderer='cspot:templates/projects/premium_collect.pt')
-def record_collect(project, request):
     return dict(
         project=project,
         menu=project_menu(project, request, 'records'),

@@ -57,9 +57,7 @@ class Project(Base):
         self.item_name = item_name
         self.item_plural = item_plural
         self.item_label = u"%s Name or Title" % item_name
-
         self.collect_code = str(uuid4())
-
         self.creation_date = datetime.now()
 
         session = DBSession()
@@ -199,7 +197,7 @@ class Project(Base):
                 .first()
 
     def get_item_names(self):
-        return DBSession().query(ItemRecord.id, ItemRecord.title) \
+        return DBSession().query(ItemRecord.id, ItemRecord.title, ItemRecord.reviewed) \
                 .filter(ItemRecord.project==self) \
                 .order_by(ItemRecord.title)
 

@@ -37,7 +37,7 @@
                     Next, enter 
                     ${project.item_plural.lower()} below or collect them
                     directly from others from the
-                    <strong><a href="${route_url('project:record:collect', request, project_id=project.id)}">collect ${project.item_plural.lower()} online</a></strong> section.
+                    <strong><a href="${route_url('project:collect:settings', request, project_id=project.id)}">collect ${project.item_plural.lower()} online</a></strong> section.
                 </p>
 
                 <p>
@@ -92,8 +92,10 @@
                     <li tal:repeat="item item_names"
                         tal:define="record_id record.id | nothing;"
                         tal:attributes="class python:record_id == item.id and 'active' or '';">
-                        <a tal:attributes="href route_url('project:record', request, project_id=project.id, record_id=item.id)"
-                           tal:content="item.title"></a>
+                        <a tal:attributes="href route_url('project:record', request, project_id=project.id, record_id=item.id)">
+                            ${item.title}
+                            <span tal:condition="not:item.reviewed" class="label label-info">New</span>
+                        </a>
                     </li>
                 <ul> 
             </div>

@@ -49,8 +49,6 @@ def includeme(config):
     config.add_route('project:record:import', '/projects/{project_id}/records/import',
                      factory='cspot.views.projects.project_factory')
 
-    config.add_route('project:record:collect', '/projects/{project_id}/records/collect',
-                     factory='cspot.views.projects.project_factory')
 
     config.add_route('project:record', '/projects/{project_id}/records/{record_id}',
                      factory='cspot.views.projects.project_factory')
@@ -59,6 +57,16 @@ def includeme(config):
                      factory='cspot.views.projects.project_factory')
 
     config.add_route('project:item_form', '/project/{project_id}/forms/item_form',
+                     factory='cspot.views.projects.project_factory')
+
+    # Collection
+
+    config.add_route('project:collect:settings', '/projects/{project_id}/collect',
+                     factory='cspot.views.projects.project_factory')
+
+    config.add_route('project:collect', '/collect/{collect_code}')
+
+    config.add_route('project:collect:thanks', '/collect/{collect_code}/thankyou',
                      factory='cspot.views.projects.project_factory')
 
     # Feedback Form Creation

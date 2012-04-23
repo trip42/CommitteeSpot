@@ -1,0 +1,56 @@
+<metal:main use-macro="load:../master.pt">
+<metal:title fill-slot="title" tal:content="record.title | project.item_name"></metal:title>
+<metal:content fill-slot="content">
+
+<div class="row">
+    <div class="span12">
+        <h2>${project.name}: Submit ${project.item_name}</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span12">
+
+        <form method="post" enctype="multipart/form-data"
+              tal:attributes="action route_url('project:collect', request, collect_code=project.collect_code)">
+
+        <div class="padding" id="form">
+            <metal:main use-macro="load:../alerts.pt" />
+
+            <div class="control-group widget">
+                <label class="control-label" for="title">
+                    ${project.item_label}:
+                    <i class="required">*</i>
+                </label>
+                <div class="controls">
+                    <input type="text" name="title" id="title" class="span6"
+                           tal:attributes="value request.POST['title'] | nothing" >
+                </div>
+            </div>
+
+            <tal:widget tal:repeat="widget_html form_widgets"
+                        tal:replace="structure widget_html" />
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" name="submit" value="save" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+<script>
+$(function() {
+    $('#title').focus(); 
+})
+</script>
+
+</metal:content>
+</metal:main>
+
